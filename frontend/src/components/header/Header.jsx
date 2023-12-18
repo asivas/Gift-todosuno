@@ -1,18 +1,18 @@
 "use client";
 import React from "react";
-
 import { useApiContext } from "../../../context/apiContext";
 import "./header.css";
 
 
-const Header = () => {
-  const { dataUser, dataCuadro } = useApiContext();
 
+const Header = () => {
+
+  const { dataUser, dataCuadro } = useApiContext();
 
   return (
     <header className="header">
       <p id="logo">TodosUno</p>
-      <span className="levelSpan">Nivel 10</span>
+      <span className="levelSpan">{dataUser.nivel}</span>
       <div className="header__content-container">
         <div
           className={`header__content ${

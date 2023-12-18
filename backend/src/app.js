@@ -17,7 +17,7 @@ var app = express();
 // Configuración de CORS al principio
 app.use(
   cors({
-    origin: ["https://www.coffeebeanswap-staking.com", "http://localhost:3000"],
+    origin: ["gift5-s5ej.vercel.app", "https://gift5-s5ej.vercel.app/"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })

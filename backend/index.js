@@ -6,18 +6,18 @@ var logger = require("morgan");
 var cors = require("cors");
 const bodyParser = require("body-parser");
 
-const poolsRouter = require("./routes/pools");
-const authRouter = require("./routes/auth");
-const cuadroRouter = require("./routes/cuadro");
-const userRouter = require("./routes/user");
+const poolsRouter = require("./src/routes/pools");
+const authRouter = require("./src/routes/auth");
+const cuadroRouter = require("./src/routes/cuadro");
+const userRouter = require("./src/routes/user");
 
-require("./database");
+require("./src/database");
 var app = express();
 
 // Configuración de CORS al principio
 app.use(
   cors({
-    origin: ["gift5-s5ej.vercel.app", "https://gift5-s5ej.vercel.app/"],
+    origin: ["https://gift5-s5ej.vercel.app", "http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })

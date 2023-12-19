@@ -17,7 +17,7 @@ var app = express();
 // Configuración de CORS al principio
 app.use(
   cors({
-    origin: ["https://gift5.vercel.app", "http://localhost:3000"],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })

@@ -17,7 +17,7 @@ export const userData = async (req, res) => {
     );
     const email = decodedToken.email;
 
-    const user = await Users.findOne({ email: "pablo@hot.com" });
+    const user = await Users.findOne({ email:email });
    
     if (!user) {
       return res.status(400).json({ message: "User does not exist" });

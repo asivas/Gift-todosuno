@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <header className="header">
       <p id="logo">TodosUno</p>
-      <span className="levelSpan">{dataUser.nivel}</span>
+      <span className="levelSpan">Nivel {dataUser.nivel}</span>
       <div className="header__content-container">
         <div
           className={`header__content ${

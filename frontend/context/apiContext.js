@@ -26,30 +26,6 @@ export const ApiProvider = ({ children }) => {
   
 
 
-  const activarUsuario = async (username) => {
-    try {
-      if (!username) {
-        console.error("El nombre de usuario no puede estar vacío");
-        return;
-      }
-      // Llamar a tu función activar usuario
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BACKEND}user/activarUsuario`,  // Ajusta la ruta según tu configuración
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username }),
-        }
-      );
-      const json = await res.json();
-      console.log("username del api", username);
-    } catch (error) {
-      console.error("Error al agregar el campo:", error);
-    } 
-  };
-
 
   const deleteCuadro = async () => {
     try {
@@ -75,27 +51,58 @@ export const ApiProvider = ({ children }) => {
     } 
   };
 
-  const deleteUser = async (user) => {
+  const deleteUser = async (username) => {
     try {
-
-      if (!user) {console.log("no hay usuario para borrar")}
+      if (!username) {
+        console.error("El nombre de usuario no puede estar vacío");
+        return;
+      }
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BACKEND}user/deleteUser`,  // Ajusta la ruta según tu configuración
+        `${process.env.NEXT_PUBLIC_API_BACKEND}user/deleteUser`,
         {
-          method: "DELETE",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ user }),
+          body: JSON.stringify({ username }),
+        }
+      );
+  
+      if (res.status === 205) {
+        // La solicitud fue exitosa, puedes realizar alguna acción aquí si es necesario
+        console.log("Usuario borrado exitosamente:", username);
+      } else {
+        // La solicitud no fue exitosa, puedes manejar el error aquí
+        console.error("Error al borrar usuario:",username, res.statusText);
+      }
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error);
+    }
+  };
+
+  const activarUsuario = async (username) => {
+    try {
+      if (!username) {
+        console.error("El nombre de usuario no puede estar vacío");
+        return;
+      }
+      // Llamar a tu función activar usuario
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BACKEND}user/activarUsuario`,  // Ajusta la ruta según tu configuración
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username }),
         }
       );
       const json = await res.json();
-      console.log("borrar user:", user.username);
+      console.log("username del api", username);
     } catch (error) {
       console.error("Error al agregar el campo:", error);
     } 
   };
-
 
   const cambiarEstadoComplete = async () => {
 

@@ -1,6 +1,6 @@
 const path = require("path");
 require("dotenv").config();
-/*
+
 module.exports = {
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -13,9 +13,9 @@ module.exports = {
       },
     ],
   },
-}; */
+}; 
 
-
+/*
 module.exports = {
   async headers() {
     return [
@@ -62,4 +62,4 @@ module.exports = {
         },
     ]
   }
-};
+}; */

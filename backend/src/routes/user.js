@@ -8,7 +8,7 @@ var { userData, getAllUsers, activarUsuario, deleteUser, cambiarEstado, subirNiv
 router.get('/users', getAllUsers);
 router.get("/data", userData);
 router.post("/activarUsuario", activarUsuario);
-router.delete("/deleteUser", deleteUser);
+router.post("/deleteUser", deleteUser);
 router.post("/cambiarEstadoComplete", cambiarEstado)
 router.put("/subirNivel", subirNivel)
 

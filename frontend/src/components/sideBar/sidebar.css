@@ -117,7 +117,7 @@
 }
 
 /* Estilos para pantallas móviles (hasta 768px) */
-@media screen and (max-width: 768px) {
+/*@media screen and (max-width: 768px) {
   .sideBar {
     width: auto;
     z-index: 100;
@@ -133,8 +133,8 @@
   .sideBar.closed {
     width: 0;
     padding: 0;
-    z-index: 200; /* Cambio del valor de z-index para estar por encima de otros componentes */
-  }
+    z-index: 200;} /* Cambio del valor de z-index para estar por encima de otros componentes */
+   /*
 
   .sideBar__toggle-container {
     position: absolute;
@@ -169,7 +169,7 @@
     font-size: 0.7rem;
   }
 }
-
+*/
 
 /*  INACTIVE USERS   */
 
@@ -185,9 +185,15 @@
     width: 100%;
 }
 
+.acceptPay {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
 .acceptPay p, .acceptPay span {
-       padding-left: 2%;
-       text-align: start;
+    text-align: start;
+    margin-bottom: 3%;
+    font-size: 14px;
+    
 }
 
 .btnPay{
@@ -202,7 +208,10 @@
 }
 
 .buttons {
+  margin-top: 4%;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 

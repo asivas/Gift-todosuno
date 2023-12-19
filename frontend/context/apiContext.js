@@ -75,9 +75,10 @@ export const ApiProvider = ({ children }) => {
     } 
   };
 
-  const deleteUser = async () => {
+  const deleteUser = async (user) => {
     try {
 
+      if (!user) {console.log("no hay usuario para borrar")}
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_BACKEND}user/deleteUser`,  // Ajusta la ruta según tu configuración
         {
@@ -85,11 +86,11 @@ export const ApiProvider = ({ children }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ dataUser }),
+          body: JSON.stringify({ user }),
         }
       );
       const json = await res.json();
-      console.log("borrar user:", dataUser.username);
+      console.log("borrar user:", user.username);
     } catch (error) {
       console.error("Error al agregar el campo:", error);
     } 

@@ -60,15 +60,30 @@ export const cambiarEstado = async (req,res) => {
 
 export const deleteUser = async (req, res) => {
   try {
-    const {dataUser} = req.body
+    const {user} = req.body
    
-    if (!dataUser) {
+    if (!user) {
       // Si el usuario no se encuentra, responde con un mensaje de error
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    const user = await Users.findByIdAndDelete(dataUser._id);
+    const usuarioAEliminar = await Users.findOne({ username: user });
+    if (!usuarioAEliminar) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
 
+    const referalFather = usuarioAEliminar.referral_father;
+    const usuarioReferalFather = await Users.findOne({ username: referalFather });
+
+    if (usuarioReferalFather) {
+      // Eliminar al usuario de la lista de referidos del usuario referal_father
+      usuarioReferalFather.referidos = usuarioReferalFather.referidos.filter(ref => ref !== username);
+      await usuarioReferalFather.save();
+    }
+
+    //const usuarioAeliminar = await Users.findByIdAndDelete(user._id);
+    await usuarioAEliminar.remove();
+    console.log(user,"borrado")
     res.status(200).json("borrado satisfactoriamente");
   } catch (error) {
     console.log(error);

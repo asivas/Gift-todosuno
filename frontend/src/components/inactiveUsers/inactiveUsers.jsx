@@ -8,14 +8,14 @@ const InactiveUsers = () => {
       inactiveUsers,
       activarUsuario,
       dataCuadro,
-      legend,
       dataUser,
       cuadroIdHijo,
       traerCuadroPadre,
       hijoIzq,
       cambiarEstadoComplete,
       hijoDer,
-      createCuadros
+      createCuadros,
+      deleteUser
     } = useApiContext();
   
     const [showButton, setShowButton] = useState(true);
@@ -95,8 +95,6 @@ const InactiveUsers = () => {
 
       // Si todas las propiedades tienen valores, dispara la función
    
-    //  deleteUser();
-    //console.log("esta lleno");
     ascenderNivel();
 
 
@@ -161,9 +159,7 @@ const InactiveUsers = () => {
 
     return (
       <div className="dashboard__top">
-
-      
-          <ul>
+      {usuariosInactivos && usuariosInactivos.length > 0 ?  <ul>
             {usuariosInactivos.map((usuario) => (
               <li key={usuario._id} className='acceptPay'>
               <p>Recibir regalo de:</p>
@@ -172,16 +168,17 @@ const InactiveUsers = () => {
                 <button className="btnPay" onClick={() => handleActivarUsuario(usuario)} style={{backgroundColor:"rgb(8 143 8)", borderColor:"rgb(8 143 8)"}}>
                   Aceptar
                 </button>
-                <button className="btnPay" style={{backgroundColor:"red", borderColor:"red"}}>
+                <button className="btnPay" onClick={() => deleteUser(usuario)} style={{backgroundColor:"red", borderColor:"red"}}>
                   Borrar
                 </button>
               </div>
                 
               </li>
             ))}
-          </ul>
+          </ul> :  <p className='noPays'>No se encuentran solicitudes</p> }
+         
         
-          <p className='noPays'>No se encuentran solicitudes</p>
+         
         
         {showButton && dataUser.complete === true ? 
         <button className="addToRefer" onClick={completar_cuadro_refer}>Agregar a cuadro padre</button>

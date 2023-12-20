@@ -121,45 +121,48 @@ export const deleteUser = async (req, res) => {
 
     const cuadroFather = await Cuadros.findOne({ legend:father.username});
     if (!cuadroFather) {
-      console.log('Cuadro no encontrado');
-      return;
+      console.log('Cuadro padre no encontrado');
     }
-
-    if (cuadroFather.lado_derecho && cuadroFather.lado_derecho.guide === username.username) {
-     cuadroFather.lado_derecho.guide = '';
+    else {
+      if (cuadroFather.lado_derecho && cuadroFather.lado_derecho.guide === username.username) {
+        cuadroFather.lado_derecho.guide = '';
+       }
+   
+       if (cuadroFather.lado_izquierdo && cuadroFather.lado_izquierdo.guide === username.username) {
+         cuadroFather.lado_izquierdo.guide = '';
+       }
+   
+       await cuadroFather.save() 
     }
-
-    if (cuadroFather.lado_izquierdo && cuadroFather.lado_izquierdo.guide === username.username) {
-      cuadroFather.lado_izquierdo.guide = '';
-    }
-
-    await cuadroFather.save() 
+    
 
     
     const cuadroAbuelo = await Cuadros.findOne({ legend:father.referral_father});
     console.log("abuelo",cuadroAbuelo.legend)
 
     if (!cuadroAbuelo) {
-      console.log('Cuadro no encontrado');
-      return  res.status(405).json({msg:"error"}); 
+      console.log('Cuadro abuelo no encontrado');
     }
    
-    if (cuadroAbuelo.lado_derecho.builders1.username == username.username) {
-      await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_derecho.builders1": 1 } });
-  }
-  
-  if (cuadroAbuelo.lado_derecho.builders2.username == username.username) {
-      await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_derecho.builders2": 1 } });
-  }
-  
-  if (cuadroAbuelo.lado_izquierdo.builders1.username == username.username) {
-      await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_izquierdo.builders1": 1 } });
-  }
-  
-  if (cuadroAbuelo.lado_izquierdo.builders2.username == username.username) {
-      await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_izquierdo.builders2": 1 } });
-  } 
-  
+    else {
+      if (cuadroAbuelo.lado_derecho.builders1.username == username.username) {
+        await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_derecho.builders1": 1 } });
+    }
+    
+    if (cuadroAbuelo.lado_derecho.builders2.username == username.username) {
+        await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_derecho.builders2": 1 } });
+    }
+    
+    if (cuadroAbuelo.lado_izquierdo.builders1.username == username.username) {
+        await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_izquierdo.builders1": 1 } });
+    }
+    
+    if (cuadroAbuelo.lado_izquierdo.builders2.username == username.username) {
+        await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_izquierdo.builders2": 1 } });
+    } 
+    
+    }
+   
   const deleteUser = await Users.findOneAndDelete({ username:username.username });
   return res.status(205).json(user);
   } 
@@ -170,7 +173,7 @@ export const deleteUser = async (req, res) => {
     }
     
 
-  //  //  const deleteUser = await Users.findOneAndDelete({ username:username.username });
+
 
 
 export const activarUsuario = async (req, res) => {
@@ -188,6 +191,26 @@ export const activarUsuario = async (req, res) => {
     
     await user.save();
     return res.status(200).json({ message: "User activated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error"});
+  }
+};
+
+export const desactivarUsuario = async (req, res) => {
+  try {
+    const username = req.body.username
+    console.log(username);
+
+    const user = await Users.findOne({ username:username });
+   
+    if (!user) {
+      return res.status(400).json({ message: `User ${username} does not exist` });
+    }
+  // Activar al usuario actual
+    user.active = false;
+    
+    await user.save();
+    return res.status(200).json({ message: "User desactivated successfully" });
   } catch (error) {
     res.status(500).json({ message: "Internal server error"});
   }
@@ -242,11 +265,11 @@ export const subirNivel = async (req, res) => {
       }
     }
 
+        // Buscar el cuadro con guides igual a referral_father, lo encuentro
    else if (!cuadroEncontrado) {
       const cuadroEncontrado2 = poolCorrespondiente.cuadros.find(cuadro => cuadro.lado_derecho.guide === usuario.referral_father)
 
       if (cuadroEncontrado2) {
-       // console.log("soy guia der")
         const cuadroId = cuadroEncontrado2._id;
         const cuadroSiguiente = await Cuadros.findOne({_id:cuadroId})
 
@@ -260,7 +283,6 @@ export const subirNivel = async (req, res) => {
         }
       
         if (usuario.direction === "izquierda") {
-         // console.log("guia dere- soy lado izq")
           if (!cuadroSiguiente.lado_derecho.builders2.username) {
             console.log("builder2 no existe en la derecha")
             cuadroSiguiente.lado_derecho.builders2.username = usuario.username;
@@ -295,22 +317,46 @@ export const subirNivel = async (req, res) => {
               return cuadroSiguiente.save();
             }
           } 
-    
         }
-        else { 
-          const abueloEncontrado = await buscarAbueloRecursivo(poolCorrespondiente, usuario.referral_father);
-      
-          if (abueloEncontrado) {
-            console.log("abuelo encontrado", abueloEncontrado)
-          } else {
-              // Si no se encuentra el cuadro ni el "abuelo", devolver un error
-              return res.status(410).json({ error: 'No se encontró el cuadro ni el abuelo en el linaje.' });
-          }
-         }
       }
    }
+    else if ( usuario.referral_father == "pablo" ) {
+      let numeroPablo = usuario.nivel
+      const cuadroEncontrado = poolCorrespondiente.cuadros.find(cuadro => cuadro.legend === `pablo${numeroPablo}`)
+    
+      if (cuadroEncontrado) {
+        const cuadroId = cuadroEncontrado._id;
+        const cuadroSiguiente = await Cuadros.findOne({_id:cuadroId})
+        if (usuario.direction === "derecha") {
+          if (!cuadroSiguiente.lado_derecho.guide) {
+            cuadroSiguiente.lado_derecho.guide = usuario.username;
+            usuario.cuadro_id = cuadroSiguiente._id
+            usuario.save();
+            return cuadroSiguiente.save();
+          }
+        }
+        
+        if (usuario.direction === "izquierda") {
+          if (!cuadroSiguiente.lado_izquierdo.guide) {
+            cuadroSiguiente.lado_izquierdo.guide = usuario.username;
+            usuario.cuadro_id = cuadroSiguiente._id;
+            usuario.save();
+            return cuadroSiguiente.save();
+          }
+        }
+      }
+    }
+   /*else { 
+    const abueloEncontrado = await buscarAbueloRecursivo(poolCorrespondiente, usuario.referral_father);
+
+    if (abueloEncontrado) {
+      console.log("abuelo encontrado", abueloEncontrado)
+    } else {
+        // Si no se encuentra el cuadro ni el "abuelo", devolver un error
+        return res.status(410).json({ error: 'No se encontró el cuadro ni el abuelo en el linaje.' });
+    } 
+   }*/
   
-   
 
     // buscar el cuadro donde aparezca el referal, si es el guia derecho
     

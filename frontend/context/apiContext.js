@@ -104,6 +104,31 @@ export const ApiProvider = ({ children }) => {
     } 
   };
 
+  const desactivarUsuario = async (username) => {
+    try {
+      if (!username) {
+        console.error("El nombre de usuario no puede estar vacío");
+        return;
+      }
+      // Llamar a tu función activar usuario
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BACKEND}user/desactivarUsuario`,  // Ajusta la ruta según tu configuración
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username }),
+        }
+      );
+      const json = await res.json();
+      console.log("username del api", username);
+    } catch (error) {
+      console.error("Error al agregar el campo:", error);
+    } 
+  };
+
+
   const cambiarEstadoComplete = async () => {
 
     const user = dataUser.username;
@@ -294,7 +319,7 @@ export const ApiProvider = ({ children }) => {
 
   return (
     <ApiContext.Provider value={{ dataUser, dataCuadro, setToken, setReset, loading, 
-    inactiveUsers, activarUsuario, legend, setLegend, deleteCuadro, deleteUser, 
+    inactiveUsers, activarUsuario, desactivarUsuario, legend, setLegend, deleteCuadro, deleteUser, 
     traerCuadroPadre, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete, createCuadros }}>
       {children}
     </ApiContext.Provider>

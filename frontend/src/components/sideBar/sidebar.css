@@ -1,6 +1,6 @@
 /* Estilos generales */
 .sideBar {
-  width: 210px;
+  width: 19%;
   background: #353535;
   transition: width 0.3s ease;
   grid-area: sidebar;
@@ -266,6 +266,7 @@
   padding: 4% 2% 4% 2%;
   font-size: 15px;
   border-radius: 3px;
+  width: 100%;
   
 }
 

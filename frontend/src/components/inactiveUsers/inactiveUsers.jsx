@@ -7,6 +7,7 @@ const InactiveUsers = () => {
     const {
       inactiveUsers,
       activarUsuario,
+      desactivarUsuario,
       dataCuadro,
       dataUser,
       cuadroIdHijo,
@@ -19,6 +20,7 @@ const InactiveUsers = () => {
       legend
     } = useApiContext();
     
+    const [ascender, setAscender] = useState(true);
     const [showList, setShowList] = useState(true);
     const [showButton, setShowButton] = useState(true);
     const [usuariosInactivos, setUsuariosInactivos] = useState(
@@ -98,7 +100,7 @@ const InactiveUsers = () => {
 
       // Si todas las propiedades tienen valores, dispara la función
    
-    ascenderNivel();
+    setAscender(true);
 
 
     };
@@ -109,6 +111,8 @@ const InactiveUsers = () => {
       let builder;
       let userHijo;
     
+      console.log (dataCuadro) 
+      
       if (dataCuadro.lado_derecho.builders1 && !hijoDer) {
         lado = 'derecho';
         builder = 'builders1';
@@ -129,9 +133,12 @@ const InactiveUsers = () => {
         builder = 'builders2';
         userHijo = dataCuadro.lado_izquierdo.guide;
         console.log("La propiedad pertenece al lado izquierdo, builder2");
-      } else {
+      } 
+      
+      else {
         return console.log("Todas las propiedades están vacías");
       }
+
     
       // Supongamos que createCuadros también devuelve información
       createCuadros(lado, builder, userHijo);
@@ -141,6 +148,11 @@ const InactiveUsers = () => {
     
 
     const ascenderNivel = async () => {
+
+      if (dataUser.username !== "pablo" && dataUser.username !== "nelson" && dataUser.username !== "escro" ) {
+        console.log("desactivar usuario")
+        desactivarUsuario(dataUser.username);
+      }
 
       const username = dataUser.username;
       const res = await fetch(
@@ -152,8 +164,9 @@ const InactiveUsers = () => {
           },
           body: JSON.stringify({ username }),
         }
-      );
-  
+      ); 
+
+
      // deleteCuadro();
     }
 
@@ -185,6 +198,11 @@ const InactiveUsers = () => {
         
         {showButton && dataUser.complete === true ? 
         <button className="addToRefer" onClick={completar_cuadro_refer}>Agregar a cuadro padre</button>
+      
+        : <p></p> }
+
+        {ascender ? 
+        <button className="addToRefer" onClick={ascenderNivel}>Ascender de nivel</button>
       
         : <p></p> }
       </div>

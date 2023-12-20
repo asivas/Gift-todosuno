@@ -21,7 +21,7 @@ const SideBar = () => {
     setIsOpen(!isOpen);
   };
 
-  const referralLink = `http://localhost:3000/register?username=${dataUser.username}`;
+  const referralLink = `https://gift-frontend-eight.vercel.app/register?username=${dataUser.username}`;
 
   const copyToClipboard = () => {
     clipboardCopy(referralLink);

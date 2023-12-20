@@ -18,7 +18,8 @@ const InactiveUsers = () => {
       deleteUser,
       legend
     } = useApiContext();
-  
+    
+    const [showList, setShowList] = useState(true);
     const [showButton, setShowButton] = useState(true);
     const [usuariosInactivos, setUsuariosInactivos] = useState(
       inactiveUsers.filter((user) => {
@@ -72,6 +73,7 @@ const InactiveUsers = () => {
     const handleActivarUsuario = (usuario) => {
       // Actualizar el estado de usuario activado
       setUsuarioActivado(usuario);
+      setShowList(false);
 
       createNewCuadro();
       
@@ -160,7 +162,9 @@ const InactiveUsers = () => {
 
     return (
       <div className="dashboard__top">
-      {legend && usuariosInactivos && usuariosInactivos.length > 0 ?  <ul>
+      {legend && usuariosInactivos && usuariosInactivos.length > 0 ? (
+        showList && (
+         <ul>
             {usuariosInactivos.map((usuario) => (
               <li key={usuario._id} className='acceptPay'>
               <p>Recibir regalo de:</p>
@@ -169,14 +173,14 @@ const InactiveUsers = () => {
                 <button className="btnPay" onClick={() => handleActivarUsuario(usuario)} style={{backgroundColor:"rgb(8 143 8)", borderColor:"rgb(8 143 8)"}}>
                   Aceptar
                 </button>
-                <button className="btnPay" onClick={() => deleteUser(usuario)} style={{backgroundColor:"red", borderColor:"red"}}>
+                <button className="btnPay" onClick={() => {deleteUser(usuario);setShowList(false);}} style={{backgroundColor:"red", borderColor:"red"}}>
                   Borrar
                 </button>
               </div>
                 
               </li>
             ))}
-          </ul> :  <p className='noPays'>No se encuentran solicitudes</p> }
+          </ul> )) :  <p className='noPays'>No se encuentran solicitudes</p> }
          
         
          

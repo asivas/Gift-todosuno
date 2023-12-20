@@ -4,7 +4,7 @@ require("dotenv").config();
 (async () => {
   try {
     mongoose.set("strictQuery", true);
-    const db = await mongoose.connect(process.env.MONGO_URL);
+    const db = await mongoose.connect(process.env.MONGO_TEST);
     console.log("dbb", db.connection.name);
     mongoose.connection.db.listCollections().toArray(function (err, collections) {
       console.log("colecciones", collections);

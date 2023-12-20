@@ -93,29 +93,25 @@ export const deleteUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   
   try {
-    const username = req.body.username
-    console.log("soy username",username.username);
+      const username = req.body.username
 
     if (!username) {
       console.log("no hay data")
-  res.status(405).json({msg:"error"})}
+      res.status(405).json({msg:"error"})}
      
-        const user = await Users.findOne({ username:username.username });
+      const user = await Users.findOne({ username:username.username });
        
-        if (!user) {
-          return res.status(400).json({ message: "User does not exist" });
-        }
+    if (!user) {
+      return res.status(400).json({ message: "User does not exist" });
+      }
+      console.log("borrar:", user.username)
 
-        console.log("borrar", user.username)
+      const father = await Users.findOne({ username:username.referral_father});
+      console.log("padre",father.username)
 
-        const father = await Users.findOne({ username:username.referral_father});
+      
 
-        console.log(father.username)
-
-        
-    // Verifica si el usuario tiene referidos
     if (father) {
-      // Elimina el último elemento del array de referidos
       father.referidos.pop();
       await father.save();
       console.log('Referido eliminado:', father.referidos);
@@ -128,51 +124,53 @@ export const deleteUser = async (req, res) => {
       console.log('Cuadro no encontrado');
       return;
     }
-    // Verifica el lado derecho del cuadro
+
     if (cuadroFather.lado_derecho && cuadroFather.lado_derecho.guide === username.username) {
-      cuadroFather.lado_derecho.guide = '';
+     cuadroFather.lado_derecho.guide = '';
     }
-    // Verifica el lado izquierdo del cuadro
+
     if (cuadroFather.lado_izquierdo && cuadroFather.lado_izquierdo.guide === username.username) {
       cuadroFather.lado_izquierdo.guide = '';
     }
 
-    await cuadroFather.save()
+    await cuadroFather.save() 
 
+    
     const cuadroAbuelo = await Cuadros.findOne({ legend:father.referral_father});
-    console.log(cuadroAbuelo.legend)
+    console.log("abuelo",cuadroAbuelo.legend)
 
     if (!cuadroAbuelo) {
       console.log('Cuadro no encontrado');
-      return;
+      return  res.status(405).json({msg:"error"}); 
     }
-     // Verifica el lado derecho del cuadro
-     if (cuadroAbuelo.lado_derecho && cuadroFather.lado_derecho.builders1.username === username.username) {
-      cuadroAbuelo.lado_derecho.builders1 = '';
+   
+    if (cuadroAbuelo.lado_derecho.builders1.username == username.username) {
+      await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_derecho.builders1": 1 } });
+  }
+  
+  if (cuadroAbuelo.lado_derecho.builders2.username == username.username) {
+      await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_derecho.builders2": 1 } });
+  }
+  
+  if (cuadroAbuelo.lado_izquierdo.builders1.username == username.username) {
+      await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_izquierdo.builders1": 1 } });
+  }
+  
+  if (cuadroAbuelo.lado_izquierdo.builders2.username == username.username) {
+      await Cuadros.updateOne({ legend: father.referral_father }, { $unset: { "lado_izquierdo.builders2": 1 } });
+  } 
+  
+  const deleteUser = await Users.findOneAndDelete({ username:username.username });
+  return res.status(205).json(user);
+  } 
+  catch (error) {
+      console.log("soy error",error);
+      res.status(400).json(error)
     }
-      // Verifica el lado derecho del cuadro
-      if (cuadroAbuelo.lado_derecho &&  cuadroFather.lado_derecho.builders2.username === username.username) {
-        cuadroAbuelo.lado_derecho.builders2= '';
-      }
-    // Verifica el lado izquierdo del cuadro
-    if (cuadroAbuelo.lado_izquierdo  && cuadroFather.lado_izquierdo.builders1.username === username.username) {
-      cuadroAbuelo.lado_izquierdo.builders1 = '';
-    }
-    if (cuadroAbuelo.lado_izquierdo  && cuadroFather.lado_izquierdo.builders2.username === username.username) {
-      cuadroAbuelo.lado_izquierdo.builders2 = '';
-    }
-
-await cuadroAbuelo.save()
-        res.status(205).json(user);
-      } 
-      catch (error) {
-        console.log("soy error",error);
-        res.status(400).json(error)
-      }
     }
     
 
-  //  const user = await Users.findByIdAndDelete(dataUser._id);
+  //  //  const deleteUser = await Users.findOneAndDelete({ username:username.username });
 
 
 export const activarUsuario = async (req, res) => {
@@ -346,4 +344,4 @@ const buscarAbueloRecursivo = async (pool, referralFather) => {
       // Llamada recursiva para buscar en el siguiente nivel de la cadena
       return buscarAbueloRecursivo(pool, usuario.referral_father);
   }
-};
+};  

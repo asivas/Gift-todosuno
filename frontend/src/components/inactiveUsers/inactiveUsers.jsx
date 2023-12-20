@@ -2,8 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { useApiContext } from "../../../context/apiContext";
 import "../sideBar/sidebar.css";
+import Swal from "sweetalert2";
+
 
 const InactiveUsers = () => {
+
+  
     const {
       inactiveUsers,
       activarUsuario,
@@ -17,10 +21,11 @@ const InactiveUsers = () => {
       hijoDer,
       createCuadros,
       deleteUser,
+      deleteCuadro,
       legend
     } = useApiContext();
     
-    const [ascender, setAscender] = useState(true);
+    const [ascender, setAscender] = useState(false);
     const [showList, setShowList] = useState(true);
     const [showButton, setShowButton] = useState(true);
     const [usuariosInactivos, setUsuariosInactivos] = useState(
@@ -68,7 +73,7 @@ const InactiveUsers = () => {
   
     const handlePostActivarUsuario = (usuario) => {
       console.log("usuario activado", usuario);
-      activarUsuario(usuario.username);
+     activarUsuario(usuario.username);
   
     };
   
@@ -97,9 +102,7 @@ const InactiveUsers = () => {
        // console.log("No se encuentran las propiedades builder", dataCuadro);
         return;
       }
-
       // Si todas las propiedades tienen valores, dispara la función
-   
     setAscender(true);
 
 
@@ -112,7 +115,9 @@ const InactiveUsers = () => {
       let userHijo;
     
       console.log (dataCuadro) 
-      
+      console.log(hijoDer)
+      console.log(hijoIzq)
+
       if (dataCuadro.lado_derecho.builders1 && !hijoDer) {
         lado = 'derecho';
         builder = 'builders1';
@@ -137,7 +142,7 @@ const InactiveUsers = () => {
       
       else {
         return console.log("Todas las propiedades están vacías");
-      }
+      } 
 
     
       // Supongamos que createCuadros también devuelve información
@@ -148,11 +153,14 @@ const InactiveUsers = () => {
     
 
     const ascenderNivel = async () => {
-
-      if (dataUser.username !== "pablo" && dataUser.username !== "nelson" && dataUser.username !== "escro" ) {
+      if (dataUser.username !== "Pablo" && dataUser.username !== "Nelson" && dataUser.username !== "Escro" ) {
         console.log("desactivar usuario")
         desactivarUsuario(dataUser.username);
       }
+      
+      succesLevel();
+    
+      deleteCuadro();
 
       const username = dataUser.username;
       const res = await fetch(
@@ -166,10 +174,18 @@ const InactiveUsers = () => {
         }
       ); 
 
-
-     // deleteCuadro();
     }
 
+    const succesLevel = () => {
+      Swal.fire({
+        icon: "success",
+        title: "Subiste de nivel",
+        html: `
+        Porfavor actualiza la pagina para ver tus cambios
+      `,
+        showConfirmButton: true,
+      });
+    }
     
 
 

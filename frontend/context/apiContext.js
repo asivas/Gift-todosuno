@@ -216,7 +216,7 @@ export const ApiProvider = ({ children }) => {
       }
       //si existe significa que no tienen el mismo cuadro id
       else {
-       // console.log("no tenemos el mismo cuadro id")
+        console.log("no tenemos el mismo cuadro id")
         setHijoIzq(true)
       }
   

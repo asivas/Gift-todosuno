@@ -320,7 +320,7 @@ export const subirNivel = async (req, res) => {
         }
       }
    }
-    else if ( usuario.referral_father == "Nelson" ) {
+    else if ( usuario.referral_father === "Nelson" ) {
       let numeroPablo = usuario.nivel
       const cuadroEncontrado = poolCorrespondiente.cuadros.find(cuadro => cuadro.legend === `Nelson${numeroPablo}`)
     

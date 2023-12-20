@@ -15,7 +15,8 @@ const InactiveUsers = () => {
       cambiarEstadoComplete,
       hijoDer,
       createCuadros,
-      deleteUser
+      deleteUser,
+      legend
     } = useApiContext();
   
     const [showButton, setShowButton] = useState(true);
@@ -159,7 +160,7 @@ const InactiveUsers = () => {
 
     return (
       <div className="dashboard__top">
-      {usuariosInactivos && usuariosInactivos.length > 0 ?  <ul>
+      {legend && usuariosInactivos && usuariosInactivos.length > 0 ?  <ul>
             {usuariosInactivos.map((usuario) => (
               <li key={usuario._id} className='acceptPay'>
               <p>Recibir regalo de:</p>

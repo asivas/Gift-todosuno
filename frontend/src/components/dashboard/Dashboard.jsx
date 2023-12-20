@@ -8,7 +8,7 @@ import InactiveUsers from "../inactiveUsers/inactiveUsers"
 
 const Dashboard = () => {
    
-  const { dataCuadro  } = useApiContext();
+  const { dataCuadro } = useApiContext();
   const [pay, setPay] = useState(true)
     
 

@@ -183,8 +183,6 @@ const InactiveUsers = () => {
           </ul> )) :  <p className='noPays'>No se encuentran solicitudes</p> }
          
         
-         
-        
         {showButton && dataUser.complete === true ? 
         <button className="addToRefer" onClick={completar_cuadro_refer}>Agregar a cuadro padre</button>
       
@@ -194,6 +192,8 @@ const InactiveUsers = () => {
   };
   
   export default InactiveUsers;
+
+  /* git: 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 */
 
 
 

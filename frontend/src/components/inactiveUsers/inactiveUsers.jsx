@@ -184,7 +184,7 @@ const InactiveUsers = () => {
     const ascenderNivel = async () => {
       if (dataUser.username !== "Pablo" && dataUser.username !== "Nelson" && dataUser.username !== "Escro" ) {
         console.log("desactivar usuario")
-       await desactivarUsuario(dataUser.username);
+        desactivarUsuario(dataUser.username);
       }
       
       succesLevel();

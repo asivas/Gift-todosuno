@@ -9,6 +9,7 @@ var {
   deleteCuadro,
   traerCuadroPadre,
   cuadroHijo
+ 
 } = require("../controller/Cuadro.controller");
 
 //router.post("/createCuadro", createCuadro);
@@ -19,6 +20,8 @@ router.get("/:cuadroId", cuadroId);
 router.get("/cuadroHijo/:cuadroId", cuadroHijo);
 
 router.post("/createCuadros", createCuadros);
+
+//router.get("/hijoLevel/:username", hijoLevel);
 
 router.delete("/delete", deleteCuadro);
 

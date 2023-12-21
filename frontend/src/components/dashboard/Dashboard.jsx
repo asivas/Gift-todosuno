@@ -14,6 +14,7 @@ const Dashboard = () => {
 
   const mandalaContainerClassName = `mandala-container pool-${dataCuadro.poolId}`;
 
+  
 
   return (
   <div> 

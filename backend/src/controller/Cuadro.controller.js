@@ -33,6 +33,25 @@ export const cuadroHijo = async (req, res) => {
 }; 
 
 
+/*
+export const hijoLevel = async (req, res) => {
+  try {
+    const {username} = req.params;
+   
+    const user = 
+
+    if (!dataCuadro) {
+      // Si el cuadro no se encuentra, responde con un mensaje de error
+      return res.status(404).json({ message: 'Cuadro no encontrado' });
+    }
+
+
+    res.status(200).json("borrado satisfactoriament");
+  } catch (error) {
+    console.log(error);
+  }
+};*/
+
 
 export const deleteCuadro = async (req, res) => {
   try {

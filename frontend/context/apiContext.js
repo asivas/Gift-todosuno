@@ -29,8 +29,8 @@ export const ApiProvider = ({ children }) => {
 
   const deleteCuadro = async () => {
     try {
-      if (dataCuadro._id) {
-        console.error("El cuadro no existe");
+      if (!dataCuadro._id) {
+        console.error("El cuadro no existe", dataCuadro);
         return;
       } 
       // Llamar a tu función activar usuario

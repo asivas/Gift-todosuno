@@ -73,7 +73,7 @@ const InactiveUsers = () => {
   
     const handlePostActivarUsuario = (usuario) => {
       console.log("usuario activado", usuario);
-     activarUsuario(usuario.username);
+      activarUsuario(usuario.username);
   
     };
   
@@ -82,7 +82,16 @@ const InactiveUsers = () => {
       setUsuarioActivado(usuario);
       setShowList(false);
 
-      createNewCuadro();
+      if (usuario.level === 10) {
+        console.log("soy nivel 10")
+        createNewCuadro();
+      }
+
+      if (usuario.level !== 10) {
+        console.log("soy otro nivel");
+        createNewCuadro2()
+      }
+      
       
       // Verificar si alguna propiedad en dataCuadro está vacía
       const propiedades = Object.keys(dataCuadro);
@@ -105,9 +114,31 @@ const InactiveUsers = () => {
       // Si todas las propiedades tienen valores, dispara la función
     setAscender(true);
 
-
     };
-  
+
+
+    const createNewCuadro2 = async () => {
+
+      let lado;
+      let builder;
+      let userHijo;
+
+      if (dataCuadro.lado_derecho.builders1 && !dataCuadro.lado_derecho.builders2) {
+        lado = 'derecho';
+        builder = 'builders1';
+        userHijo = dataCuadro.lado_derecho.guide;
+        console.log("creado cuadro para lado derecho");
+      } else if (dataCuadro.lado_izquierdo.builders1 && !dataCuadro.lado_izquierdo.builders2) {
+        lado = 'izquierdo';
+        builder = 'builders1';
+        userHijo = dataCuadro.lado_izquierdo.guide;
+        console.log("creado cuadro para lado izquierdo");
+      } 
+    
+      // Supongamos que createCuadros también devuelve información
+      createCuadros(lado, builder, userHijo);
+    };
+
 
     const createNewCuadro = () => {
       let lado;
@@ -147,21 +178,18 @@ const InactiveUsers = () => {
     
       // Supongamos que createCuadros también devuelve información
       createCuadros(lado, builder, userHijo);
-    
-    
     };
     
 
     const ascenderNivel = async () => {
       if (dataUser.username !== "Pablo" && dataUser.username !== "Nelson" && dataUser.username !== "Escro" ) {
         console.log("desactivar usuario")
-        desactivarUsuario(dataUser.username);
+       await desactivarUsuario(dataUser.username);
       }
       
       succesLevel();
     
-      deleteCuadro();
-
+    
       const username = dataUser.username;
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_BACKEND}user/subirNivel`,  // Ajusta la ruta según tu configuración
@@ -173,7 +201,7 @@ const InactiveUsers = () => {
           body: JSON.stringify({ username }),
         }
       ); 
-
+      
     }
 
     const succesLevel = () => {

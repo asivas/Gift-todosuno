@@ -35,7 +35,7 @@
     background-image: url('../../imgs/12800.JPG');
   }
   .mandala-container.pool-657aac65021485dc1eb1a477 {
-    background-image: url('../../imgs/6400usd.JPG');
+    background-image: url('../../imgs/25600usd.JPG');
   }
   .mandala-container.pool-657aac89021485dc1eb1a478 {
     background-image: url('../../imgs/51200usd.JPG');
@@ -80,3 +80,39 @@
   color: white;
 }
 
+
+
+
+@media screen and (max-width: 767px) {
+
+.mandala-container.pool-65333a8a20c26e486be53e11 {
+  background-image: url('../../imgs/100usdx.jpg');
+}                   
+.mandala-container.pool-65797beed605fb00a8643a23 {
+  background-image: url('../../imgs/200usdx.JPG');
+}
+.mandala-container.pool-65333a9f20c26e486be53e15 {
+  background-image: url('../../imgs/400usdx.JPG');
+}
+.mandala-container.pool-65333aa820c26e486be53e17{
+  background-image: url('../../imgs/800usdx.JPG');
+}
+.mandala-container.pool-65333ab220c26e486be53e19 {
+  background-image: url('../../imgs/1600usdx.JPG');
+}
+.mandala-container.pool-65333ab820c26e486be53e1b {
+  background-image: url('../../imgs/3200usdx.JPG'); 
+}
+.mandala-container.pool-65333ac420c26e486be53e1d {
+  background-image: url('../../imgs/6400usdx.JPG');
+}
+.mandala-container.pool-657aac52021485dc1eb1a476 {
+  background-image: url('../../imgs/12800x.JPG');
+}
+.mandala-container.pool-657aac65021485dc1eb1a477 {
+  background-image: url('../../imgs/25600usdx.JPG');
+}
+.mandala-container.pool-657aac89021485dc1eb1a478 {
+  background-image: url('../../imgs/51200usdx.JPG');
+}
+}; 

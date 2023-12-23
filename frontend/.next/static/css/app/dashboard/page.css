@@ -125,6 +125,41 @@ body {
 }
 
 
+
+
+@media screen and (max-width: 767px) {
+
+.mandala-container.pool-65333a8a20c26e486be53e11 {
+  background-image: url(/_next/static/media/100usdx.6440f064.jpg);
+}                   
+.mandala-container.pool-65797beed605fb00a8643a23 {
+  background-image: url(/_next/static/media/200usdx.6ee6a047.JPG);
+}
+.mandala-container.pool-65333a9f20c26e486be53e15 {
+  background-image: url(/_next/static/media/400usdx.4f283aca.JPG);
+}
+.mandala-container.pool-65333aa820c26e486be53e17{
+  background-image: url(/_next/static/media/800usdx.40d8fbcf.JPG);
+}
+.mandala-container.pool-65333ab220c26e486be53e19 {
+  background-image: url(/_next/static/media/1600usdx.f888989f.JPG);
+}
+.mandala-container.pool-65333ab820c26e486be53e1b {
+  background-image: url(/_next/static/media/3200usdx.ffac49a3.JPG); 
+}
+.mandala-container.pool-65333ac420c26e486be53e1d {
+  background-image: url(/_next/static/media/6400usdx.f62d44ab.JPG);
+}
+.mandala-container.pool-657aac52021485dc1eb1a476 {
+  background-image: url(/_next/static/media/12800x.c98336e5.JPG);
+}
+.mandala-container.pool-657aac65021485dc1eb1a477 {
+  background-image: url(/_next/static/media/6400usdx.f62d44ab.JPG);
+}
+.mandala-container.pool-657aac89021485dc1eb1a478 {
+  background-image: url(/_next/static/media/51200usdx.ac285723.JPG);
+}
+}; 
 /*!******************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./src/components/mandala/mandala.css ***!
   \******************************************************************************************************************************************************************************************************************************************************************************/
@@ -442,7 +477,7 @@ body {
 
 .header {
   height: 40px;
-  max-width: 100vw;
+  max-width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;

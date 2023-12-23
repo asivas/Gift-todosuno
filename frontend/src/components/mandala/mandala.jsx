@@ -8,8 +8,16 @@ const Mandala = () => {
 
     const { dataUser, dataCuadro } = useApiContext();
 
-     // Define las coordenadas para cada punto
-  const puntos = [
+  
+  const puntos = window.innerWidth <= 767 ? [
+      { x: 28, y: 50, propiedadUsuario: dataCuadro?.legend, active: true },
+      { x: 65, y: 50, propiedadUsuario: dataCuadro?.lado_derecho?.guide, active: true },
+      { x: -9, y: 50, propiedadUsuario: dataCuadro?.lado_izquierdo?.guide, active: true },
+      { x: -9, y: 30, propiedadUsuario: dataCuadro?.lado_izquierdo?.builders1?.username, active: true },
+      { x: -9, y: 70, propiedadUsuario: dataCuadro?.lado_izquierdo?.builders2?.username, active: true },
+      { x: 65, y: 30, propiedadUsuario: dataCuadro?.lado_derecho?.builders1?.username, active: true },
+      { x: 65, y: 70, propiedadUsuario: dataCuadro?.lado_derecho?.builders2?.username, active: false },
+  ] : [
       { x: 28, y: 45, propiedadUsuario: dataCuadro?.legend, active: true },
       { x: 85, y: 45, propiedadUsuario: dataCuadro?.lado_derecho?.guide, active: true },
       { x: -29, y: 45, propiedadUsuario: dataCuadro?.lado_izquierdo?.guide, active: true },

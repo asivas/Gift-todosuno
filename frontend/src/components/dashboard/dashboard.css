@@ -1,3 +1,7 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap'); 
+
 #dashboard {
 
   padding: 3rem 2rem 3rem 2rem;
@@ -82,7 +86,7 @@
 
 
 
-
+/*
 @media screen and (max-width: 767px) {
 
 .mandala-container.pool-65333a8a20c26e486be53e11 {
@@ -115,4 +119,4 @@
 .mandala-container.pool-657aac89021485dc1eb1a478 {
   background-image: url('../../imgs/51200usdx.JPG');
 }
-}; 
+}; */

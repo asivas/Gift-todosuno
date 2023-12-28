@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import Cuadros from "../models/Cuadros";
 require("dotenv").config();
 
-
+let userP;
 export const userData = async (req, res) => {
   try {
     const token = req.headers.authorization;
@@ -18,6 +18,8 @@ export const userData = async (req, res) => {
     const email = decodedToken.email;
 
     const user = await Users.findOne({ email: email });
+
+    userP = user ;
    
     if (!user) {
       return res.status(400).json({ message: "User does not exist" });
@@ -28,6 +30,8 @@ export const userData = async (req, res) => {
     console.log(error);
   }
 };
+
+
 
 
 export const cambiarEstado = async (req,res) => {
@@ -360,6 +364,26 @@ const buscarAbueloRecursivo = async (pool, referralFather) => {
   } else {
       // Llamada recursiva para buscar en el siguiente nivel de la cadena
       return buscarAbueloRecursivo(pool, usuario.referral_father);
+  }
+};  
+
+
+
+export const remindFatherFn = async (req, res) => {
+  try {
+  
+
+    const userRF = userP.referral_father;
+
+    const pe = await Users.findOne({ username: userRF });
+    
+    if (!pe) {
+      return res.status(400).json({ message: "User does not exist" });
+    }
+
+    res.json(pe);
+  } catch (error) {
+    console.log(error);
   }
 };  
 

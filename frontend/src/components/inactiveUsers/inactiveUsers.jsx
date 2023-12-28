@@ -22,9 +22,12 @@ const InactiveUsers = () => {
       createCuadros,
       deleteUser,
       deleteCuadro,
+      fatherComplete,
       legend
     } = useApiContext();
     
+  
+  
     const [ascender, setAscender] = useState(false);
     const [showList, setShowList] = useState(true);
     const [showButton, setShowButton] = useState(true);
@@ -204,6 +207,8 @@ const InactiveUsers = () => {
       
     }
 
+
+
     const succesLevel = () => {
       Swal.fire({
         icon: "success",
@@ -241,14 +246,20 @@ const InactiveUsers = () => {
          
         
         {showButton && dataUser.complete === true ? 
-        <button className="addToRefer" onClick={completar_cuadro_refer}>Agregar a cuadro padre</button>
+        <button className="addToRefer" onClick={completar_cuadro_refer}>
+        {`Agregar a ${dataUser.referidos[1]} a tu cuadro padre`}
+        </button>
       
-        : <p></p> }
+        : <p style={{display:"none"}}></p> }
 
         {ascender ? 
         <button className="addToRefer" onClick={ascenderNivel}>Ascender de nivel</button>
       
-        : <p></p> }
+        : <p style={{display:"none"}}></p> }
+        
+        { fatherComplete ? 
+          <p style={{color:"Red", fontWeight:"300", fontSize:"15px"}}>Tu padre tiene que aceptarte en su cuadro.</p>
+        : <p style={{display:"none"}}></p> }
       </div>
     );
   };

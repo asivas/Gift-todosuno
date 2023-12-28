@@ -28,10 +28,30 @@ export const registerUser = async (req, res) => {
       const referral = await Users.findOne({ username: referralUser });
 
       if (referral.referidos.length >= 2) {
-        return res.status(409).json({
+        console.log(referral.referidos[0])
+        return res.status(412).json({
           message: "No podes referir mas",
         });
       }
+
+      const referido = referral.referidos[0]
+      const referral2 = await Users.findOne({ username: referido });
+
+      if (!referral2) {
+        return res.status(414).json({
+          message: "no existe"
+        });
+      }
+
+      if ( referral2.active === false ) {
+        console.log("tenes que activar el primer user")
+        return res.status(413).json({
+          message: "tenes que activar el primer user",
+        });
+      }
+      
+
+
 
       const hashedPassword = await bcrypt.hash(password, 10);
       
@@ -111,7 +131,7 @@ export const registerUser = async (req, res) => {
   
     }
     res
-      .status(201)
+      .status(200)
       .json({ message: "User successfully registered", data: newUser });
   } catch (error) {
     res.status(500).json({

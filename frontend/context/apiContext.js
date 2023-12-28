@@ -20,7 +20,7 @@ export const ApiProvider = ({ children }) => {
   const [legend, setLegend] = useState(false)
   const [hijoDer, setHijoDer] = useState(false);
   const [hijoIzq, setHijoIzq] = useState(false);
-
+  const [fatherComplete ,setFatherComplete] = useState(false);
   
 
   
@@ -250,6 +250,8 @@ export const ApiProvider = ({ children }) => {
     } 
   };
   
+
+
   useEffect(() => {
 
     const fetchData = async () => {
@@ -310,17 +312,44 @@ export const ApiProvider = ({ children }) => {
       } catch (error) {
         console.error("Error fetching private data:", error);} };
 
+
+  const remindFatherFn = async () => {
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BACKEND}user/remindFatherFn`,  // Ajusta la ruta según tu configuración
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
+      ); 
+      
+      const json = await res.json();
   
+      if (json.complete == true) {
+        setFatherComplete(json.complete)
+      }
+
+      console.log("soy referal father complete",json.complete)
+     
+    }
+   catch (error) {
+    console.error("Error con el fatherFn:", error)
+   }
+  }
 
     fetchData();
     fetchUsers();
-    
+   remindFatherFn();
+
   }, [token, reset]);
 
   return (
     <ApiContext.Provider value={{ dataUser, dataCuadro, setToken, setReset, loading, 
     inactiveUsers, activarUsuario, desactivarUsuario, legend, setLegend, deleteCuadro, deleteUser, 
-    traerCuadroPadre, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete, createCuadros }}>
+    traerCuadroPadre, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete, createCuadros, fatherComplete }}>
       {children}
     </ApiContext.Provider>
   );

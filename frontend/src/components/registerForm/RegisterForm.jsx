@@ -72,6 +72,22 @@ const RegisterForm = () => {
                         'error'
                       )
                     break
+                case 413:
+                  console.log("ya registrado",json)
+                  MySweetAlert.fire(
+                      'Error',
+                      'Falta activar el primer referido',
+                      'error'
+                    )
+                    break
+                case 412:
+                    console.log("ya registrado",json)
+                    MySweetAlert.fire(
+                        'Error',
+                        'No podes referir mas personas',
+                        'error'
+                        )
+                        break
                 default:
                     console.log("error en el server")
                     MySweetAlert.fire(

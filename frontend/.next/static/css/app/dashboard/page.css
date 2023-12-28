@@ -426,7 +426,7 @@ body {
   flex-direction: column;
   width: 100%;
   display: flex;
-  align-items: flex-end;
+
 }
 
 .dashboard__top ul {
@@ -501,8 +501,8 @@ body {
 }*/
 
 .noPays {
-  text-align: start;
-  margin: 1%;
+
+  margin: 1% 0% 1% 0%;
   font-size:15px;
 }
 

@@ -7,3 +7,13 @@
     background-image: url(../imgs/fondo4.png);
     background-position: 55%;
 }
+
+
+
+@media (min-width: 300px) and (max-width: 800px) {
+
+    .home {
+        background-size: 125vh;
+        background-position: 63%;
+    }
+  }

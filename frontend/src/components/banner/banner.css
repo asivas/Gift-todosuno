@@ -25,3 +25,15 @@
     color: white;
 }
 
+@media (min-width: 300px) and (max-width: 800px) {
+    .banner {
+        justify-content:space-between
+    }
+    #logo-banner {
+        margin-left: 1%;
+        margin-right: 8%;
+    }
+    .banner span {
+        margin-right: 4%;
+    }
+  }

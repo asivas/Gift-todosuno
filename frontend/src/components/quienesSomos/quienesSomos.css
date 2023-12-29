@@ -36,3 +36,23 @@
     margin-bottom: 0%;
     font-family: 'PT Serif', serif;
 }
+
+
+@media (min-width: 300px) and (max-width: 800px) {
+
+    .quienesSomos h1 {
+        font-size: 43px;
+    }
+
+    .quienesSomos {
+        margin-top: 25%;
+    }
+
+    .quienesSomos p {
+        font-size: 14px;
+
+    }
+    .texto {
+        width: 184px;
+    }
+  }

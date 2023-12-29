@@ -23,6 +23,7 @@ const InactiveUsers = () => {
       deleteUser,
       deleteCuadro,
       fatherComplete,
+      remindFatherFn,
       legend
     } = useApiContext();
     
@@ -72,6 +73,7 @@ const InactiveUsers = () => {
         // Reiniciar el estado de usuario activado
         setUsuarioActivado(null);
       }
+      remindFatherFn();
     }, [usuarioActivado]);
   
     const handlePostActivarUsuario = (usuario) => {
@@ -270,4 +272,5 @@ const InactiveUsers = () => {
 
 
 
- 
+ /*
+      */

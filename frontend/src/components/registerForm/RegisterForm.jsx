@@ -60,15 +60,15 @@ const RegisterForm = () => {
         
       
             switch(res.status){
-                case 201: 
+                case 200: 
                     MySweetAlert.close()
                     router.push(`/login`)
                     break
-                case 400:
+                case 409:
                     console.log("ya registrado",json)
                     MySweetAlert.fire(
                         'Error',
-                        'Email already registered',
+                        'Email o usuario ya registrado',
                         'error'
                       )
                     break

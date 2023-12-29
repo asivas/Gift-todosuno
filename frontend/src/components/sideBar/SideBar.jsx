@@ -13,7 +13,7 @@ import InactiveUsers from "../inactiveUsers/inactiveUsers";
 const SideBar = () => {
   
   const pathname = usePathname();
-  const { dataUser, setLegend } = useApiContext();
+  const { dataUser, setLegend, setFatherComplete } = useApiContext();
   const [isOpen, setIsOpen] = useState(false); // Cambiado a false para cerrar por defecto en pantallas pequeñas
 
 
@@ -21,8 +21,8 @@ const SideBar = () => {
     setIsOpen(!isOpen);
   };
 
-  const referralLink = `https://gift-frontend-eight.vercel.app/register?username=${dataUser.username}`;
- // const referralLink = `http://localhost:3000/register?username=${dataUser.username}`;
+  //const referralLink = `https://gift-frontend-eight.vercel.app/register?username=${dataUser.username}`;
+  const referralLink = `http://localhost:3000/register?username=${dataUser.username}`;
 
   const copyToClipboard = () => {
     clipboardCopy(referralLink);
@@ -61,6 +61,7 @@ const SideBar = () => {
      Cookies.remove('token');
     router.push("/login")
     setLegend(false)
+    setFatherComplete(false)
   }
 
   return (

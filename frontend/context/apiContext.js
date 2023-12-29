@@ -25,7 +25,31 @@ export const ApiProvider = ({ children }) => {
 
   
 
+ const remindFatherFn = async () => {
 
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BACKEND}user/remindFatherFn`,  // Ajusta la ruta según tu configuración
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }
+    ); 
+    
+    const json = await res.json();
+
+    if (json.complete == true) {
+      setFatherComplete(json.complete)
+    }
+
+    console.log("soy referal father complete",json.complete)
+   
+  }
+ catch (error) {
+  console.error("Error con el fatherFn:", error)
+ }}
 
   const deleteCuadro = async () => {
     try {
@@ -313,43 +337,17 @@ export const ApiProvider = ({ children }) => {
         console.error("Error fetching private data:", error);} };
 
 
-  const remindFatherFn = async () => {
-
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BACKEND}user/remindFatherFn`,  // Ajusta la ruta según tu configuración
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        }
-      ); 
-      
-      const json = await res.json();
-  
-      if (json.complete == true) {
-        setFatherComplete(json.complete)
-      }
-
-      console.log("soy referal father complete",json.complete)
-     
-    }
-   catch (error) {
-    console.error("Error con el fatherFn:", error)
-   }
-  }
-
     fetchData();
     fetchUsers();
-   remindFatherFn();
+ 
 
   }, [token, reset]);
 
   return (
     <ApiContext.Provider value={{ dataUser, dataCuadro, setToken, setReset, loading, 
     inactiveUsers, activarUsuario, desactivarUsuario, legend, setLegend, deleteCuadro, deleteUser, 
-    traerCuadroPadre, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete, createCuadros, fatherComplete }}>
+    traerCuadroPadre, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete, createCuadros, fatherComplete ,
+    setFatherComplete ,remindFatherFn}}>
       {children}
     </ApiContext.Provider>
   );

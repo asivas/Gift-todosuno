@@ -24,6 +24,8 @@ export const registerUser = async (req, res) => {
       });
     }
     let newUser;
+
+    
     if (referralUser) {
       const referral = await Users.findOne({ username: referralUser });
 
@@ -125,9 +127,8 @@ export const registerUser = async (req, res) => {
       }
   
     }
-    res
-      .status(200)
-      .json({ message: "User successfully registered", data: newUser });
+    
+    res.status(200).json({ message: "User successfully registered", data: newUser });
   } catch (error) {
     res.status(500).json({
       message: "An error occurred while registering the user",

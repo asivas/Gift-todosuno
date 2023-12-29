@@ -110,12 +110,9 @@ const termsAndConditions = () => {
     title: "<strong>Terminos y condiciones</strong>",
   icon: "info",
   html: ` 
-  Somos una comunidad comprometida con el intercambio voluntario y la creación colaborativa. Queremos enfatizar que en ningún caso garantizamos ganancias ni promovemos la venta de productos o inversiones de ningún tipo.
-  Somos una comunidad de regalías donde la participación implica un compromiso voluntario de contribuir con generosidad y creatividad. Cada miembro que se une a nuestra plataforma está de acuerdo en participar mediante un regalo o donacion  voluntario.
-  Es importante subrayar que para obtener resultados en nuestra comunidad se requiere dedicación y trabajo. No ofrecemos atajos ni promesas de beneficios rápidos y sin esfuerzo. Aquí valoramos el esfuerzo individual y colectivo, donde la colaboración y la pasión por el trabajo son fundamentales.
-  Además, es crucial destacar que la plataforma "Todos Uno" no se responsabiliza de ninguna pérdida de dinero. No manejamos transacciones financieras ni promovemos inversiones. Cada miembro es responsable de sus acciones y decisiones dentro de la comunidad.
-  Nuestra plataforma se basa en la idea de compartir, colaborar y construir juntos. No vendemos productos ni servicios, ni promovemos inversiones financieras. Nos destacamos por ser una comunidad comprometida con la generosidad y las donaciones.
-  Al unirse a nuestra comunidad, cada miembro acepta estos principios y se compromete a contribuir de manera voluntaria y activa para el beneficio colectivo. ¡Únete a nosotros para formar parte de esta experiencia de crecimiento conjunto y gratificante!
+  TodosUno es una comunidad creada con el fin del beneficio colectivo, desarrollando un sistema de ayuda mutua.
+  Bajo ningún punto de vista garantizamos o aseguramos algún tipo de resultado económico, esto depende 100% del trabajo de cada participante, con esto mismo desvinculo de cualquier reclamo tanto a la persona que me invito como a la propia comunidad.
+  Soy consciente y estoy de acuerdo con hacer un regalo voluntario para simplemente aplicar la Ley universal de “Dar y Recibir”. 
   `,
   showCloseButton: true,
   focusConfirm: false,

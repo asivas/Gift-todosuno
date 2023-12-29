@@ -32,3 +32,14 @@ body {
   margin-top: 3%;
   margin-left: 2%;
 }
+
+@media (min-width: 300px) and (max-width: 800px) {
+
+  
+  .login_back {
+    margin-top: 8%;
+    margin-bottom: 21%;}
+
+    .login_back a {
+    padding: 2%;
+}}

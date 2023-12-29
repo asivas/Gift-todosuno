@@ -116,3 +116,15 @@ color: white;
     margin-bottom: 1rem;
   }
 } */
+
+@media (min-width: 300px) and (max-width: 800px) {
+
+  .form_login {
+    width: 283px;
+  }
+
+ 
+  .loginPage .title {
+    width: 283px;
+  }
+}

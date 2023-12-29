@@ -249,7 +249,7 @@ const InactiveUsers = () => {
         
         {showButton && dataUser.complete === true ? 
         <button className="addToRefer" onClick={completar_cuadro_refer}>
-        {`Agregar a ${dataUser.referidos[1]} a tu cuadro padre`}
+        {`Agregar a ${dataUser.referidos[1]} a tu cuadro `}
         </button>
       
         : <p style={{display:"none"}}></p> }

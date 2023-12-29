@@ -37,12 +37,7 @@ export const registerUser = async (req, res) => {
       const referido = referral.referidos[0]
       const referral2 = await Users.findOne({ username: referido });
 
-      if (!referral2) {
-        return res.status(414).json({
-          message: "no existe"
-        });
-      }
-
+    
       if ( referral2.active === false ) {
         console.log("tenes que activar el primer user")
         return res.status(413).json({

@@ -36,19 +36,23 @@ export const registerUser = async (req, res) => {
         });
       }
 
-      const referido = referral.referidos[0]
-      const referral2 = await Users.findOne({ username: referido });
 
-    
-      if ( referral2.active === false ) {
-        console.log("tenes que activar el primer user")
+      const referido = referral.referidos[0]
+
+      if (referido) {
+        console.log(referido)  
+        const referral2 = await Users.findOne({ username: referido });
+        if (referral2.active == false) {
         return res.status(413).json({
-          message: "tenes que activar el primer user",
+          message: "Todavia no activo a su primer referido",
         });
+      } 
+
       }
       
 
-
+    
+      console.log("no existe referido")
 
       const hashedPassword = await bcrypt.hash(password, 10);
       
@@ -81,7 +85,6 @@ export const registerUser = async (req, res) => {
       }
       
 
-   
 
       // ACA ENCUENTRA EL CUADRO DE TU REFER
       const cuadro = await Cuadros.findById(referral.cuadro_id);
@@ -175,3 +178,7 @@ export const loginUser = async (req, res) => {
     });
   }
 };
+
+/*
+      
+      */

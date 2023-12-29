@@ -432,7 +432,7 @@ body {
 .dashboard__top ul {
   list-style: none;
     width: 100%;
-    padding-left: 0 !important;
+    padding-left: 0;
 }
 
 .acceptPay {

@@ -44,3 +44,17 @@
 .inactive {
   color: red;
 }
+
+
+
+@media (min-width: 300px) and (max-width: 800px) {
+ 
+  .header__content-container span {
+    display: none;
+  }
+  .header .levelSpan {
+    margin-left: 1%;
+    font-size:19px;
+  }
+}
+

@@ -255,7 +255,7 @@ const InactiveUsers = () => {
         : <p style={{display:"none"}}></p> }
 
         { ascender ? 
-        <button className="addToRefer" onClick={ascenderNivel}>Ascender de nivel</button>
+        <button className="addToRefer" onClick={ascenderNivel}>Subir de nivel</button>
       
         : <p style={{display:"none"}}></p> }
         

@@ -195,8 +195,10 @@ export const subirNivel = async (req, res) => {
 
     usuario.nivel = usuario.nivel - 1;
 
-    await usuario.save();
+    await usuario.save(); 
 
+
+    
     const poolCorrespondiente = await Pools.findOne({ nivel: usuario.nivel });
 
     if (!poolCorrespondiente) {
@@ -212,8 +214,9 @@ export const subirNivel = async (req, res) => {
      if ( usuario.referral_father === "Nelson" ) {
       console.log(usuario.referral_father, ": usuario r father")
       let numeroPablo = usuario.nivel
-      const cuadroEncontrado = poolCorrespondiente.cuadros.find(cuadro => cuadro.legend === `Nelson${numeroPablo}`)
-      console.log(cuadroEncontrado)
+      console.log("numero pablo",numeroPablo)
+      const cuadroEncontrado = poolCorrespondiente.cuadros.find(cuadro => cuadro.legend == `Nelson${numeroPablo}`)
+      console.log("cuadro encontrado",cuadroEncontrado)
       if (cuadroEncontrado) {
         const cuadroId = cuadroEncontrado._id;
         const cuadroSiguiente = await Cuadros.findOne({_id:cuadroId})
@@ -236,13 +239,16 @@ export const subirNivel = async (req, res) => {
         }
       }
     }
-    //////////////////
+    ////////////////// 
 
     const cuadroEncontrado = poolCorrespondiente.cuadros.find(cuadro => cuadro.legend === usuario.referral_father)
    
     if (cuadroEncontrado) {
+      console.log("rf",usuario.referral_father)
+      console.log("cuadro legend",cuadroEncontrado.legend)
       const cuadroId = cuadroEncontrado._id;
       const cuadroSiguiente = await Cuadros.findOne({_id:cuadroId})
+      console.log(cuadroSiguiente)
       if (usuario.direction === "derecha") {
         if (!cuadroSiguiente.lado_derecho.guide) {
           cuadroSiguiente.lado_derecho.guide = usuario.username;
@@ -262,12 +268,16 @@ export const subirNivel = async (req, res) => {
       }}
 
  // Buscar el cuadro con guides igual a referral_father, lo encuentro
-   else if (!cuadroEncontrado) {
+  else if (!cuadroEncontrado) {
+
     const cuadroEncontrado2 = poolCorrespondiente.cuadros.find(cuadro => cuadro.lado_derecho.guide === usuario.referral_father)
 
     if (cuadroEncontrado2) {
+      console.log("cuadro encontrado 2", cuadroEncontrado2)
       const cuadroId = cuadroEncontrado2._id;
       const cuadroSiguiente = await Cuadros.findOne({_id:cuadroId})
+      console.log("cuadro encontrado en pool", cuadroEncontrado2)
+      console.log("cuadro encontrado en cuadro",cuadroSiguiente)
 
       if (usuario.direction === "derecha") {
         if (!cuadroSiguiente.lado_derecho.builders1.username) {
@@ -288,14 +298,19 @@ export const subirNivel = async (req, res) => {
         }
         else {console.log("ya hay recluiter 2 en el cuadro:", cuadroSiguiente.lado_derecho.builders2.username )}
       }
+      
     }
     else if (!cuadroEncontrado2) {
-      console.log("soy guia izq")
+      console.log("cuadro encontrado 3", cuadroEncontrado3)
+      //console.log("soy guia izq")
       const cuadroEncontrado3 = poolCorrespondiente.cuadros.find(cuadro => cuadro.lado_izquierdo.guide === usuario.referral_father) 
-      const cuadroId = cuadroEncontrado3;
+      const cuadroId = cuadroEncontrado3._id;
       const cuadroSiguiente = await Cuadros.findOne({_id:cuadroId})
 
       if (cuadroSiguiente) {
+        console.log("cuadro encontrado en pool", cuadroEncontrado3)
+      console.log("cuadro encontrado en cuadro",cuadroSiguiente)
+
         if (usuario.direction === "derecha") {
           if (!cuadroSiguiente.lado_izquierdo.builders1.username) {
             cuadroSiguiente.lado_izquierdo.builders1.username = usuario.username;
@@ -332,9 +347,9 @@ export const subirNivel = async (req, res) => {
   
 
     // buscar el cuadro donde aparezca el referal, si es el guia derecho
-    else {
+    /*else {
       console.log("no encuentra al padre")
-    }
+    } */
    
     return res.status(205).json({ msg: 'todo ok' });
 
@@ -345,7 +360,7 @@ export const subirNivel = async (req, res) => {
 };
 
 
-
+/*
 
 const buscarAbueloRecursivo = async (pool, referralFather) => {
   const usuario = await Users.findOne({ username: referralFather }).select('referral_father').lean();
@@ -365,7 +380,7 @@ const buscarAbueloRecursivo = async (pool, referralFather) => {
       // Llamada recursiva para buscar en el siguiente nivel de la cadena
       return buscarAbueloRecursivo(pool, usuario.referral_father);
   }
-};  
+};  */
 
 
 

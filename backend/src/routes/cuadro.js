@@ -8,7 +8,9 @@ var {
   cuadroId,
   deleteCuadro,
   traerCuadroPadre,
-  cuadroHijo
+  traerCuadroPadreSub,
+  cuadroHijo,
+  cuadroPadre
  
 } = require("../controller/Cuadro.controller");
 
@@ -19,6 +21,8 @@ router.get("/:cuadroId", cuadroId);
 
 router.get("/cuadroHijo/:cuadroId", cuadroHijo);
 
+router.get("/cuadroPadre/:cuadroDirection/:father", cuadroPadre);
+
 router.post("/createCuadros", createCuadros);
 
 //router.get("/hijoLevel/:username", hijoLevel);
@@ -26,6 +30,7 @@ router.post("/createCuadros", createCuadros);
 router.delete("/delete", deleteCuadro);
 
 router.post("/traerCuadroPadre", traerCuadroPadre);
-
+ 
+router.post("/traerCuadroPadreSub", traerCuadroPadreSub);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import Users from "../models/Users";
 import Cuadros from "../models/Cuadros";
+import Pools from "../models/Pools";
 import jwt from "jsonwebtoken";
 require("dotenv").config();
 
@@ -30,7 +31,7 @@ export const registerUser = async (req, res) => {
       const referral = await Users.findOne({ username: referralUser });
 
       if (referral.referidos.length >= 2) {
-        console.log(referral.referidos[0])
+      //  console.log(referral.referidos[0])
         return res.status(412).json({
           message: "No podes referir mas",
         });
@@ -40,19 +41,16 @@ export const registerUser = async (req, res) => {
       const referido = referral.referidos[0]
 
       if (referido) {
-        console.log(referido)  
+      //  console.log(referido)  
         const referral2 = await Users.findOne({ username: referido });
         if (referral2.active == false) {
         return res.status(413).json({
           message: "Todavia no activo a su primer referido",
         });
       } 
-
       }
       
-
-    
-      console.log("no existe referido")
+     //console.log("no existe referido")
 
       const hashedPassword = await bcrypt.hash(password, 10);
       
@@ -82,14 +80,23 @@ export const registerUser = async (req, res) => {
           direction:"izquierda"
   
         });
+        const pool = await Pools.findOne({nivel:referral.nivel});
+  
+        const indiceCuadro = pool.cuadros.findIndex((cuadro) => cuadro.legend === referral.username);
+  
+        if (indiceCuadro !== -1) {
+        pool.cuadros[indiceCuadro].lado_izquierdo.guide = username;
+        console.log ("agregado al pool", pool.cuadros[indiceCuadro].lado_izquierdo.guide);
+        }
+        await pool.save(); 
       }
       
 
-
-      // ACA ENCUENTRA EL CUADRO DE TU REFER
+ // ACA ENCUENTRA EL CUADRO DE TU REFER
       const cuadro = await Cuadros.findById(referral.cuadro_id);
+      //console.log(cuadro)
 
-
+   
       if (cuadro.legend === referralUser) {
         if (referral.referidos.length === 0) {
           cuadro.lado_derecho.guide = username;
@@ -116,19 +123,18 @@ export const registerUser = async (req, res) => {
         } else if (referral.referidos.length === 1) {
           cuadro.lado_izquierdo.builders2.username = username;
         }
-      }
+      } 
       
       referral.referidos.push(username);
       await newUser.save();
       await cuadro.save();
-      await referral.save();
+     await referral.save();
 
-      if (referral.referidos.length === 2) {
+     if (referral.referidos.length === 2) {
         const ref = await Users.findOne({username:referralUser}) 
         ref.complete = true;
         ref.save();
-      }
-  
+      } 
     }
     
     res.status(200).json({ message: "User successfully registered", data: newUser });
@@ -139,6 +145,11 @@ export const registerUser = async (req, res) => {
     });
   }
 };
+
+
+
+
+
 
 export const loginUser = async (req, res) => {
   try {
@@ -178,7 +189,3 @@ export const loginUser = async (req, res) => {
     });
   }
 };
-
-/*
-      
-      */

@@ -254,8 +254,13 @@ export const traerCuadroPadreSub = async (req,res) => {
   const { padre, hijo, nieto1, nieto2 } = req.body;
 
   try {
-    const cuadro = await Cuadros.findOne({ legend: padre });
-  
+    
+    const userFather = await Users.findOne({username:padre})
+
+    const cuadroId = userFather.cuadro_id;
+    
+    const cuadro = await Cuadros.findById(cuadroId);
+
     if (cuadro) {
       // Buscar al hijo en el lado derecho
       if (cuadro.lado_derecho && cuadro.lado_derecho.guide === hijo) {

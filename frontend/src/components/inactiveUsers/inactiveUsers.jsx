@@ -26,6 +26,7 @@ const InactiveUsers = () => {
       deleteCuadro,
       fatherComplete,
       remindFatherFn,
+      cambiarEstadoCompletePadre,
       legend,
       ascender
     } = useApiContext();
@@ -136,8 +137,6 @@ const InactiveUsers = () => {
       // Si todas las propiedades tienen valores, dispara la función
     setAscendido(true);
 
-  
-
     };
 
     
@@ -239,7 +238,7 @@ const InactiveUsers = () => {
       }
       
       succesLevel();
-    
+      cambiarEstadoCompletePadre();
     
       const username = dataUser.username;
       const res = await fetch(
@@ -252,7 +251,8 @@ const InactiveUsers = () => {
           body: JSON.stringify({ username }),
         }
       ); 
-      
+     
+     
     }
 
 
@@ -306,8 +306,8 @@ const InactiveUsers = () => {
         </button>
       
         : <p style={{display:"none"}}></p> }
-
   
+         
         { ascendido ? 
         <button className="addToRefer" onClick={ascenderNivel}>Subir de nivel</button>
       

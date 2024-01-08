@@ -48,6 +48,25 @@ export const cambiarEstado = async (req,res) => {
     }
   }; 
 
+  export const cambiarEstadoPadre = async (req,res) => {
+    try {
+      const { user } = req.body;
+      const cuadro = await Cuadros.findOne({legend:user})
+
+      if (cuadro) {
+        console.log("usuario padre", user)
+        const usuario = await Users.findOne({username:user});
+        usuario.complete = true;
+        usuario.save();
+        return res.status(200).json({msg:user})
+      }
+     else res.status(201).json({msg:"no tiene cuadro"})
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }; 
+
 
 
  export const getAllUsers = async (req, res) => {

@@ -168,6 +168,21 @@ export const ApiProvider = ({ children }) => {
     console.log("apretando") 
   }
 
+  const cambiarEstadoCompletePadre = async () => {
+
+    const user = dataUser.referral_father;
+    const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BACKEND}user/cambiarEstadoCompletePadre`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user }),
+    
+    })
+  }
+
 
   
   const traerCuadroPadre = async () => {
@@ -405,8 +420,8 @@ export const ApiProvider = ({ children }) => {
   return (
     <ApiContext.Provider value={{ dataUser, dataCuadro, setToken, setReset, loading, 
     inactiveUsers, activarUsuario, desactivarUsuario, legend, setLegend, deleteCuadro, deleteUser, 
-    traerCuadroPadre, traerCuadroPadreSub, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete, createCuadros, fatherComplete ,
-    setFatherComplete ,remindFatherFn, ascender}}>
+    traerCuadroPadre, traerCuadroPadreSub, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete,cambiarEstadoCompletePadre, createCuadros, fatherComplete ,
+    setFatherComplete ,remindFatherFn, ascender, setAscender}}>
       {children}
     </ApiContext.Provider>
   );

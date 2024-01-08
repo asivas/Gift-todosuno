@@ -13,7 +13,7 @@ import InactiveUsers from "../inactiveUsers/inactiveUsers";
 const SideBar = () => {
   
   const pathname = usePathname();
-  const { dataUser, setLegend, setFatherComplete } = useApiContext();
+  const { dataUser, setLegend, setFatherComplete , setAscender} = useApiContext();
   const [isOpen, setIsOpen] = useState(false); // Cambiado a false para cerrar por defecto en pantallas pequeñas
 
 
@@ -64,6 +64,7 @@ const referralLink = `https://gift-frontend-eight.vercel.app/register?username=$
     router.push("/login")
     setLegend(false)
     setFatherComplete(false)
+    setAscender(false);
   }
 
   return (

@@ -10,7 +10,8 @@ var {
   traerCuadroPadre,
   traerCuadroPadreSub,
   cuadroHijo,
-  cuadroPadre
+  cuadroPadre,
+  everyOneActive
  
 } = require("../controller/Cuadro.controller");
 
@@ -18,6 +19,8 @@ var {
 //router.post("/acceptPay", acceptPay);
 
 router.get("/:cuadroId", cuadroId);
+
+router.get("/everyOneActive/:cuadroId", everyOneActive);
 
 router.get("/cuadroHijo/:cuadroId", cuadroHijo);
 

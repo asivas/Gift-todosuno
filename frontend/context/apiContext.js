@@ -21,7 +21,7 @@ export const ApiProvider = ({ children }) => {
   const [hijoDer, setHijoDer] = useState(false);
   const [hijoIzq, setHijoIzq] = useState(false);
   const [fatherComplete ,setFatherComplete] = useState(false);
-  
+  const [ascender, setAscender] = useState(false);
 
   
 
@@ -42,11 +42,9 @@ export const ApiProvider = ({ children }) => {
 
     if (json.complete == true) {
       setFatherComplete(json.complete)
-    }
-
-    console.log("soy referal father complete",json.complete)
-   
+    }   
   }
+
  catch (error) {
   console.error("Error con el fatherFn:", error)
  }}
@@ -167,10 +165,11 @@ export const ApiProvider = ({ children }) => {
     
     })
 
-    console.log("apretando")
-    
+    console.log("apretando") 
   }
 
+
+  
   const traerCuadroPadre = async () => {
 
     const padre = dataUser.referral_father 
@@ -191,6 +190,29 @@ export const ApiProvider = ({ children }) => {
     console.log("funcion padre activada")
   }
 
+    
+  const traerCuadroPadreSub = async () => {
+
+    const padre = dataUser.referral_father 
+    const hijo = dataUser.username;
+    const nieto1 = dataCuadro.lado_derecho.guide;
+    const nieto2 = dataCuadro.lado_izquierdo.guide;
+
+
+    const res = await fetch(
+
+      `${process.env.NEXT_PUBLIC_API_BACKEND}cuadro/traerCuadroPadreSub`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ padre, hijo, nieto1, nieto2 }),
+      
+      }
+    );
+    console.log("funcion padre sub activada")
+  }
   
   const cuadroIdHijo = async () => {
 
@@ -240,7 +262,6 @@ export const ApiProvider = ({ children }) => {
       }
       //si existe significa que no tienen el mismo cuadro id
       else {
-        console.log("no tenemos el mismo cuadro id")
         setHijoIzq(true)
       }
   
@@ -301,10 +322,47 @@ export const ApiProvider = ({ children }) => {
           const json2 = await res2.json();
           setDataCuadro(json2);
         
+          const res3 = await fetch(
+            `${process.env.NEXT_PUBLIC_API_BACKEND}cuadro/cuadroPadre/${json.direction}/${json.referral_father}`);
+         const json3 = await res3.json();
+       
+        
+          if (
+            json3.estado === true &&
+            json.nivel !== 10 &&
+            json2.lado_derecho &&
+            json2.lado_derecho.guide &&
+            json2.lado_izquierdo &&
+            json2.lado_izquierdo.guide &&
+            json2.legend === json.username) {
+          console.log("No soy nivel 10 y ambos guías están presentes");
+          json.complete = true;
+        } else {
+          console.log("No estoy completo o alguno de los guías está ausente o soy nivel 10");
+        }
+
           if(json.username === json2.legend) {
             setLegend(true)
           }
 
+         if (
+          json2.lado_derecho&&
+          json2.lado_derecho.builders1 &&
+          json2.lado_derecho.builders2 &&
+          json2.lado_izquierdo &&
+          json2.lado_izquierdo.builders1 &&
+          json2.lado_izquierdo.builders2
+         ) {
+          const res4 = await fetch(
+            `${process.env.NEXT_PUBLIC_API_BACKEND}cuadro/everyOneActive/${json2._id}`
+          );
+          const json4 = await res4.json();
+          if (json4.estado === true) {
+            setAscender(true)
+          
+          }
+          
+         }
           } 
 
       } catch (error) {
@@ -337,6 +395,7 @@ export const ApiProvider = ({ children }) => {
         console.error("Error fetching private data:", error);} };
 
 
+
     fetchData();
     fetchUsers();
  
@@ -346,8 +405,8 @@ export const ApiProvider = ({ children }) => {
   return (
     <ApiContext.Provider value={{ dataUser, dataCuadro, setToken, setReset, loading, 
     inactiveUsers, activarUsuario, desactivarUsuario, legend, setLegend, deleteCuadro, deleteUser, 
-    traerCuadroPadre, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete, createCuadros, fatherComplete ,
-    setFatherComplete ,remindFatherFn}}>
+    traerCuadroPadre, traerCuadroPadreSub, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete, createCuadros, fatherComplete ,
+    setFatherComplete ,remindFatherFn, ascender}}>
       {children}
     </ApiContext.Provider>
   );

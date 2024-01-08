@@ -5,6 +5,7 @@ import "../sideBar/sidebar.css";
 import Swal from "sweetalert2";
 
 
+
 const InactiveUsers = () => {
 
   
@@ -16,6 +17,7 @@ const InactiveUsers = () => {
       dataUser,
       cuadroIdHijo,
       traerCuadroPadre,
+      traerCuadroPadreSub,
       hijoIzq,
       cambiarEstadoComplete,
       hijoDer,
@@ -24,12 +26,13 @@ const InactiveUsers = () => {
       deleteCuadro,
       fatherComplete,
       remindFatherFn,
-      legend
+      legend,
+      ascender
     } = useApiContext();
     
   
   
-    const [ascender, setAscender] = useState(false);
+    const [ascendido, setAscendido] = useState(ascender);
     const [showList, setShowList] = useState(true);
     const [showButton, setShowButton] = useState(true);
     const [usuariosInactivos, setUsuariosInactivos] = useState(
@@ -55,7 +58,14 @@ const InactiveUsers = () => {
       cambiarEstadoComplete();
       setShowButton(false);
     }
+    
+    const completar_cuadro_refer_sub = () => {
+      traerCuadroPadreSub();
+      cambiarEstadoComplete();
+      setShowButton(false);
+    }
 
+    
 
     useEffect(() => {
 
@@ -74,6 +84,8 @@ const InactiveUsers = () => {
         setUsuarioActivado(null);
       }
       remindFatherFn();
+
+    
     }, [usuarioActivado]);
   
     const handlePostActivarUsuario = (usuario) => {
@@ -82,6 +94,9 @@ const InactiveUsers = () => {
   
     };
   
+
+   
+
     const handleActivarUsuario = (usuario) => {
       // Actualizar el estado de usuario activado
       setUsuarioActivado(usuario);
@@ -96,8 +111,10 @@ const InactiveUsers = () => {
         console.log("soy otro nivel");
         createNewCuadro2()
       }
-      
-      
+
+     agregarApool(usuario);
+    
+
       // Verificar si alguna propiedad en dataCuadro está vacía
       const propiedades = Object.keys(dataCuadro);
       for (const propiedad of propiedades) {
@@ -117,9 +134,26 @@ const InactiveUsers = () => {
         return;
       }
       // Si todas las propiedades tienen valores, dispara la función
-    setAscender(true);
+    setAscendido(true);
+
+  
 
     };
+
+    
+    const agregarApool = async (username) => {
+      console.log("soy username", username)
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BACKEND}pools/agregarApool`,  // Ajusta la ruta según tu configuración
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username }),
+        }
+      ); 
+    }
 
 
     const createNewCuadro2 = async () => {
@@ -133,9 +167,21 @@ const InactiveUsers = () => {
         builder = 'builders1';
         userHijo = dataCuadro.lado_derecho.guide;
         console.log("creado cuadro para lado derecho");
-      } else if (dataCuadro.lado_izquierdo.builders1 && !dataCuadro.lado_izquierdo.builders2) {
+      } 
+      else if (dataCuadro.lado_izquierdo.builders1 && !dataCuadro.lado_izquierdo.builders2) {
         lado = 'izquierdo';
         builder = 'builders1';
+        userHijo = dataCuadro.lado_izquierdo.guide;
+        console.log("creado cuadro para lado izquierdo");
+      } 
+      else if (!dataCuadro.lado_derecho.builders1 && dataCuadro.lado_derecho.builders2) {
+        lado = 'derecho';
+        builder = 'builders2';
+        userHijo = dataCuadro.lado_derecho.guide;
+        console.log("creado cuadro para lado derecho");
+      } else if (!dataCuadro.lado_izquierdo.builders1 && dataCuadro.lado_izquierdo.builders2) {
+        lado = 'izquierdo';
+        builder = 'builders2';
         userHijo = dataCuadro.lado_izquierdo.guide;
         console.log("creado cuadro para lado izquierdo");
       } 
@@ -221,7 +267,6 @@ const InactiveUsers = () => {
         showConfirmButton: true,
       });
     }
-    
 
 
     return (
@@ -240,6 +285,7 @@ const InactiveUsers = () => {
                 <button className="btnPay" onClick={() => {deleteUser(usuario);setShowList(false);}} style={{backgroundColor:"red", borderColor:"red"}}>
                   Borrar
                 </button>
+                
               </div>
                 
               </li>
@@ -247,17 +293,27 @@ const InactiveUsers = () => {
           </ul> )) :  <p className='noPays'>No se encuentran solicitudes</p> }
          
         
-        {showButton && dataUser.complete === true ? 
+        {showButton && dataUser.complete === true && dataUser.nivel === 10 ? 
         <button className="addToRefer" onClick={completar_cuadro_refer}>
         {`Agregar a ${dataUser.referidos[1]} a tu cuadro `}
         </button>
       
         : <p style={{display:"none"}}></p> }
 
-        { ascender ? 
+        {showButton && dataUser.complete === true && dataUser.nivel !== 10 ? 
+        <button className="addToRefer" onClick={completar_cuadro_refer_sub}>
+        {`Agregar al ultimo referido a tu cuadro `}
+        </button>
+      
+        : <p style={{display:"none"}}></p> }
+
+  
+        { ascendido ? 
         <button className="addToRefer" onClick={ascenderNivel}>Subir de nivel</button>
       
         : <p style={{display:"none"}}></p> }
+      
+       
         
         { fatherComplete ? 
           <p style={{color:"Red", fontWeight:"300", fontSize:"15px"}}>Tu padre tiene que aceptarte en su cuadro.</p>

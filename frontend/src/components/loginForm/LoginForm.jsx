@@ -16,7 +16,7 @@ const MySweetAlert = withReactContent(Swal);
 
 const LoginForm = () => {
   
-console.log( 'empezamos aca' ,process.env.NEXT_PUBLIC_API_BACKEND)
+
   const {setToken, setReset} = useApiContext()
   
    const router = useRouter();
@@ -46,7 +46,6 @@ console.log( 'empezamos aca' ,process.env.NEXT_PUBLIC_API_BACKEND)
 
       switch (res.status) {
         case 200:
-          console.log("todo salió bien");
   const json = await res.json();
   Cookies.set("token", json.token);
   setToken(json.token);

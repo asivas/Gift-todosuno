@@ -21,22 +21,25 @@ export const cuadroPadre = async (req, res) => {
   try {
     const { cuadroDirection, father } = req.params;
 
-    const cuadro = await Cuadros.findOne({legend:father})
+    const cuadro = await Cuadros.findOne({ legend: father });
+
+    if (!cuadro) {
+      // Si cuadro es null, significa que no se encontró ningún cuadro
+      return res.status(200).json({ estado: false });
+    }
 
     if (cuadroDirection === "derecha") {
-      if (!cuadro.lado_derecho.builders1.username || !cuadro.lado_derecho.builders2.username)
-      return res.status(200).json({estado:true})
-    }
-    
-    else if (cuadroDirection === "izquierda") {
-      if (!cuadro.lado_izquierdo.builders1.username || !cuadro.lado_izquierdo.builders2.username)
-       return res.status(200).json({estado:true})
+      if (!cuadro.lado_derecho || !cuadro.lado_derecho.builders1.username || !cuadro.lado_derecho.builders2.username)
+        return res.status(200).json({ estado: true });
+    } else if (cuadroDirection === "izquierda") {
+      if (!cuadro.lado_izquierdo || !cuadro.lado_izquierdo.builders1.username || !cuadro.lado_izquierdo.builders2.username)
+        return res.status(200).json({ estado: true });
     }
 
-   res.status(201).json({estado:false})
-   //res.json(cuadro);
+    res.status(201).json({ estado: false });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
@@ -314,3 +317,57 @@ export const traerCuadroPadreSub = async (req,res) => {
     console.error('Error al buscar el cuadro:', error);
   }
 }
+
+export const everyOneActive = async (req,res) => {
+ 
+
+  try {
+     
+    const { cuadroId } = req.params;
+
+    const cuadro = await Cuadros.findById(cuadroId);
+
+    let builders1 = await Users.findOne({username:cuadro.lado_derecho.builders1.username})
+    let builders2 = await Users.findOne({username:cuadro.lado_derecho.builders2.username})
+    let builders3 = await Users.findOne({username:cuadro.lado_izquierdo.builders1.username})
+    let builders4 = await Users.findOne({username:cuadro.lado_izquierdo.builders2.username})
+
+    if (
+      builders1.active === true &&
+      builders2.active === true &&
+      builders3.active === true &&
+      builders4.active === true 
+    ) {
+      res.status(200).json({ estado: true});
+    }
+
+    res.status(201).json({estado:false})
+  } catch (error) {
+    console.error('Error al buscar el cuadro:', error);
+  }
+}
+
+
+/* 
+      // Verificar si alguna propiedad en dataCuadro está vacía
+      const propiedades = Object.keys(dataCuadro);
+      for (const propiedad of propiedades) {
+        if (dataCuadro[propiedad] === null || dataCuadro[propiedad] === "") {
+          console.log("esta vacia");
+          return;
+        }
+      }
+  
+      if (
+        !dataCuadro.lado_derecho.builders1 ||
+        !dataCuadro.lado_derecho.builders2 ||
+        !dataCuadro.lado_izquierdo.builders1 ||
+        !dataCuadro.lado_izquierdo.builders2
+      ) {
+       // console.log("No se encuentran las propiedades builder", dataCuadro);
+        return;
+      }
+      // Si todas las propiedades tienen valores, dispara la función
+    setAscender(true);
+
+    };*/

@@ -21,7 +21,7 @@ const SideBar = () => {
     setIsOpen(!isOpen);
   };
 
-const referralLink = `https://gift-frontend-eight.vercel.app/register?username=${dataUser.username}`;
+const referralLink = `https://oficialtodosuno.com/register?username=${dataUser.username}`;
 // const referralLink = `http://localhost:3000/register?username=${dataUser.username}`;
 
 //START= "nodemon index.js --exec babel-node"

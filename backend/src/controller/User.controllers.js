@@ -110,7 +110,6 @@ export const deleteUser = async (req, res) => {
       const father = await Users.findOne({ username:username.referral_father});
       console.log("padre",father.username)
 
-      
 
     if (father) {
       father.referidos.pop();

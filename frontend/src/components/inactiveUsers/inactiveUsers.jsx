@@ -238,6 +238,7 @@ const InactiveUsers = () => {
       }
       
       succesLevel();
+      
       cambiarEstadoCompletePadre();
     
       const username = dataUser.username;
@@ -292,7 +293,6 @@ const InactiveUsers = () => {
             ))}
           </ul> )) :  <p className='noPays'>No se encuentran solicitudes</p> }
          
-        
         {showButton && dataUser.complete === true && dataUser.nivel === 10 ? 
         <button className="addToRefer" onClick={completar_cuadro_refer}>
         {`Agregar a ${dataUser.referidos[1]} a tu cuadro `}

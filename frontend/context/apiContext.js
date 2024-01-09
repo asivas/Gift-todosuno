@@ -170,7 +170,7 @@ export const ApiProvider = ({ children }) => {
 
   const cambiarEstadoCompletePadre = async () => {
 
-    const user = dataUser.referral_father;
+    const user = dataUser;
     const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_BACKEND}user/cambiarEstadoCompletePadre`,
     {

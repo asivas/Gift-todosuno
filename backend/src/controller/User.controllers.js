@@ -51,16 +51,25 @@ export const cambiarEstado = async (req,res) => {
   export const cambiarEstadoPadre = async (req,res) => {
     try {
       const { user } = req.body;
-      const cuadro = await Cuadros.findOne({legend:user})
 
-      if (cuadro) {
-        console.log("usuario padre", user)
-        const usuario = await Users.findOne({username:user});
+      const userF = await Users.findOne({username:user.referral_father})
+
+      console.log("userfather", userF)
+      
+      const nivel = userF.nivel;
+      
+      const pool = await Pools.findOne({nivel:nivel})
+      
+      const cuadroEncontrado = pool.cuadros.find(cuadro => cuadro.legend === user.referral_father)
+
+      if (cuadroEncontrado) {
+        console.log("usuario padre", user.referral_father)
+        const usuario = await Users.findOne({username:user.referral_father});
         usuario.complete = true;
         usuario.save();
         return res.status(200).json({msg:user})
-      }
-     else res.status(201).json({msg:"no tiene cuadro"})
+      } 
+     else res.status(201).json({msg:"no tiene cuadro"}) 
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
@@ -216,7 +225,6 @@ export const subirNivel = async (req, res) => {
 
     await usuario.save(); 
 
-
     
     const poolCorrespondiente = await Pools.findOne({ nivel: usuario.nivel });
 
@@ -227,7 +235,7 @@ export const subirNivel = async (req, res) => {
       return res.status(407).json({ error: 'La propiedad cuadros es nula o indefinida en el pool correspondiente' });
     }
 
-  // Buscar el cuadro con legend igual a referral_father, lo encuentro
+  // 1)  Si tu referal father es Nelson, osea si sos escro o pablo
      /////////////////////////////////////////////////
 
      if ( usuario.referral_father === "Nelson" ) {
@@ -239,8 +247,10 @@ export const subirNivel = async (req, res) => {
       if (cuadroEncontrado) {
         const cuadroId = cuadroEncontrado._id;
         const cuadroSiguiente = await Cuadros.findOne({_id:cuadroId})
+        console.log("cuadro siguiente",cuadroSiguiente)
+
         if (usuario.direction === "derecha") {
-          if (!cuadroSiguiente.lado_derecho.guide) {
+          if (cuadroSiguiente && cuadroSiguiente.lado_derecho && !cuadroSiguiente.lado_derecho.guide) {
             cuadroSiguiente.lado_derecho.guide = usuario.username;
             usuario.cuadro_id = cuadroSiguiente._id
             usuario.save();
@@ -249,7 +259,7 @@ export const subirNivel = async (req, res) => {
         }
         
         if (usuario.direction === "izquierda") {
-          if (!cuadroSiguiente.lado_izquierdo.guide) {
+          if (cuadroSiguiente && cuadroSiguiente.lado_izquierdo && !cuadroSiguiente.lado_izquierdo.guide) {
             cuadroSiguiente.lado_izquierdo.guide = usuario.username;
             usuario.cuadro_id = cuadroSiguiente._id;
             usuario.save();
@@ -259,6 +269,7 @@ export const subirNivel = async (req, res) => {
       }
     }
     ////////////////// 
+    // 2) ENCONTRAS EL CUADRO EN EL QUE TU REFERAL FATHER ES LEGEND
 
     const cuadroEncontrado = poolCorrespondiente.cuadros.find(cuadro => cuadro.legend === usuario.referral_father)
    
@@ -266,10 +277,10 @@ export const subirNivel = async (req, res) => {
       console.log("rf",usuario.referral_father)
       console.log("cuadro legend",cuadroEncontrado.legend)
       const cuadroId = cuadroEncontrado._id;
-      const cuadroSiguiente = await Cuadros.findOne({_id:cuadroId})
+      const cuadroSiguiente = await Cuadros.findById(cuadroId)
       console.log(cuadroSiguiente)
       if (usuario.direction === "derecha") {
-        if (!cuadroSiguiente.lado_derecho.guide) {
+        if (cuadroSiguiente && cuadroSiguiente.lado_derecho && !cuadroSiguiente.lado_derecho.guide) {
           cuadroSiguiente.lado_derecho.guide = usuario.username;
           usuario.cuadro_id = cuadroSiguiente._id
           usuario.save();
@@ -278,7 +289,7 @@ export const subirNivel = async (req, res) => {
       }
       
       if (usuario.direction === "izquierda") {
-        if (!cuadroSiguiente.lado_izquierdo.guide) {
+        if (cuadroSiguiente && cuadroSiguiente.lado_izquierdo && !cuadroSiguiente.lado_izquierdo.guide) {
           cuadroSiguiente.lado_izquierdo.guide = usuario.username;
           usuario.cuadro_id = cuadroSiguiente._id;
           usuario.save();
@@ -286,7 +297,8 @@ export const subirNivel = async (req, res) => {
         }
       }}
 
- // Buscar el cuadro con guides igual a referral_father, lo encuentro
+  /////////////////////////////////////////////////
+ //3) Buscar el cuadro con guides igual a referral_father, lo encuentro
   else if (!cuadroEncontrado) {
 
     const cuadroEncontrado2 = poolCorrespondiente.cuadros.find(cuadro => cuadro.lado_derecho.guide === usuario.referral_father)
@@ -294,12 +306,12 @@ export const subirNivel = async (req, res) => {
     if (cuadroEncontrado2) {
       console.log("cuadro encontrado 2", cuadroEncontrado2)
       const cuadroId = cuadroEncontrado2._id;
-      const cuadroSiguiente = await Cuadros.findOne({_id:cuadroId})
+      const cuadroSiguiente = await Cuadros.findById(cuadroId)
       console.log("cuadro encontrado en pool", cuadroEncontrado2)
       console.log("cuadro encontrado en cuadro",cuadroSiguiente)
 
       if (usuario.direction === "derecha") {
-        if (!cuadroSiguiente.lado_derecho.builders1.username) {
+        if (cuadroSiguiente && cuadroSiguiente.lado_derecho && !cuadroSiguiente.lado_derecho.builders1.username) {
           cuadroSiguiente.lado_derecho.builders1.username = usuario.username;
           usuario.cuadro_id = cuadroSiguiente._id
           usuario.save();
@@ -308,7 +320,7 @@ export const subirNivel = async (req, res) => {
       }
     
       if (usuario.direction === "izquierda") {
-        if (!cuadroSiguiente.lado_derecho.builders2.username) {
+        if (cuadroSiguiente && cuadroSiguiente.lado_derecho && !cuadroSiguiente.lado_derecho.builders2.username) {
           console.log("builder2 no existe en la derecha")
           cuadroSiguiente.lado_derecho.builders2.username = usuario.username;
           usuario.cuadro_id = cuadroSiguiente._id;
@@ -320,18 +332,19 @@ export const subirNivel = async (req, res) => {
       
     }
     else if (!cuadroEncontrado2) {
-      console.log("cuadro encontrado 3", cuadroEncontrado3)
+
       //console.log("soy guia izq")
       const cuadroEncontrado3 = poolCorrespondiente.cuadros.find(cuadro => cuadro.lado_izquierdo.guide === usuario.referral_father) 
       const cuadroId = cuadroEncontrado3._id;
-      const cuadroSiguiente = await Cuadros.findOne({_id:cuadroId})
+      const cuadroSiguiente = await Cuadros.findById(cuadroId)
+      console.log("cuadro encontrado 3", cuadroSiguiente)
 
       if (cuadroSiguiente) {
         console.log("cuadro encontrado en pool", cuadroEncontrado3)
       console.log("cuadro encontrado en cuadro",cuadroSiguiente)
 
         if (usuario.direction === "derecha") {
-          if (!cuadroSiguiente.lado_izquierdo.builders1.username) {
+          if (cuadroSiguiente && cuadroSiguiente.lado_izquierdo && !cuadroSiguiente.lado_izquierdo.builders1.username) {
             cuadroSiguiente.lado_izquierdo.builders1.username = usuario.username;
             usuario.cuadro_id = cuadroSiguiente._id
             usuario.save();
@@ -340,7 +353,7 @@ export const subirNivel = async (req, res) => {
         }
     
         if (usuario.direction === "izquierda") {
-          if (!cuadroSiguiente.lado_izquierdo.builders2.username) {
+          if (cuadroSiguiente && cuadroSiguiente.lado_izquierdo && !cuadroSiguiente.lado_izquierdo.builders2.username) {
             cuadroSiguiente.lado_izquierdo.builders2.username = usuario.username;
             usuario.cuadro_id = cuadroSiguiente._id;
             usuario.save();

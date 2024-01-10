@@ -1,0 +1,525 @@
+/*!****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./src/components/header/header.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************/
+@import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap'); 
+
+.header {
+  height: 40px;
+  max-width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color:#000000db;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  grid-area: header;
+  color: white;
+}
+
+.header .levelSpan {
+  font-size: 20px;
+  font-family: 'Philosopher', sans-serif ;
+  margin-left: 17%;
+}
+
+
+#logo {
+  font-size: 27px;
+  font-family: 'Philosopher', sans-serif ;
+  
+}
+
+.header__content-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__content {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.active {
+  color: rgb(10, 182, 10);
+}
+
+.inactive {
+  color: red;
+}
+
+
+
+@media (min-width: 300px) and (max-width: 800px) {
+ 
+  .header__content-container span {
+    display: none;
+  }
+  .header .levelSpan {
+    margin-left: 1%;
+    font-size:19px;
+  }
+}
+
+
+/*!*******************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./src/app/dashboard/dashboardPage.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************/
+body {
+  height: 100%;
+  margin: 0;
+}
+
+
+.loader {
+  display: flex;
+  margin-top: 19%;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+.loader p {
+  margin-bottom: 2%;
+}
+
+.dashboardPage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #dee2e6;
+}
+
+.content {
+  display: flex;
+  flex: 1 1;
+  background-color: #dee2e6;
+}
+
+.dashboardPage__main-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+}
+
+/*!**********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./src/components/dashboard/dashboard.css ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************/
+
+@import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap'); 
+
+#dashboard {
+
+  padding: 3rem 2rem 3rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background-position: center;
+  width: 100%;
+  height: 91vh;
+}
+
+  .mandala-container.pool-65333a8a20c26e486be53e11 {
+    background-image: url(/_next/static/media/100usd.8af65348.jpg);
+  }                   
+  .mandala-container.pool-65797beed605fb00a8643a23 {
+    background-image: url(/_next/static/media/200usd.08f709af.JPG);
+  }
+  .mandala-container.pool-65333a9f20c26e486be53e15 {
+    background-image: url(/_next/static/media/400usd.d351b735.JPG);
+  }
+  .mandala-container.pool-65333aa820c26e486be53e17{
+    background-image: url(/_next/static/media/800usd.a7be8141.JPG);
+  }
+  .mandala-container.pool-65333ab220c26e486be53e19 {
+    background-image: url(/_next/static/media/1600usd.f3b9e8ec.JPG);
+  }
+  .mandala-container.pool-65333ab820c26e486be53e1b {
+    background-image: url(/_next/static/media/3200usd.c958eb9a.JPG); 
+  }
+  .mandala-container.pool-65333ac420c26e486be53e1d {
+    background-image: url(/_next/static/media/6400usd.c96729b6.JPG);
+  }
+  .mandala-container.pool-657aac52021485dc1eb1a476 {
+    background-image: url(/_next/static/media/12800.1b3406a6.JPG);
+  }
+  .mandala-container.pool-657aac65021485dc1eb1a477 {
+    background-image: url(/_next/static/media/25600usd.db58b19c.JPG);
+  }
+  .mandala-container.pool-657aac89021485dc1eb1a478 {
+    background-image: url(/_next/static/media/51200usd.7c5a6336.JPG);
+  }
+  
+  
+
+.dashboard__cards-container {
+  display: grid;
+  width: 100%;
+  height: auto;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  ); /* Ajusta la cantidad y tamaño de las columnas */
+}
+
+.dashboard__baner-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+}
+
+
+.dashboardPage__referral-link {
+  width: 100%;
+  text-align: right;
+  cursor: pointer;
+  margin-right: 2%;
+  margin-top: 3%;
+  margin-bottom: 2%;
+}
+
+
+.dashboardPage__referral-link:hover {
+  color: #561680;
+}
+
+
+.dashboardPage__referral-link-icon {
+  color: white;
+}
+
+
+
+/*
+@media screen and (max-width: 767px) {
+
+.mandala-container.pool-65333a8a20c26e486be53e11 {
+  background-image: url('../../imgs/100usdx.jpg');
+}                   
+.mandala-container.pool-65797beed605fb00a8643a23 {
+  background-image: url('../../imgs/200usdx.JPG');
+}
+.mandala-container.pool-65333a9f20c26e486be53e15 {
+  background-image: url('../../imgs/400usdx.JPG');
+}
+.mandala-container.pool-65333aa820c26e486be53e17{
+  background-image: url('../../imgs/800usdx.JPG');
+}
+.mandala-container.pool-65333ab220c26e486be53e19 {
+  background-image: url('../../imgs/1600usdx.JPG');
+}
+.mandala-container.pool-65333ab820c26e486be53e1b {
+  background-image: url('../../imgs/3200usdx.JPG'); 
+}
+.mandala-container.pool-65333ac420c26e486be53e1d {
+  background-image: url('../../imgs/6400usdx.JPG');
+}
+.mandala-container.pool-657aac52021485dc1eb1a476 {
+  background-image: url('../../imgs/12800x.JPG');
+}
+.mandala-container.pool-657aac65021485dc1eb1a477 {
+  background-image: url('../../imgs/25600usdx.JPG');
+}
+.mandala-container.pool-657aac89021485dc1eb1a478 {
+  background-image: url('../../imgs/51200usdx.JPG');
+}
+}; */
+/*!******************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./src/components/mandala/mandala.css ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************/
+/* Mandala.css */
+.mandala-container {
+    position: relative;
+    width: 300px; /* Ajusta el tamaño según tu diseño */
+    height: 300px;
+
+  }
+  
+  .punto {
+    position: absolute;
+    width: 43%; /* Ajusta el tamaño del punto según tu diseño */
+    height: 30px;
+    color: white;
+    background-color: black;/* Ajusta el color según tu diseño */
+    border-radius: 30%;
+    display: flex;
+    border: 1px solid rgba(255, 255, 255, 0.459);
+    justify-content:center;
+    align-items: center;
+  }
+
+
+  
+/*  65333a8a20c26e486be53e11 */
+  
+
+  
+@media (min-width: 300px) and (max-width: 800px) {
+
+.punto {
+  width: 30%;
+  font-size: 13px;
+}
+
+}
+
+/*!******************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./src/components/sideBar/sidebar.css ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************/
+/* Estilos generales */
+.sideBar {
+  width: 19%;
+  background: #353535;
+  transition: width 0.3s ease;
+  grid-area: sidebar;
+  z-index: 10;
+  position: relative;
+}
+
+.sideBar_list a {
+  text-decoration: none;
+  color: white;
+}
+
+.sideBar_list {
+  list-style: none;
+  color: white;
+  font-weight: 100;
+  font-size: 16px;
+  padding: 0rem 1rem;
+  height: auto;
+  overflow: hidden;
+  display: grid;
+  margin-top: 15%;
+  cursor: pointer;  
+}
+
+.sideBar_list li {
+  display: flex;
+  justify-items: flex-start;
+  align-items: center;
+  margin-bottom: 10%;
+  padding-bottom: 5%;
+  border-bottom: 1px solid #ffffff42;
+  font-weight: 300 
+  
+}
+.sideBar_list li svg {
+  margin-right: 3%;
+}
+
+
+.sideBar_list-item:hover {
+  color: #fff;
+}
+
+.hidden {
+  display: none;
+}
+
+.closed {
+  width: 0;
+  padding: 36px 0;
+  z-index: 200; /* Agregado para estar por encima de otros componentes en pantallas pequeñas */
+}
+
+.sideBar__toggle-container {
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  transform: translateY(-50%);
+  transition: width 0.3s ease, opacity 0.3s ease;
+  background-color: #23292f;
+  width: 25px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  z-index: 101;
+}
+
+.sideBar__toggle-container.closed {
+  position: relative;
+  right: -20%;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.sideBar.closed .sideBar_top {
+  display: none;
+}
+
+.sideBar.closed .sideBar_list {
+  display: none;
+}
+
+.toggleButton {
+  cursor: pointer;
+  color: #fff;
+}
+
+.dropdown-list {
+  padding-top: 0.8rem;
+  display: none;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+}
+
+.dropdown-list.open {
+  display: block;
+  max-height: 1000px;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+.sideBar_list-item .active {
+  color: #fff;
+}
+
+
+/*  INACTIVE USERS   */
+
+.dashboard__top {
+  flex-direction: column;
+  width: 100%;
+  display: flex;
+
+}
+
+.dashboard__top ul {
+  list-style: none;
+    width: 100%;
+    padding-left: 0;
+}
+
+.acceptPay {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+.acceptPay p, .acceptPay span {
+    text-align: start;
+    margin-bottom: 3%;
+    font-size: 14px;
+    
+}
+
+.btnPay{
+  width: 49%;
+  padding: 2%;
+  color: white;
+  border-radius: 3px;
+}
+
+.btnPay:hover {
+  border: 2px solid white;
+}
+
+.buttons {
+  margin-top: 4%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+#acceptPay p {
+  margin-bottom: 1px;
+  margin-top: 0;
+}
+
+#acceptPay span {
+  margin-bottom: 4%;
+}
+
+#acceptPay{
+  text-align: right;
+  cursor: pointer;
+  margin-right: 2%;
+  margin-top: 3%;
+  margin-bottom: 2%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 15px;
+}
+
+
+/*.acceptPay button {
+  border: none;
+  border-radius: 4px;
+  padding: 6px;
+  margin-left: 0.5%;
+  color: white;
+  background: green;
+  
+}
+.acceptPay button:hover {
+  background: rgba(0, 128, 0, 0.651);
+}*/
+
+.noPays {
+
+  margin: 1% 0% 1% 0%;
+  font-size:15px;
+}
+
+.addToRefer{
+  margin-top: 6%;
+  padding: 1%;
+  border: 1px solid #0e8213;
+  background-color: #0e8213;
+  color: white;
+  padding: 4% 2% 4% 2%;
+  font-size: 15px;
+  border-radius: 3px;
+  width: 100%;
+  
+}
+
+.addToRefer:hover {
+ background-color: #176100;
+}
+
+
+@media (min-width: 300px) and (max-width: 800px) {
+ 
+  .sideBar{
+   width: 34%;
+  }
+  .closed {
+    width: 0 !important;
+  }
+  .sideBar_list{
+    font-size: 14px;
+  }
+  .sideBar_list li {
+    margin-bottom: 15%;
+    padding-bottom: 11%;
+  }
+
+  .dashboard__top {
+    width: 80%;
+  }
+  .buttons {
+    flex-direction: column;
+  }
+  .buttons button {
+    width: 100%;
+    margin-bottom: 2%;
+  }
+ }
+ 
+

@@ -291,24 +291,29 @@ export const traerCuadroPadreSub = async (req,res) => {
       // Buscar en el lado izquierdo si no se encontró en el lado derecho
       else if (cuadro.lado_izquierdo && cuadro.lado_izquierdo.guide === hijo) {
         console.log(`El hijo ${hijo} está en el lado izquierdo del cuadroooo.`);
-        if (cuadro.lado_derecho.builders1.username && cuadro.lado_derecho.builders1.username === nieto1 ) {
-          cuadro.lado_derecho.builders2.username = nieto2;
+        console.log("cuadro",cuadro)
+        if (cuadro.lado_izquierdo.builders1.username && cuadro.lado_izquierdo.builders1.username === nieto1 ) {
+          cuadro.lado_izquierdo.builders2.username = nieto2;
           cuadro.save();
+          console.log("opcion1")
           return res.status(205).json({msg:"todo ok"})
         }
-        else if (cuadro.lado_derecho.builders1.username && cuadro.lado_derecho.builders1.username === nieto2) {
-          cuadro.lado_derecho.builders2.username = nieto1;
+        else if (cuadro.lado_izquierdo.builders1.username && cuadro.lado_izquierdo.builders1.username === nieto2) {
+          cuadro.lado_izquierdo.builders2.username = nieto1;
           cuadro.save();
+          console.log("opcion2")
           return res.status(206).json({msg:"todo ok"})
         }
-        else if (cuadro.lado_derecho.builders2.username && cuadro.lado_derecho.builders2.username === nieto1) {
+        else if (cuadro.lado_izquierdo.builders2.username && cuadro.lado_izquierdo.builders2.username === nieto1) {
           cuadro.lado_derecho.builders1.username = nieto2;
           cuadro.save();
+          console.log("opcion3")
           return res.status(207).json({msg:"todo ok"})
         }
-        else if (cuadro.lado_derecho.builders2.username && cuadro.lado_derecho.builders2.username === nieto2) {
-          cuadro.lado_derecho.builders1.username = nieto1;
+        else if (cuadro.lado_izquierdo.builders2.username && cuadro.lado_izquierdo.builders2.username === nieto2) {
+          cuadro.lado_izquierdo.builders1.username = nieto1;
           cuadro.save();
+          console.log("opcion4")
           return res.status(208).json({msg:"todo ok"})
         }
 

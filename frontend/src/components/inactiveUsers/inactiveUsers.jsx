@@ -10,7 +10,7 @@ const InactiveUsers = () => {
 
   
     const {
-      inactiveUsers,
+
       activarUsuario,
       desactivarUsuario,
       dataCuadro,
@@ -24,6 +24,7 @@ const InactiveUsers = () => {
       createCuadros,
       deleteUser,
       deleteCuadro,
+      inactiveUsers,
       fatherComplete,
       remindFatherFn,
       cambiarEstadoCompletePadre,
@@ -36,22 +37,7 @@ const InactiveUsers = () => {
     const [ascendido, setAscendido] = useState(ascender);
     const [showList, setShowList] = useState(true);
     const [showButton, setShowButton] = useState(true);
-    const [usuariosInactivos, setUsuariosInactivos] = useState(
-      inactiveUsers.filter((user) => {
-        const username = user.username;
-    
-        // Verifica si alguna de las propiedades existe antes de comparar
-        return (
-          username &&
-          (
-            username === dataCuadro.lado_derecho.builders1?.username ||
-            username === dataCuadro.lado_derecho.builders2?.username ||
-            username === dataCuadro.lado_izquierdo.builders1?.username ||
-            username === dataCuadro.lado_izquierdo.builders2?.username
-          )
-        );
-      })
-    );
+     
     const [usuarioActivado, setUsuarioActivado] = useState(null);
   
     const completar_cuadro_refer = () => {
@@ -69,7 +55,6 @@ const InactiveUsers = () => {
     
 
     useEffect(() => {
-
       cuadroIdHijo();
       // Verificar si se activó un usuario recientemente
       if (usuarioActivado) {
@@ -87,7 +72,7 @@ const InactiveUsers = () => {
       remindFatherFn();
 
     
-    }, [usuarioActivado]);
+    }, [usuarioActivado, inactiveUsers]);
   
     const handlePostActivarUsuario = (usuario) => {
       console.log("usuario activado", usuario);
@@ -272,7 +257,7 @@ const InactiveUsers = () => {
 
     return (
       <div className="dashboard__top">
-      {legend && usuariosInactivos && usuariosInactivos.length > 0 ? (
+      {legend && inactiveUsers && inactiveUsers.length > 0 ? (
         showList && (
          <ul>
             {usuariosInactivos.map((usuario) => (

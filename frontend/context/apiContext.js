@@ -403,8 +403,21 @@ export const ApiProvider = ({ children }) => {
         setDataUsers(json);
        
         const inactiveUsersList = json.filter(user => user.active !== true);
+
+       const filter2 =  inactiveUsersList.filter((user) => {
+            const username = user.username;
+            return (
+              username && dataCuadro.lado_derecho && dataCuadro.lado_izquierdo
+              (
+                username === dataCuadro.lado_derecho.builders1?.username ||
+                username === dataCuadro.lado_derecho.builders2?.username ||
+                username === dataCuadro.lado_izquierdo.builders1?.username ||
+                username === dataCuadro.lado_izquierdo.builders2?.username
+              )
+            );
+          })
         
-        setInactiveUsers(inactiveUsersList)
+        setInactiveUsers(filter2)
         
       } catch (error) {
         console.error("Error fetching private data:", error);} };

@@ -1,0 +1,139 @@
+/*!************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./src/app/home.css ***!
+  \************************************************************************************************************************************************************************************************************************************************************/
+/*@import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@700&display=swap'); */
+
+.home {
+    background-color: rgb(52 48 25 / 7%);
+    width: 100%;
+    height: 100vh;
+    background-image: url(/_next/static/media/fondo4.9b078f32.png);
+    background-position: 55%;
+}
+
+
+
+@media (min-width: 300px) and (max-width: 800px) {
+    .home {
+        background-size: 125vh;
+        background-position: 63%;
+    }
+
+}
+/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./src/components/quienesSomos/quienesSomos.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************/
+/*@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap');*/
+
+.quienesSomos {
+  
+    color: #000000b5;
+    padding-top: 0%;
+    display: flex;
+    align-items: center;
+    width: 50%;
+    margin-left: 4%;
+    margin-top: 4%;
+    /* background-color: rgb(17 17 17 / 78%); */
+    background-color: transparent;
+    padding: 1%;
+    height: 53%;
+    margin-top: 6%;
+    
+ 
+}
+
+.quienesSomos h1 {
+    font-size: 32px;
+    margin-bottom: 0;
+    margin-top: 0%;
+    font-family: 'Philosopher', sans-serif ;
+    color:#403f3f;
+    font-size:80px
+}
+.quienesSomos .sub {
+    color:#c2a5e4
+}
+.quienesSomos p {
+    font-size: 19px;
+    margin-top: 2%;
+    line-height: 30px;
+    margin-bottom: 0%;
+    font-family: 'PT Serif', serif;
+}
+
+
+@media (min-width: 300px) and (max-width: 800px) {
+
+    .quienesSomos h1 {
+        font-size: 40px;
+    }
+
+    .quienesSomos {
+        margin-top: 25%;
+    }
+
+    .quienesSomos p {
+        font-size: 13px;
+
+    }
+    .texto {
+        width: 184px;
+    }
+  }
+/*!****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./src/components/banner/banner.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************/
+
+
+
+.banner {
+    background-color:#1f1f1ff7;
+    margin-top: 0;
+    color: rgba(255, 255, 255, 0.925);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#logo-banner {
+  margin-right: 31%;
+  font-family: 'Philosopher', sans-serif ; 
+
+}
+
+.banner span {
+    margin-right: 3%;
+}
+
+.banner a {
+    text-decoration: none;
+    color: white;
+}
+
+@media (min-width: 300px) and (max-width: 800px) {
+    .banner {
+        justify-content:space-between
+    }
+    #logo-banner {
+        margin-left: 3%;
+        margin-right: 8%;
+    }
+    .banner span {
+        margin-right: 4%;
+    }
+  }
+/*!****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./src/components/footer/footer.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************/
+.footer {
+    background-image: url(/_next/static/media/fondoLogin.ba7735b9.jpg);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}

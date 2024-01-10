@@ -260,7 +260,7 @@ const InactiveUsers = () => {
       {legend && inactiveUsers && inactiveUsers.length > 0 ? (
         showList && (
          <ul>
-            {usuariosInactivos.map((usuario) => (
+            {inactiveUsers.map((usuario) => (
               <li key={usuario._id} className='acceptPay'>
               <p>Recibir regalo de:</p>
               <span>{usuario.email}</span> 

@@ -375,10 +375,45 @@ export const ApiProvider = ({ children }) => {
           if (json4.estado === true) {
             setAscender(true)
           
-          }
+          } }
+        
+        
+          setLoading(true);
+
+          const res5 = await fetch(
+            `${process.env.NEXT_PUBLIC_API_BACKEND}user/users`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const json5 = await res5.json();
+          setDataUsers(json5);
+         
+          const inactiveUsersList = json5.filter(user => user.active !== true);
+          console.log(inactiveUsersList)
+  
+          console.log(json2)
+          const filter2 = inactiveUsersList.filter((user) => {
+            const username = user.username;
+            return (
+              username &&
+              json2.lado_derecho &&
+              json2.lado_izquierdo &&
+              (
+                username === json2.lado_derecho.builders1?.username ||
+                username === json2.lado_derecho.builders2?.username ||
+                username === json2.lado_izquierdo.builders1?.username ||
+                username === json2.lado_izquierdo.builders2?.username
+              )
+            );
+          });
           
-         }
-          } 
+          console.log("filter", filter2)
+          setInactiveUsers(filter2)
+          
+        } ;
 
       } catch (error) {
         console.error("Error fetching private data:", error);
@@ -388,44 +423,9 @@ export const ApiProvider = ({ children }) => {
       }
     };
     
-  const fetchUsers = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BACKEND}user/users`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const json = await res.json();
-        setDataUsers(json);
-       
-        const inactiveUsersList = json.filter(user => user.active !== true);
-
-       const filter2 =  inactiveUsersList.filter((user) => {
-            const username = user.username;
-            return (
-              username && dataCuadro.lado_derecho && dataCuadro.lado_izquierdo
-              (
-                username === dataCuadro.lado_derecho.builders1?.username ||
-                username === dataCuadro.lado_derecho.builders2?.username ||
-                username === dataCuadro.lado_izquierdo.builders1?.username ||
-                username === dataCuadro.lado_izquierdo.builders2?.username
-              )
-            );
-          })
-        
-        setInactiveUsers(filter2)
-        
-      } catch (error) {
-        console.error("Error fetching private data:", error);} };
-
-
 
     fetchData();
-    fetchUsers();
+
  
 
   }, [token, reset]);

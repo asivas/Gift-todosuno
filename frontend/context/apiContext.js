@@ -432,7 +432,7 @@ export const ApiProvider = ({ children }) => {
 
   return (
     <ApiContext.Provider value={{ dataUser, dataCuadro, setToken, setReset, loading, 
-    inactiveUsers, activarUsuario, desactivarUsuario, legend, setLegend, deleteCuadro, deleteUser, 
+    inactiveUsers, setInactiveUsers, activarUsuario, desactivarUsuario, legend, setLegend, deleteCuadro, deleteUser, 
     traerCuadroPadre, traerCuadroPadreSub, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete,cambiarEstadoCompletePadre, createCuadros, fatherComplete ,
     setFatherComplete ,remindFatherFn, ascender, setAscender}}>
       {children}

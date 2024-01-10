@@ -25,6 +25,7 @@ const InactiveUsers = () => {
       deleteUser,
       deleteCuadro,
       inactiveUsers,
+      setInactiveUsers,
       fatherComplete,
       remindFatherFn,
       cambiarEstadoCompletePadre,
@@ -59,7 +60,7 @@ const InactiveUsers = () => {
       // Verificar si se activó un usuario recientemente
       if (usuarioActivado) {
         // Actualizar la lista de usuarios inactivos eliminando el usuario activado
-        setUsuariosInactivos((prevUsuarios) =>
+        setInactiveUsers((prevUsuarios) =>
           prevUsuarios.filter((user) => user._id !== usuarioActivado._id)
         );
   

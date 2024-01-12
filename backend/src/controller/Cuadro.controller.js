@@ -251,20 +251,38 @@ export const traerCuadroPadre = async (req,res) => {
 }
 
 export const traerCuadroPadreSub = async (req,res) => {
-  const { padre, hijo, nieto1, nieto2 } = req.body;
+  const { hijo, nieto1, nieto2 } = req.body;
 
   try {
     
-    const userFather = await Users.findOne({username:padre})
+    const nivel = hijo.nivel;
 
-    const cuadroId = userFather.cuadro_id;
+    const pool = await Pools.findOne({nivel:nivel})
+
+    let cuadroEncontrado;
+
+    if (hijo.direction === "derecha") {
+
+     cuadroEncontrado = pool.cuadros.find(cuadro => cuadro.lado_derecho.guide === hijo.username)
+    }
+    if (hijo.direction === "izquierda") {
+
+     cuadroEncontrado = pool.cuadros.find((cuadro => cuadro.lado_izquierdo.guide === hijo.username))
+    }
+
+    console.log("cuadro encontrado para completar", cuadroEncontrado);
+    
+    const cuadroId = cuadroEncontrado._id;
     
     const cuadro = await Cuadros.findById(cuadroId);
 
+    console.log("cepcID", cuadroId)
+    console.log("cepc", cuadro)
+
     if (cuadro) {
       // Buscar al hijo en el lado derecho
-      if (cuadro.lado_derecho && cuadro.lado_derecho.guide === hijo) {
-        console.log(`El hijo ${hijo} está en el lado derecho del cuadroxxx.`);
+      if (cuadro.lado_derecho && cuadro.lado_derecho.guide === hijo.username) {
+        console.log(`El hijo ${hijo.username} está en el lado derecho del cuadroxxx.`);
 
         if (cuadro.lado_derecho.builders1.username && cuadro.lado_derecho.builders1.username === nieto1 ) {
           cuadro.lado_derecho.builders2.username = nieto2;
@@ -289,8 +307,8 @@ export const traerCuadroPadreSub = async (req,res) => {
       }
   
       // Buscar en el lado izquierdo si no se encontró en el lado derecho
-      else if (cuadro.lado_izquierdo && cuadro.lado_izquierdo.guide === hijo) {
-        console.log(`El hijo ${hijo} está en el lado izquierdo del cuadroooo.`);
+      else if (cuadro.lado_izquierdo && cuadro.lado_izquierdo.guide === hijo.username) {
+        console.log(`El hijo ${hijo.username} está en el lado izquierdo del cuadroooo.`);
         console.log("cuadro",cuadro)
         if (cuadro.lado_izquierdo.builders1.username && cuadro.lado_izquierdo.builders1.username === nieto1 ) {
           cuadro.lado_izquierdo.builders2.username = nieto2;
@@ -321,8 +339,8 @@ export const traerCuadroPadreSub = async (req,res) => {
         console.log(`El hijo ${hijo} no fue encontrado en los lados del cuadro.`);
       }
     } else {
-      console.log(`Cuadro con legend ${padre} no encontrado.`);
-    }
+      console.log(`Cuadro con legend no encontrado.`);
+    } 
   } catch (error) {
     console.error('Error al buscar el cuadro:', error);
   }

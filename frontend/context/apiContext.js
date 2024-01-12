@@ -168,7 +168,7 @@ export const ApiProvider = ({ children }) => {
     console.log("apretando") 
   }
 
-  const cambiarEstadoCompletePadre = async () => {
+ /* const cambiarEstadoCompletePadre = async () => {
 
     const user = dataUser;
     const res = await fetch(
@@ -181,7 +181,7 @@ export const ApiProvider = ({ children }) => {
       body: JSON.stringify({ user }),
     
     })
-  }
+  }*/
 
 
   
@@ -208,8 +208,8 @@ export const ApiProvider = ({ children }) => {
     
   const traerCuadroPadreSub = async () => {
 
-    const padre = dataUser.referral_father 
-    const hijo = dataUser.username;
+    
+    const hijo = dataUser;
     const nieto1 = dataCuadro.lado_derecho.guide;
     const nieto2 = dataCuadro.lado_izquierdo.guide;
 
@@ -222,7 +222,7 @@ export const ApiProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ padre, hijo, nieto1, nieto2 }),
+        body: JSON.stringify({ hijo, nieto1, nieto2 }),
       
       }
     );
@@ -316,7 +316,9 @@ export const ApiProvider = ({ children }) => {
 
     const fetchData = async () => {
       try {
+
         setLoading(true);
+
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_BACKEND}user/data`,
           {
@@ -331,18 +333,23 @@ export const ApiProvider = ({ children }) => {
   
         // Verificar si cuadro_id no es null antes de hacer la segunda solicitud
         if (json.cuadro_id !== null) {
+
           const res2 = await fetch(
             `${process.env.NEXT_PUBLIC_API_BACKEND}cuadro/${json.cuadro_id}`
           );
           const json2 = await res2.json();
           setDataCuadro(json2);
         
+          let json3;
+          if (json.username != "Pablo10") {
           const res3 = await fetch(
             `${process.env.NEXT_PUBLIC_API_BACKEND}cuadro/cuadroPadre/${json.direction}/${json.referral_father}`);
-         const json3 = await res3.json();
+        
+            json3 = await res3.json();}
        
         
           if (
+            json3 &&
             json3.estado === true &&
             json.nivel !== 10 &&
             json2.lado_derecho &&
@@ -352,9 +359,7 @@ export const ApiProvider = ({ children }) => {
             json2.legend === json.username) {
           console.log("No soy nivel 10 y ambos guías están presentes");
           json.complete = true;
-        } else {
-          console.log("No estoy completo o alguno de los guías está ausente o soy nivel 10");
-        }
+        } 
 
           if(json.username === json2.legend) {
             setLegend(true)
@@ -413,10 +418,10 @@ export const ApiProvider = ({ children }) => {
           console.log("filter", filter2)
           setInactiveUsers(filter2)
           
-        } ;
+        } 
 
       } catch (error) {
-        console.error("Error fetching private data:", error);
+        console.error("Error fetching private dataaa:", error);
       }
       finally {
         setLoading(false); // Indicar que los datos se han cargado
@@ -426,14 +431,12 @@ export const ApiProvider = ({ children }) => {
 
     fetchData();
 
- 
-
   }, [token, reset]);
 
   return (
     <ApiContext.Provider value={{ dataUser, dataCuadro, setToken, setReset, loading, 
     inactiveUsers, setInactiveUsers, activarUsuario, desactivarUsuario, legend, setLegend, deleteCuadro, deleteUser, 
-    traerCuadroPadre, traerCuadroPadreSub, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete,cambiarEstadoCompletePadre, createCuadros, fatherComplete ,
+    traerCuadroPadre, traerCuadroPadreSub, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete, createCuadros, fatherComplete ,
     setFatherComplete ,remindFatherFn, ascender, setAscender}}>
       {children}
     </ApiContext.Provider>

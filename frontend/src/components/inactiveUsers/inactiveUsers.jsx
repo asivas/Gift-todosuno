@@ -28,7 +28,7 @@ const InactiveUsers = () => {
       setInactiveUsers,
       fatherComplete,
       remindFatherFn,
-      cambiarEstadoCompletePadre,
+   //   cambiarEstadoCompletePadre,
       legend,
       ascender
     } = useApiContext();
@@ -218,6 +218,8 @@ const InactiveUsers = () => {
     
 
     const ascenderNivel = async () => {
+
+
       if (dataUser.username !== "Pablo" && dataUser.username !== "Nelson" && dataUser.username !== "Escro" ) {
         console.log("desactivar usuario")
         desactivarUsuario(dataUser.username);
@@ -225,7 +227,7 @@ const InactiveUsers = () => {
       
       succesLevel();
       
-      cambiarEstadoCompletePadre();
+      //cambiarEstadoCompletePadre();
     
       const username = dataUser.username;
       const res = await fetch(

@@ -20,9 +20,6 @@ const Users = new Schema(
     referral_father: {
       type: String,
     },
-    active: {
-      type: Boolean,
-    },
     cuadro_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Cuadros",

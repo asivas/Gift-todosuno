@@ -16,8 +16,7 @@ const contact = () => {
     <h2>CONTACTANOS</h2>
     <p>Hola! Si estas interesado en nuestra comunidad y te gustaria aprender mas , o sumarte al equipo, no dudes en contactarte con nuestros representantes! Podes encontrarlos en los siguientes telefonos y mail.</p> 
     <li>soportetodosuno@gmail.com</li>
-    <li>+5491134228779</li>
-    <li>+34627278370</li>
+    <li>+54 9 11 3422 8779</li>
     </div>
     </div>
     </div>

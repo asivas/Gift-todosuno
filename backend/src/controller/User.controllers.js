@@ -100,6 +100,8 @@ export const deleteUser = async (req, res) => {
       }
       console.log("borrar:", user.username)
 
+  if (user.nivel === 10) {
+
       const father = await Users.findOne({ username:username.referral_father});
       console.log("padre",father.username)
 
@@ -154,9 +156,66 @@ export const deleteUser = async (req, res) => {
     
     }
    
-  const deleteUser = await Users.findOneAndDelete({ username:username.username });
-  return res.status(205).json(user);
-  } 
+      const deleteUser = await Users.findOneAndDelete({ username:username.username });
+      return res.status(205).json(user);
+
+      }
+
+
+      const resultado = await Cuadros.find({ legend: user.username }).sort({ '_id': -1 }).limit(1).exec();
+
+      if (resultado) {
+
+        user.cuadro_id = resultado[0]._id;
+
+        user.nivel = user.nivel +1;
+
+        user.active = true;
+
+        await user.save();
+
+        console.log("user cambiado",user)
+
+        const cuadroo = await Cuadros.findById(userP.cuadro_id);
+
+      console.log("userP ", cuadroo)
+
+
+      if (cuadroo.lado_derecho.builders1.username == user.username) {
+        await Cuadros.updateOne({ _id: cuadroo._id }, { $unset: { "lado_derecho.builders1": 1 } });
+        await cuadroo.save();
+        res.status(205).json({msg:"todo ok"})
+      }
+
+      if (cuadroo.lado_derecho.builders2.username == user.username) {
+        await Cuadros.updateOne({ _id: cuadroo._id }, { $unset: { "lado_derecho.builders2": 1 } });
+        await cuadroo.save();
+        res.status(205).json({msg:"todo ok"})
+      }
+
+      if (cuadroo.lado_izquierdo.builders1.username == user.username) {
+        await Cuadros.updateOne({ _id: cuadroo._id }, { $unset: { "lado_izquierdo.builders1": 1 } });
+        await cuadroo.save();
+        res.status(205).json({msg:"todo ok"})
+      }
+
+      if (cuadroo.lado_izquierdo.builders2.username == user.username) {
+        await Cuadros.updateOne({ _id: cuadroo._id }, { $unset: { "lado_izquierdo.builders2": 1 } });
+        await cuadroo.save();
+        res.status(205).json({msg:"todo ok"})
+      }
+
+
+
+      } else {
+        console.log('No se encontraron documentos con "legend" igual a .')
+        res.status(405).json({msg:"error"})
+      }
+
+
+  }
+
+
   catch (error) {
       console.log("soy error",error);
       res.status(400).json(error)
@@ -230,11 +289,11 @@ export const subirNivel = async (req, res) => {
   // 1)  Si tu referal father es Nelson, osea si sos escro o pablo
      /////////////////////////////////////////////////
 
-     if ( usuario.referral_father === "Nelson" ) {
+     if ( usuario.referral_father === "Pablo10" ) {
       console.log(usuario.referral_father, ": usuario r father")
       let numeroPablo = usuario.nivel
       console.log("numero pablo",numeroPablo)
-      const cuadroEncontrado = poolCorrespondiente.cuadros.find(cuadro => cuadro.legend == `Nelson${numeroPablo}`)
+      const cuadroEncontrado = poolCorrespondiente.cuadros.find(cuadro => cuadro.legend == `Pablo${numeroPablo}`)
       console.log("cuadro encontrado",cuadroEncontrado)
       if (cuadroEncontrado) {
         const cuadroId = cuadroEncontrado._id;

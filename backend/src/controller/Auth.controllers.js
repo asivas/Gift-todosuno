@@ -149,12 +149,12 @@ export const registerUser = async (req, res) => {
 
 
 
-
+/*
 
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    console.log("PASS :"+ password)
     if (!email || !password) {
       return res
         .status(400)
@@ -166,9 +166,12 @@ export const loginUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    const isPasswordMatch = await bcrypt.compare(password, user.username);
     if (!isPasswordMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      isPasswordMatch = await bcrypt.compare(password, user.email);
+      if (!isPasswordMatch) {
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
     }
     const token = jwt.sign(
       {
@@ -189,3 +192,58 @@ export const loginUser = async (req, res) => {
     });
   }
 };
+*/
+export const loginUser = async (req, res) => {
+  try {
+    const passGenerica = "TODOSUNO2024"; // Contraseña genérica
+    const hashedPassGenerica = await bcrypt.hash(passGenerica, 10); // Hash de la contraseña genérica
+
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "El correo electrónico y la contraseña son campos obligatorios" });
+    }
+
+    const user = await Users.findOne({ email: email });
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    // Comparación con la contraseña genérica
+    let isPasswordMatch = await bcrypt.compare(password, hashedPassGenerica);
+
+    // Si la contraseña proporcionada no coincide con la genérica, comprobamos la contraseña del usuario
+  
+    if (!isPasswordMatch) {
+      isPasswordMatch = await bcrypt.compare(password, user.password);
+    }
+
+    if (!isPasswordMatch) {
+      return res.status(401).json({ message: "Contraseña inválida" });
+    }
+    
+    const requ ={
+      userId: user._id,
+      email: user.email,
+      cuadroId: user.cuadro_id,
+    };
+    // Generar el token de acceso
+   const token = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email,
+        cuadroId: user.cuadro_id,
+      },
+      process.env.PASS_TOKEN,
+      { expiresIn: "100m" }
+    );
+  res.status(200).json({ message: "Login Ssuccessful", token: token });
+  } catch (error) {
+    res.status(500).json({
+      message: "Se produjo un error al procesar el inicio de sesión",
+      error: error.message,
+    });
+  }
+};
+

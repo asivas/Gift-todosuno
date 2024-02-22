@@ -1,5 +1,9 @@
 
-
+a {
+    color: blue; /* Color del texto */
+    text-decoration: underline; /* Subrayado del texto */
+    font-weight: bold; /* Negrita */
+  }
 .contact {
     background-image: url("../../imgs/fondoLogin.jpg");
 }

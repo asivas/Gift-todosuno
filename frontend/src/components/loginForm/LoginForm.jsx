@@ -13,6 +13,54 @@ import withReactContent from "sweetalert2-react-content";
 
 
 const MySweetAlert = withReactContent(Swal);
+/*
+const LoginForm = () => {
+  const { setToken } = useApiContext();
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: "onBlur",
+  });
+
+  const submitHandler = async (data) => {
+    MySweetAlert.fire({
+      position: "center",
+      title: "Iniciar sesión...",
+      showConfirmButton: false,
+    });
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BACKEND}auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (response.ok) {
+        const json = await response.json();
+        Cookies.set("token", json.token);
+        setToken(json.token);
+        MySweetAlert.close();
+        router.push("/dashboard");
+      } else if (response.status === 401) {
+        console.log("Correo electrónico o contraseña incorrectos");
+        MySweetAlert.fire("Error", "Correo electrónico o contraseña incorrectos", "error");
+      } else {
+        console.log("Error del servidor");
+        MySweetAlert.fire("Error", "Error del servidor", "error");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+*/
 
 const LoginForm = () => {
   
@@ -46,21 +94,21 @@ const LoginForm = () => {
 
       switch (res.status) {
         case 200:
-  const json = await res.json();
-  Cookies.set("token", json.token);
-  setToken(json.token);
- // setReset(true); // Asegúrate de que esto esté configurado correctamente
-  MySweetAlert.close();
-  router.push("/dashboard");
-          break;
+            const json = await res.json();
+            Cookies.set("token", json.token);
+            setToken(json.token);
+          // setReset(true); // Asegúrate de que esto esté configurado correctamente
+            MySweetAlert.close();
+            router.push("/dashboard");
+            break;
         case 401:
-          console.log("Incorrect email or password");
-          MySweetAlert.fire("Error", "Incorrect email or password", "error");
-          break;
+            console.log("Correo electrónico o contraseña incorrectos");
+            MySweetAlert.fire("Error", "Correo electrónico o contraseña incorrectos", "error");
+            break;
         default:
-          console.log("Server error");
-          MySweetAlert.fire("Error", "Server error", "error");
-          break;
+            console.log("Server error");
+            MySweetAlert.fire("Error", "Error del servidor", "error");
+            break;
       }
     } catch (error) {
       console.log(error);
@@ -99,8 +147,8 @@ const LoginForm = () => {
           <input
             className="input_login"
             type="password"
-            id="contrasena"
-            name="contrasena"
+            id="password"
+            name="password"
             required
             placeholder="Ingrese su contraseña"
             {...register("password", {

@@ -1,6 +1,9 @@
 # .gitignore
 
+*.log
+
 # Node.js
 node_modules/
 next/
-
+.next/
+.env.env.prod

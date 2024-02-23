@@ -36,54 +36,60 @@ export const getAllPools = async (req, res) => {
 };
 
 
-export const agregarApool = async (req,res) => {
-try{
-const {username} = req.body;
-
-const referalF = username.referral_father;
-
-const userF = await Users.findOne({username:referalF})
-
-const nivel = userF.nivel;
-
-const pool = await Pools.findOne({nivel:nivel})
-
-const cuadroEncontrado = pool.cuadros.find(cuadro => cuadro.legend === referalF)
-
-if (cuadroEncontrado) { 
-
-  console.log("pool corresp", pool.nivel)
-  console.log("cuadroencontrado", cuadroEncontrado)
-
-  if (!cuadroEncontrado.lado_derecho.guide) {
-    console.log("falta el lado derecho")
-    cuadroEncontrado.lado_derecho.guide = username.username;
-    await Pools.findOneAndUpdate(
-      { nivel: nivel, "cuadros.legend": referalF },
-      { $set: { "cuadros.$.lado_derecho.guide": username.username } }
-    );
-
-    return res.status(200).json({msg:"ok"})
-  }
-  if (!cuadroEncontrado.lado_izquierdo.guide) {
-    console.log("falta el lado izq")
-    cuadroEncontrado.lado_izquierdo.guide = username.username;
+export const agregarApool = async (req, res) => {
+  try {
+    const { username } = req.body;
     
-       // Save the changes using findOneAndUpdate
-       await Pools.findOneAndUpdate(
-        { nivel: nivel, "cuadros.legend": referalF },
+    // Encuentra el usuario referido por el padre
+    const referalF = username.referral_father;
+    const userF = await Users.findOne({ username: referalF });
+    if (!userF) {
+      return res.status(404).json({ message: "Usuario referido no encontrado" });
+    }
+    
+    // Encuentra el nivel del usuario referido
+    const nivel = userF.nivel;
+
+    // Encuentra el cuadro correspondiente en la pool
+    const pool = await Pools.findOne({ nivel });
+    if (!pool) {
+      return res.status(404).json({ message: "Pool no encontrada para el nivel del usuario" });
+    }
+
+    // Encuentra el cuadro del usuario referido
+    const cuadroEncontrado = pool.cuadros.find(cuadro => cuadro.legend === referalF);
+    if (!cuadroEncontrado) {
+      return res.status(404).json({ message: "Cuadro del usuario referido no encontrado en la pool" });
+    }
+
+    // Verifica si el lado derecho del cuadro está vacío y actualízalo si es así
+    if (!cuadroEncontrado.lado_derecho.guide) {
+      cuadroEncontrado.lado_derecho.guide = username.username;
+      await Pools.findOneAndUpdate(
+        { nivel, "cuadros.legend": referalF },
+        { $set: { "cuadros.$.lado_derecho.guide": username.username } }
+      );
+      return res.status(200).json({ message: "Usuario agregado al lado derecho del cuadro" });
+    }
+    
+    // Verifica si el lado izquierdo del cuadro está vacío y actualízalo si es así
+    if (!cuadroEncontrado.lado_izquierdo.guide) {
+      cuadroEncontrado.lado_izquierdo.guide = username.username;
+      await Pools.findOneAndUpdate(
+        { nivel, "cuadros.legend": referalF },
         { $set: { "cuadros.$.lado_izquierdo.guide": username.username } }
       );
-    return res.status(200).json({msg:"ok"})
+      return res.status(200).json({ message: "Usuario agregado al lado izquierdo del cuadro" });
+    }
+    
+    // Si ambos lados del cuadro están ocupados, indica que el cuadro está completo
+    return res.status(400).json({ message: "El cuadro del usuario referido está completo" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Error interno del servidor" });
   }
-}
+};
 
- res.status(201).json({msg:"todavia no tiene cuadro"})
-}
-catch(err) {
-res.status(404).json(err)
-}
-}
 
 export const getPoolById = async (req, res) => {
   try {

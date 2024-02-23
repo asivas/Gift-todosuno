@@ -21,15 +21,26 @@ const SideBar = () => {
     setIsOpen(!isOpen);
   };
 
-const referralLink = `https://oficialtodosuno.com/register?username=${dataUser.username}`;
-// const referralLink = `http://localhost:3000/register?username=${dataUser.username}`;
+//const referralLink = `https://oficialtodosuno.com/register?username=${dataUser.username}`;
+ const referralLink = `http://localhost:3000/register?username=${dataUser.username}`;
 
 //START= "nodemon index.js --exec babel-node"
-
+/*
   const copyToClipboard = () => {
     clipboardCopy(referralLink);
     alert("Enlace copiado al portapales");
   };
+*/
+  const copyToClipboard = () => {
+    try {
+      navigator.clipboard.writeText(referralLink);
+      alert("Enlace copiado al portapales");
+    } catch (error) {
+      //console.error("Error al copiar al portapapeles:", error);
+      alert("Error al copiar al portapapeles");
+    }
+  };
+ 
 
   const nonActive = () => {
     alert ("No puedes compartir el enlace porque no eres usuario activo")
@@ -58,14 +69,27 @@ const referralLink = `https://oficialtodosuno.com/register?username=${dataUser.u
   }, []);
 
 
-
+/*
   const cerrarSession = async () => {
      Cookies.remove('token');
     router.push("/login")
     setLegend(false)
     setFatherComplete(false)
     setAscender(false);
-  }
+  }*/
+  const cerrarSession = async () => {
+    try {
+      Cookies.remove('token');
+      router.push("/login");
+      setLegend(false);
+      setFatherComplete(false);
+      setAscender(false);
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      alert("Error al cerrar sesión");
+    }
+  };
+  
 
   return (
     <div className={`sideBar ${isOpen ? "open" : "closed"}`}>

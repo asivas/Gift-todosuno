@@ -199,7 +199,7 @@ export const loginUser = async (req, res) => {
     const hashedPassGenerica = await bcrypt.hash(passGenerica, 10); // Hash de la contraseña genérica
 
     const { email, password } = req.body;
-
+    console.log("Email : " +email + "Pass :" +password + "GENERICA : " +passGenerica);
     if (!email || !password) {
       return res.status(400).json({ message: "El correo electrónico y la contraseña son campos obligatorios" });
     }

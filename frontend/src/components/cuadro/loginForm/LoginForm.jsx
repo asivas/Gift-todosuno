@@ -1,10 +1,9 @@
-"use client";
 import React, { useState } from "react";
 import "./loginForm.css";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 import Image from "next/image";
@@ -12,16 +11,13 @@ import Swal from "sweetalert2";
 import { useApiContext } from "../../../context/apiContext";
 import withReactContent from "sweetalert2-react-content";
 
-
-
-
 const MySweetAlert = withReactContent(Swal);
 
 const LoginForm = () => {
-console.log(process.env.NEXT_PUBLIC_API_BACKEND)
-  const {setToken} = useApiContext()
-  
-   const router = useRouter();
+  console.log(process.env.NEXT_PUBLIC_API_BACKEND);
+  const { setToken } = useApiContext();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -38,13 +34,16 @@ console.log(process.env.NEXT_PUBLIC_API_BACKEND)
     });
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BACKEND}auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BACKEND}auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       switch (res.status) {
         case 200:
@@ -66,6 +65,7 @@ console.log(process.env.NEXT_PUBLIC_API_BACKEND)
       }
     } catch (error) {
       console.log(error);
+      MySweetAlert.fire("Error", "Server error", "error");
     }
   };
 
@@ -92,14 +92,16 @@ console.log(process.env.NEXT_PUBLIC_API_BACKEND)
               },
             })}
           />
-          {errors.email && <span>{errors.email.message}</span>}
+          {errors.email && (
+            <span className="error-message">{errors.email.message}</span>
+          )}
         </div>
         <div className="form__group">
-          <label htmlFor="contrasena">Contraseña:</label>
+          <label htmlFor="password">Contraseña:</label>
           <input
             type="password"
-            id="contrasena"
-            name="contrasena"
+            id="password"
+            name="password"
             required
             placeholder="Ingrese su contraseña"
             {...register("password", {
@@ -109,7 +111,9 @@ console.log(process.env.NEXT_PUBLIC_API_BACKEND)
               },
             })}
           />
-          {errors.password && <span>{errors.password.message}</span>}
+          {errors.password && (
+            <span className="error-message">{errors.password.message}</span>
+          )}
         </div>
         <div className="form__bottom">
           <Link href={"/register"} className="form__login-link">

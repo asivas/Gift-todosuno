@@ -1,7 +1,7 @@
 import { Router } from "express";
 import verifyTokenUser from "../middleware/verifyToken";
 const router = Router();
-var { userData, getAllUsers, activarUsuario, desactivarUsuario, deleteUser, cambiarEstado,cambiarEstadoPadre, subirNivel,remindFatherFn } = require("../controller/User.controllers");
+var { userUpdate,userData, getAllUsers, activarUsuario, desactivarUsuario, deleteUser, cambiarEstado,cambiarEstadoPadre, subirNivel,remindFatherFn } = require("../controller/User.controllers");
 
 
 // Ruta para obtener todos los usuarios
@@ -14,5 +14,8 @@ router.post("/cambiarEstadoComplete", cambiarEstado)
 router.post("/cambiarEstadoCompletePadre", cambiarEstadoPadre)
 router.put("/subirNivel", subirNivel)
 router.get("/remindFatherFn", remindFatherFn)
+
+
+router.put("/updateUser", userUpdate)
 
 module.exports = router;

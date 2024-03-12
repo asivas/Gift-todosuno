@@ -1,4 +1,5 @@
-import { Schema, model, mongoose } from "mongoose";
+import { Schema, model} from "mongoose";
+const mongoose = require('mongoose');
 
 const Cuadros = new Schema({
   poolId: {

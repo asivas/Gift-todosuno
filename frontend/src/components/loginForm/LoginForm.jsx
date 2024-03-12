@@ -10,64 +10,67 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { useApiContext } from "../../../context/apiContext";
 import withReactContent from "sweetalert2-react-content";
+import { validateHeaderValue } from "http";
+
 
 
 const MySweetAlert = withReactContent(Swal);
-/*
-const LoginForm = () => {
-  const { setToken } = useApiContext();
-  const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    mode: "onBlur",
-  });
 
-  const submitHandler = async (data) => {
-    MySweetAlert.fire({
-      position: "center",
-      title: "Iniciar sesión...",
-      showConfirmButton: false,
+const LoginForm = () => {
+  const { setToken, setReset, updateUser } = useApiContext();
+ 
+
+  const handleUpdateUser = async () => {
+
+    const { value: fruit } = await Swal.fire({
+      title: "Seleccione el codigo de validación",
+      input: "select",
+      inputOptions: {
+        Frutas: {
+          manzana: "Manzana",
+          banana: "Banana",
+          uva: "Uva",
+          naranja: "Naranja",
+          pera: "Pera",
+          sandia: "Sandia",
+        }
+      },
+      inputPlaceholder: "Seleccione una fruta",
+      showCancelButton: true,
+      inputValidator: (value) => {
+        return new Promise((resolve) => {
+          if (value === "banana" || value ==="pera" || value ==="naranja") {
+            resolve();
+          } else {
+            resolve("Necesito que selecciones el codigo que se te envio :)");
+          }
+        });
+      }
     });
+  
+    if (fruit) {
+      Swal.fire(`Usted selecciono: ${fruit}`);
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BACKEND}auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-
-      if (response.ok) {
-        const json = await response.json();
-        Cookies.set("token", json.token);
-        setToken(json.token);
-        MySweetAlert.close();
-        router.push("/dashboard");
-      } else if (response.status === 401) {
-        console.log("Correo electrónico o contraseña incorrectos");
-        MySweetAlert.fire("Error", "Correo electrónico o contraseña incorrectos", "error");
-      } else {
-        console.log("Error del servidor");
-        MySweetAlert.fire("Error", "Error del servidor", "error");
+      const updatedUsers = await updateUser(email, password);
+      if (updatedUsers) {
+        // alert("¡Usuario actualizado correctamente! Ya puede iniciar sesion");
+        Swal.fire("¡Usuario actualizado correctamente! Ya puede iniciar sesion");
       }
+      
+      // Si es necesario, realiza alguna acción adicional después de actualizar el usuario
     } catch (error) {
-      console.log(error);
+      console.error("Error al actualizar usuario:", error);
+      // Swal.fire("SweetAlert2 is working!");
+      Swal.fire("Ha ocurrido un error al actualizar el usuario. Por favor, inténtalo de nuevo más tarde.");
+      
     }
   };
-*/
-
-const LoginForm = () => {
-  
-
-  const {setToken, setReset} = useApiContext()
-  
-   const router = useRouter();
+  }
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -84,31 +87,38 @@ const LoginForm = () => {
     });
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BACKEND}auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BACKEND}auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       switch (res.status) {
         case 200:
-            const json = await res.json();
-            Cookies.set("token", json.token);
-            setToken(json.token);
+          const json = await res.json();
+          Cookies.set("token", json.token);
+          setToken(json.token);
           // setReset(true); // Asegúrate de que esto esté configurado correctamente
-            MySweetAlert.close();
-            router.push("/dashboard");
-            break;
+          MySweetAlert.close();
+          router.push("/dashboard");
+          break;
         case 401:
-            console.log("Correo electrónico o contraseña incorrectos");
-            MySweetAlert.fire("Error", "Correo electrónico o contraseña incorrectos", "error");
-            break;
+          console.log("Correo electrónico o contraseña incorrectos");
+          MySweetAlert.fire(
+            "Error",
+            "Correo electrónico o contraseña incorrectos",
+            "error"
+          );
+          break;
         default:
-            console.log("Server error");
-            MySweetAlert.fire("Error", "Error del servidor", "error");
-            break;
+          console.log("Server error");
+          MySweetAlert.fire("Error", "Error del servidor", "error");
+          break;
       }
     } catch (error) {
       console.log(error);
@@ -117,7 +127,6 @@ const LoginForm = () => {
 
   return (
     <>
-    
       <div className="title">TodosUno</div>
       <form onSubmit={handleSubmit(submitHandler)} className="form_login">
         <div className="form__group_login">
@@ -169,6 +178,11 @@ const LoginForm = () => {
           </button>
         </div>
       </form>
+      <div>
+      <button onClick={handleUpdateUser} className="form__login-link">
+        ACTUALIZAR USUARIO
+      </button>
+      </div>
     </>
   );
 };

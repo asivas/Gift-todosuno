@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
+
 const ApiContext = createContext();
 
 export const useApiContext = () => {
@@ -23,6 +24,39 @@ export const ApiProvider = ({ children }) => {
   const [fatherComplete ,setFatherComplete] = useState(false);
   const [ascender, setAscender] = useState(false);
 
+
+  const updateUser = async (email, password) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BACKEND}user/updateUser`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Error al actualizar la contraseña');
+      }
+      
+      const data = await response.json();
+     
+ 
+      return data;
+    } catch (error) {
+      if (error.message === 'User not found') {
+        return { error: 'Usuario no encontrado' };
+      } else if (error.message === 'Error al actualizar datos') {
+        return { error: 'Error al actualizar la información' };
+      } else {
+        console.error('Error al actualizar la contraseña:', error);
+        throw error; // Re-lanza el error para que lo maneje la función superior
+      }
+    }
+  };
+  
   
 
  const remindFatherFn = async () => {
@@ -437,7 +471,7 @@ export const ApiProvider = ({ children }) => {
     <ApiContext.Provider value={{ dataUser, dataCuadro, setToken, setReset, loading, 
     inactiveUsers, setInactiveUsers, activarUsuario, desactivarUsuario, legend, setLegend, deleteCuadro, deleteUser, 
     traerCuadroPadre, traerCuadroPadreSub, cuadroIdHijo, hijoDer, hijoIzq, cambiarEstadoComplete, createCuadros, fatherComplete ,
-    setFatherComplete ,remindFatherFn, ascender, setAscender}}>
+    setFatherComplete ,remindFatherFn, ascender, setAscender, updateUser}}>
       {children}
     </ApiContext.Provider>
   );

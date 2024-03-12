@@ -2,7 +2,9 @@ import Users from "../models/Users";
 import Pools from "../models/Pools";
 import jwt from "jsonwebtoken";
 import Cuadros from "../models/Cuadros";
-require("dotenv").config();
+const bcrypt = require('bcrypt');
+
+require("dotenv").config({ path: ".env.prod" });
 
 let userP;
 export const userData = async (req, res) => {
@@ -44,27 +46,6 @@ export const cambiarEstado = async (req, res) => {
   }
 };
 
-// export const cambiarEstadoPadre = async (user) => {
-
-//   const userF = await Users.findOne({ username: user });
-
-//   console.log("userfather", userF);
-
-//   const nivel = userF.nivel;
-
-//   const pool = await Pools.findOne({ nivel: nivel });
-
-//   const cuadroEncontrado = pool.cuadros.find(
-//     (cuadro) => cuadro.legend === userF.username
-//   );
-
-//   if (cuadroEncontrado) {
-//     userF.complete = true;
-//     userF.save();
-//     return;
-//   }
-// };
-
 //funcion mejorada
 export const cambiarEstadoPadre = async (username) => {
   try {
@@ -97,7 +78,7 @@ export const cambiarEstadoPadre = async (username) => {
 };
 
 
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = async (res) => {
   try {
     const users = await Users.find();
     //console.log(users)
@@ -273,7 +254,7 @@ export const deleteUser = async (req, res) => {
 export const activarUsuario = async (req, res) => {
   try {
     const username = req.body.username;
-    const user = await Users.findOne({ username});
+    const user = await Users.findOne({ username });
 
     if (!user) {
       return res
@@ -317,7 +298,7 @@ export const subirNivel = async (req, res) => {
   try {
     const usuario = await Users.findOne({ username: username });
 
-     usuario.nivel --;
+    usuario.nivel--;
 
     await usuario.save();
 
@@ -453,7 +434,7 @@ export const subirNivel = async (req, res) => {
           cuadroSiguiente.lado_derecho &&
           !cuadroSiguiente.lado_derecho.builders2.username
         ) {
-          console.log("ema","builder2 no existe en la derecha");
+          console.log("ema", "builder2 no existe en la derecha");
           cuadroSiguiente.lado_derecho.builders2.username = usuario.username;
           usuario.cuadro_id = cuadroSiguiente._id;
           usuario.save();
@@ -630,5 +611,33 @@ export const remindFatherFn = async (req, res) => {
   } catch (error) {
     console.error("Error al buscar el padre referente:", error);
     return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+export const userUpdate = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await Users.findOne({ email: email });
+     console.log("Emaaaaaa", user)
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    if (email) {
+      user.email = email;
+    }
+
+    if (password) {
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(password, salt);
+      user.password = hash;
+    }
+
+    const updatedUser = await user.save();
+
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    return res.status(500).json({ message: "Error al actualizar datos", error: error.message });
   }
 };

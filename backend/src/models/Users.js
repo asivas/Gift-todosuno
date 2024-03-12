@@ -1,4 +1,5 @@
-import { Schema, model, mongoose } from "mongoose";
+import { Schema, model } from "mongoose";
+const mongoose = require('mongoose');
 
 const Users = new Schema(
   {
@@ -54,40 +55,3 @@ const Users = new Schema(
 );
 
 export default model("Users", Users);
-
-/*nivel2: {
-      type: Boolean,
-      default: false,
-    },
-    nivel3: {
-      type: Boolean,
-      default: false,
-    },
-    nivel4: {
-      type: Boolean,
-      default: false,
-    },
-    nivel5: {
-      type: Boolean,
-      default: false,
-    },
-    nivel6: {
-      type: Boolean,
-      default: false,
-    },
-    nivel7: {
-      type: Boolean,
-      default: false,
-    },
-    nivel8: {
-      type: Boolean,
-      default: false,
-    },
-    nivel9: {
-      type: Boolean,
-      default: false,
-    },
-    nivel10: {
-      type: Boolean,
-      default: false,
-    },*/

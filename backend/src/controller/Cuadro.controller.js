@@ -29,17 +29,25 @@ export const cuadroPadre = async (req, res) => {
     }
 
     if (cuadroDirection === "derecha") {
-      if (!cuadro.lado_derecho || !cuadro.lado_derecho.builders1.username || !cuadro.lado_derecho.builders2.username)
+      if (
+        !cuadro.lado_derecho ||
+        !cuadro.lado_derecho.builders1.username ||
+        !cuadro.lado_derecho.builders2.username
+      )
         return res.status(200).json({ estado: true });
     } else if (cuadroDirection === "izquierda") {
-      if (!cuadro.lado_izquierdo || !cuadro.lado_izquierdo.builders1.username || !cuadro.lado_izquierdo.builders2.username)
+      if (
+        !cuadro.lado_izquierdo ||
+        !cuadro.lado_izquierdo.builders1.username ||
+        !cuadro.lado_izquierdo.builders2.username
+      )
         return res.status(200).json({ estado: true });
     }
 
     res.status(201).json({ estado: false });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
@@ -47,16 +55,15 @@ export const cuadroHijo = async (req, res) => {
   try {
     const { cuadroId } = req.params;
 
-    const cuadro = await Cuadros.findOne({legend:cuadroId});
+    const cuadro = await Cuadros.findOne({ legend: cuadroId });
 
     res.status(200).json(cuadro);
   } catch (error) {
     console.error(error);
     // Manejar el error según tus necesidades
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
-}; 
-
+};
 
 /*
 export const hijoLevel = async (req, res) => {
@@ -77,14 +84,13 @@ export const hijoLevel = async (req, res) => {
   }
 };*/
 
-
 export const deleteCuadro = async (req, res) => {
   try {
-    const {dataCuadro} = req.body;
-   
+    const { dataCuadro } = req.body;
+
     if (!dataCuadro) {
       // Si el cuadro no se encuentra, responde con un mensaje de error
-      return res.status(404).json({ message: 'Cuadro no encontrado' });
+      return res.status(404).json({ message: "Cuadro no encontrado" });
     }
 
     const cuadro = await Cuadros.findByIdAndDelete(dataCuadro._id);
@@ -97,12 +103,10 @@ export const deleteCuadro = async (req, res) => {
 
 export const createCuadros = async (req, res) => {
   try {
-    const { dataCuadro, prop1, prop2  } = req.body;
+    const { dataCuadro, prop1, prop2 } = req.body;
 
-    
-    if (prop1 === "derecho" ) {
-   
-      if ( prop2 === "builders1") {
+    if (prop1 === "derecho") {
+      if (prop2 === "builders1") {
         let cuadroDerecho = {
           guide: dataCuadro.lado_derecho.builders1.username,
         };
@@ -110,21 +114,25 @@ export const createCuadros = async (req, res) => {
           poolId: dataCuadro.poolId,
           legend: dataCuadro.lado_derecho.guide,
           lado_derecho: cuadroDerecho,
-          lado_izquierdo:{guide:""},
-          cuadroPadre_id: dataCuadro._id
+          lado_izquierdo: { guide: "" },
+          cuadroPadre_id: dataCuadro._id,
         });
-      
-      const pool = await Pools.findById(dataCuadro.poolId);
-      pool.cuadros.push(cuadro);
-      await pool.save();
-      await cuadro.save();
-      const guide = await Users.findOne({ username:dataCuadro.lado_derecho.guide });
-      const builder = await Users.findOne({ username:dataCuadro.lado_derecho.builders1.username });
-      guide.cuadro_id = cuadro._id
-      builder.cuadro_id = cuadro._id
-      await guide.save();
-      await builder.save();
-      return res.status(200).json({msg:"nuevo cuadro"});
+
+        const pool = await Pools.findById(dataCuadro.poolId);
+        pool.cuadros.push(cuadro);
+        await pool.save();
+        await cuadro.save();
+        const guide = await Users.findOne({
+          username: dataCuadro.lado_derecho.guide,
+        });
+        const builder = await Users.findOne({
+          username: dataCuadro.lado_derecho.builders1.username,
+        });
+        guide.cuadro_id = cuadro._id;
+        builder.cuadro_id = cuadro._id;
+        await guide.save();
+        await builder.save();
+        return res.status(200).json({ msg: "nuevo cuadro" });
       }
       if (prop2 === "builders2") {
         let cuadroIzq = {
@@ -133,50 +141,56 @@ export const createCuadros = async (req, res) => {
         let cuadro = new Cuadros({
           poolId: dataCuadro.poolId,
           legend: dataCuadro.lado_derecho.guide,
-          lado_derecho:{guide:""},
-          lado_izquierdo:cuadroIzq,
-          cuadroPadre_id: dataCuadro._id
+          lado_derecho: { guide: "" },
+          lado_izquierdo: cuadroIzq,
+          cuadroPadre_id: dataCuadro._id,
         });
         const pool = await Pools.findById(dataCuadro.poolId);
-      pool.cuadros.push(cuadro);
-      await pool.save();
-      await cuadro.save();
-      const guide = await Users.findOne({ username:dataCuadro.lado_derecho.guide });
-      const builder = await Users.findOne({ username:dataCuadro.lado_derecho.builders2.username });
-      guide.cuadro_id = cuadro._id
-      builder.cuadro_id = cuadro._id
-      await guide.save();
-      await builder.save();
-      return res.status(200).json({msg:"nuevo cuadro"})
+        pool.cuadros.push(cuadro);
+        await pool.save();
+        await cuadro.save();
+        const guide = await Users.findOne({
+          username: dataCuadro.lado_derecho.guide,
+        });
+        const builder = await Users.findOne({
+          username: dataCuadro.lado_derecho.builders2.username,
+        });
+        guide.cuadro_id = cuadro._id;
+        builder.cuadro_id = cuadro._id;
+        await guide.save();
+        await builder.save();
+        return res.status(200).json({ msg: "nuevo cuadro" });
       }
-
     }
 
     if (prop1 === "izquierdo") {
-   
-      if ( prop2 === "builders1") {
+      if (prop2 === "builders1") {
         let cuadroIzquierdo = {
           guide: dataCuadro.lado_izquierdo.builders1.username,
         };
         let cuadro = new Cuadros({
           poolId: dataCuadro.poolId,
           legend: dataCuadro.lado_izquierdo.guide,
-          lado_izquierdo:{guide:""},
-          lado_derecho:cuadroIzquierdo,
-          cuadroPadre_id: dataCuadro._id
+          lado_izquierdo: { guide: "" },
+          lado_derecho: cuadroIzquierdo,
+          cuadroPadre_id: dataCuadro._id,
         });
         const pool = await Pools.findById(dataCuadro.poolId);
         pool.cuadros.push(cuadro);
         await pool.save();
 
         await cuadro.save();
-        const guide = await Users.findOne({ username:dataCuadro.lado_izquierdo.guide });
-        const builder = await Users.findOne({ username:dataCuadro.lado_izquierdo.builders1.username });
-        guide.cuadro_id = cuadro._id
-        builder.cuadro_id = cuadro._id
+        const guide = await Users.findOne({
+          username: dataCuadro.lado_izquierdo.guide,
+        });
+        const builder = await Users.findOne({
+          username: dataCuadro.lado_izquierdo.builders1.username,
+        });
+        guide.cuadro_id = cuadro._id;
+        builder.cuadro_id = cuadro._id;
         await guide.save();
         await builder.save();
-        return res.status(200).json({msg:"nuevo cuadro"})
+        return res.status(200).json({ msg: "nuevo cuadro" });
       }
 
       if (prop2 === "builders2") {
@@ -187,175 +201,204 @@ export const createCuadros = async (req, res) => {
           poolId: dataCuadro.poolId,
           legend: dataCuadro.lado_izquierdo.guide,
           lado_izquierdo: cuadroIzquierdo,
-          lado_derecho:{guide:""},
-          cuadroPadre_id: dataCuadro._id
+          lado_derecho: { guide: "" },
+          cuadroPadre_id: dataCuadro._id,
         });
-      
-      const pool = await Pools.findById(dataCuadro.poolId);
-      pool.cuadros.push(cuadro);
-      await pool.save();
-      await cuadro.save();
-      const guide = await Users.findOne({ username:dataCuadro.lado_izquierdo.guide });
-      const builder = await Users.findOne({ username:dataCuadro.lado_izquierdo.builders2.username });
-      guide.cuadro_id = cuadro._id
-      builder.cuadro_id = cuadro._id
-      await guide.save();
-      await builder.save();
-      return res.status(200).json({msg:"nuevo cuadro"})
-      }}
-  
-   /* if(dataCuadro && prop1 && prop2) {
+
+        const pool = await Pools.findById(dataCuadro.poolId);
+        pool.cuadros.push(cuadro);
+        await pool.save();
+        await cuadro.save();
+        const guide = await Users.findOne({
+          username: dataCuadro.lado_izquierdo.guide,
+        });
+        const builder = await Users.findOne({
+          username: dataCuadro.lado_izquierdo.builders2.username,
+        });
+        guide.cuadro_id = cuadro._id;
+        builder.cuadro_id = cuadro._id;
+        await guide.save();
+        await builder.save();
+        return res.status(200).json({ msg: "nuevo cuadro" });
+      }
+    }
+
+    /* if(dataCuadro && prop1 && prop2) {
       res.status(202).json("todo ok")
     } */
     // Resto del código si es necesario
   } catch (error) {
     //console.error(error);
     // Manejar el error según tus necesidades
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
-    
 
-
-
-
-export const traerCuadroPadre = async (req,res) => {
+export const traerCuadroPadre = async (req, res) => {
   const { padre, hijo, nieto } = req.body;
 
   try {
     const cuadro = await Cuadros.findOne({ legend: padre });
-  
+
     if (cuadro) {
       // Buscar al hijo en el lado derecho
       if (cuadro.lado_derecho && cuadro.lado_derecho.guide === hijo) {
-       // console.log(`El hijo ${hijo} está en el lado derecho del cuadro.`);
+        // console.log(`El hijo ${hijo} está en el lado derecho del cuadro.`);
         cuadro.lado_derecho.builders2.username = nieto;
         cuadro.save();
       }
-  
+
       // Buscar en el lado izquierdo si no se encontró en el lado derecho
       else if (cuadro.lado_izquierdo && cuadro.lado_izquierdo.guide === hijo) {
         //console.log(`El hijo ${hijo} está en el lado izquierdo del cuadro.`);
         cuadro.lado_izquierdo.builders2.username = nieto;
         cuadro.save();
-
       } else {
-       // console.log(`El hijo ${hijo} no fue encontrado en los lados del cuadro.`);
+        // console.log(`El hijo ${hijo} no fue encontrado en los lados del cuadro.`);
       }
     } else {
       //console.log(`Cuadro con legend ${padre} no encontrado.`);
     }
   } catch (error) {
-    console.error('Error al buscar el cuadro:', error);
+    console.error("Error al buscar el cuadro:", error);
   }
-}
+};
 
-export const traerCuadroPadreSub = async (req,res) => {
+export const traerCuadroPadreSub = async (req, res) => {
   const { hijo, nieto1, nieto2 } = req.body;
 
   try {
-    
     const nivel = hijo.nivel;
 
-    const pool = await Pools.findOne({nivel:nivel})
+    const pool = await Pools.findOne({ nivel: nivel });
 
     let cuadroEncontrado;
 
     if (hijo.direction === "derecha") {
-
-     cuadroEncontrado = pool.cuadros.find(cuadro => cuadro.lado_derecho.guide === hijo.username)
+      cuadroEncontrado = pool.cuadros.find(
+        (cuadro) => cuadro.lado_derecho.guide === hijo.username,
+      );
     }
     if (hijo.direction === "izquierda") {
-
-     cuadroEncontrado = pool.cuadros.find((cuadro => cuadro.lado_izquierdo.guide === hijo.username))
+      cuadroEncontrado = pool.cuadros.find(
+        (cuadro) => cuadro.lado_izquierdo.guide === hijo.username,
+      );
     }
 
     console.log("cuadro encontrado para completar", cuadroEncontrado);
-    
+
     const cuadroId = cuadroEncontrado._id;
-    
+
     const cuadro = await Cuadros.findById(cuadroId);
 
-    console.log("cepcID", cuadroId)
-    console.log("cepc", cuadro)
+    console.log("cepcID", cuadroId);
+    console.log("cepc", cuadro);
 
     if (cuadro) {
       // Buscar al hijo en el lado derecho
       if (cuadro.lado_derecho && cuadro.lado_derecho.guide === hijo.username) {
-       // console.log(`El hijo ${hijo.username} está en el lado derecho del cuadroxxx.`);
+        // console.log(`El hijo ${hijo.username} está en el lado derecho del cuadroxxx.`);
 
-        if (cuadro.lado_derecho.builders1.username && cuadro.lado_derecho.builders1.username === nieto1 ) {
+        if (
+          cuadro.lado_derecho.builders1.username &&
+          cuadro.lado_derecho.builders1.username === nieto1
+        ) {
           cuadro.lado_derecho.builders2.username = nieto2;
           cuadro.save();
-          return res.status(201).json({msg:"todo ok"})
-        }
-        else if (cuadro.lado_derecho.builders1.username && cuadro.lado_derecho.builders1.username === nieto2) {
+          return res.status(201).json({ msg: "todo ok" });
+        } else if (
+          cuadro.lado_derecho.builders1.username &&
+          cuadro.lado_derecho.builders1.username === nieto2
+        ) {
           cuadro.lado_derecho.builders2.username = nieto1;
           cuadro.save();
-          return res.status(202).json({msg:"todo ok"})
-        }
-        else if (cuadro.lado_derecho.builders2.username && cuadro.lado_derecho.builders2.username === nieto1) {
+          return res.status(202).json({ msg: "todo ok" });
+        } else if (
+          cuadro.lado_derecho.builders2.username &&
+          cuadro.lado_derecho.builders2.username === nieto1
+        ) {
           cuadro.lado_derecho.builders1.username = nieto2;
           cuadro.save();
-          return res.status(203).json({msg:"todo ok"})
-        }
-        else if (cuadro.lado_derecho.builders2.username && cuadro.lado_derecho.builders2.username === nieto2) {
+          return res.status(203).json({ msg: "todo ok" });
+        } else if (
+          cuadro.lado_derecho.builders2.username &&
+          cuadro.lado_derecho.builders2.username === nieto2
+        ) {
           cuadro.lado_derecho.builders1.username = nieto1;
           cuadro.save();
-          return res.status(204).json({msg:"todo ok"})
+          return res.status(204).json({ msg: "todo ok" });
         }
       }
-  
+
       // Buscar en el lado izquierdo si no se encontró en el lado derecho
-      else if (cuadro.lado_izquierdo && cuadro.lado_izquierdo.guide === hijo.username) {
+      else if (
+        cuadro.lado_izquierdo &&
+        cuadro.lado_izquierdo.guide === hijo.username
+      ) {
         //console.log(`El hijo ${hijo.username} está en el lado izquierdo del cuadroooo.`);
         //console.log("cuadro",cuadro)
-        if (cuadro.lado_izquierdo.builders1.username && cuadro.lado_izquierdo.builders1.username === nieto1 ) {
+        if (
+          cuadro.lado_izquierdo.builders1.username &&
+          cuadro.lado_izquierdo.builders1.username === nieto1
+        ) {
           cuadro.lado_izquierdo.builders2.username = nieto2;
           cuadro.save();
           //console.log("opcion1")
-          return res.status(205).json({msg:"todo ok"})
-        }
-        else if (cuadro.lado_izquierdo.builders1.username && cuadro.lado_izquierdo.builders1.username === nieto2) {
+          return res.status(205).json({ msg: "todo ok" });
+        } else if (
+          cuadro.lado_izquierdo.builders1.username &&
+          cuadro.lado_izquierdo.builders1.username === nieto2
+        ) {
           cuadro.lado_izquierdo.builders2.username = nieto1;
           cuadro.save();
           //console.log("opcion2")
-          return res.status(206).json({msg:"todo ok"})
-        }
-        else if (cuadro.lado_izquierdo.builders2.username && cuadro.lado_izquierdo.builders2.username === nieto1) {
+          return res.status(206).json({ msg: "todo ok" });
+        } else if (
+          cuadro.lado_izquierdo.builders2.username &&
+          cuadro.lado_izquierdo.builders2.username === nieto1
+        ) {
           cuadro.lado_derecho.builders1.username = nieto2;
           cuadro.save();
           //console.log("opcion3")
-          return res.status(207).json({msg:"todo ok"})
-        }
-        else if (cuadro.lado_izquierdo.builders2.username && cuadro.lado_izquierdo.builders2.username === nieto2) {
+          return res.status(207).json({ msg: "todo ok" });
+        } else if (
+          cuadro.lado_izquierdo.builders2.username &&
+          cuadro.lado_izquierdo.builders2.username === nieto2
+        ) {
           cuadro.lado_izquierdo.builders1.username = nieto1;
           cuadro.save();
           //console.log("opcion4")
-          return res.status(208).json({msg:"todo ok"})
+          return res.status(208).json({ msg: "todo ok" });
         }
-
       }
       // else {
       //  console.log(`El hijo ${hijo} no fue encontrado en los lados del cuadro.`);
-     // }
+      // }
     } //else {
-     // console.log(`Cuadro con legend no encontrado.`);
-    //} 
+    // console.log(`Cuadro con legend no encontrado.`);
+    //}
   } catch (error) {
-    console.error('Error al buscar el cuadro:', error);
+    console.error("Error al buscar el cuadro:", error);
   }
-}
+};
 export const everyOneActive = async (req, res) => {
   try {
     const { cuadroId } = req.params;
 
     const cuadro = await Cuadros.findById(cuadroId);
 
-    let builders1 = await Users.findOne({ username: cuadro.lado_derecho.builders1.username });
-    let builders2 = await Users.findOne({ username: cuadro.lado_derecho.builders2.username });
-    let builders3 = await Users.findOne({ username: cuadro.lado_izquierdo.builders1.username });
-    let builders4 = await Users.findOne({ username: cuadro.lado_izquierdo.builders2.username });
+    let builders1 = await Users.findOne({
+      username: cuadro.lado_derecho.builders1.username,
+    });
+    let builders2 = await Users.findOne({
+      username: cuadro.lado_derecho.builders2.username,
+    });
+    let builders3 = await Users.findOne({
+      username: cuadro.lado_izquierdo.builders1.username,
+    });
+    let builders4 = await Users.findOne({
+      username: cuadro.lado_izquierdo.builders2.username,
+    });
 
     if (
       builders1.active === true &&
@@ -368,61 +411,59 @@ export const everyOneActive = async (req, res) => {
       res.status(200).json({ estado: false });
     }
   } catch (error) {
-    console.error('Error al buscar el cuadro:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    console.error("Error al buscar el cuadro:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
-/*
-export const everyOneActive = async (req,res) => {
- 
 
+export const subirNivelUsuario = async (req, res) => {
   try {
-     
-    const { cuadroId } = req.params;
+    const { username } = req.body;
 
-    const cuadro = await Cuadros.findById(cuadroId);
+    // Verificar si el usuario existe
+    const usuario = await Users.findOne({ username });
 
-    let builders1 = await Users.findOne({username:cuadro.lado_derecho.builders1.username})
-    let builders2 = await Users.findOne({username:cuadro.lado_derecho.builders2.username})
-    let builders3 = await Users.findOne({username:cuadro.lado_izquierdo.builders1.username})
-    let builders4 = await Users.findOne({username:cuadro.lado_izquierdo.builders2.username})
-
-    if (
-      builders1.active === true &&
-      builders2.active === true &&
-      builders3.active === true &&
-      builders4.active === true 
-    ) {
-      res.status(200).json({ estado: true});
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
-    res.status(201).json({estado:false})
+    // Verificar si el usuario tiene un cuadro asociado
+    const cuadro = await Cuadros.findOne({ legend: username });
+
+    // Encuentra el nivel anterior del usuario
+    const nivelAnterior = usuario.nivel - 1;
+
+    // Encuentra el pool correspondiente al nivel anterior
+    const poolAnterior = await Pools.findOne({ nivel: nivelAnterior });
+    console.log("ema", poolAnterior);
+    // Si no hay un pool para el nivel anterior, maneja este caso según la lógica de tu aplicación
+    if (!poolAnterior) {
+      return res.status(404).json({
+        error: "No hay un Pool disponible para el nivel anterior del usuario",
+      });
+    }
+
+    // Crea un nuevo cuadro usando el poolId del nivel anterior
+    const nuevoCuadro = new Cuadros({
+      legend: username,
+      lado_derecho: { guide: "" },
+      lado_izquierdo: { guide: "" },
+      poolId: poolAnterior._id,
+      cuadroPadre_id: cuadro ? cuadro._id : null,
+    });
+
+    // Guarda el nuevo cuadro en la base de datos
+    await nuevoCuadro.save();
+
+    // Actualiza el cuadro_id del usuario
+    usuario.cuadro_id = nuevoCuadro._id;
+    await usuario.save();
+
+    return res
+      .status(200)
+      .json({ message: "Nuevo cuadro generado y asignado al usuario" });
   } catch (error) {
-    console.error('Error al buscar el cuadro:', error);
+    console.error("Error al subir nivel de usuario:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
-}
-*/
-
-/* 
-      // Verificar si alguna propiedad en dataCuadro está vacía
-      const propiedades = Object.keys(dataCuadro);
-      for (const propiedad of propiedades) {
-        if (dataCuadro[propiedad] === null || dataCuadro[propiedad] === "") {
-          console.log("esta vacia");
-          return;
-        }
-      }
-  
-      if (
-        !dataCuadro.lado_derecho.builders1 ||
-        !dataCuadro.lado_derecho.builders2 ||
-        !dataCuadro.lado_izquierdo.builders1 ||
-        !dataCuadro.lado_izquierdo.builders2
-      ) {
-       // console.log("No se encuentran las propiedades builder", dataCuadro);
-        return;
-      }
-      // Si todas las propiedades tienen valores, dispara la función
-    setAscender(true);
-
-    };*/
+};

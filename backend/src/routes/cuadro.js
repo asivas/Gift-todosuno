@@ -4,15 +4,15 @@ const router = Router();
 import verifyTokenUser from "../middleware/verifyToken";
 var {
   createCuadros,
-//  acceptPay,
+  //  acceptPay,
   cuadroId,
   deleteCuadro,
   traerCuadroPadre,
   traerCuadroPadreSub,
   cuadroHijo,
   cuadroPadre,
-  everyOneActive
- 
+  everyOneActive,
+  subirNivelUsuario,
 } = require("../controller/Cuadro.controller");
 
 //router.post("/createCuadro", createCuadro);
@@ -33,7 +33,8 @@ router.post("/createCuadros", createCuadros);
 router.delete("/delete", deleteCuadro);
 
 router.post("/traerCuadroPadre", traerCuadroPadre);
- 
+
 router.post("/traerCuadroPadreSub", traerCuadroPadreSub);
 
+router.post("/generarNuevoCuadro", subirNivelUsuario);
 module.exports = router;

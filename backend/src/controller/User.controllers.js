@@ -2,7 +2,7 @@ import Users from "../models/Users";
 import Pools from "../models/Pools";
 import jwt from "jsonwebtoken";
 import Cuadros from "../models/Cuadros";
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 require("dotenv").config({ path: ".env.prod" });
 
@@ -15,7 +15,7 @@ export const userData = async (req, res) => {
       process.env.PASS_TOKEN,
       {
         algorithm: "HS256",
-      }
+      },
     );
     const email = decodedToken.email;
 
@@ -52,7 +52,7 @@ export const cambiarEstadoPadre = async (username) => {
     const user = await Users.findOne({ username });
 
     if (!user) {
-      throw new Error(`User ${username} not found`);
+      throw new Error("User not found");
     }
 
     const nivel = user.nivel;
@@ -63,7 +63,9 @@ export const cambiarEstadoPadre = async (username) => {
       throw new Error(`Pool for level ${nivel} not found`);
     }
 
-    const cuadroEncontrado = pool.cuadros.find(cuadro => cuadro.legend === username);
+    const cuadroEncontrado = pool.cuadros.find(
+      (cuadro) => cuadro.legend === username,
+    );
 
     if (cuadroEncontrado) {
       user.complete = true;
@@ -77,8 +79,7 @@ export const cambiarEstadoPadre = async (username) => {
   }
 };
 
-
-export const getAllUsers = async (res) => {
+export const getAllUsers = async (req, res) => {
   try {
     const users = await Users.find();
     //console.log(users)
@@ -150,14 +151,14 @@ export const deleteUser = async (req, res) => {
         if (cuadroAbuelo.lado_derecho.builders1.username == username.username) {
           await Cuadros.updateOne(
             { legend: father.referral_father },
-            { $unset: { "lado_derecho.builders1": 1 } }
+            { $unset: { "lado_derecho.builders1": 1 } },
           );
         }
 
         if (cuadroAbuelo.lado_derecho.builders2.username == username.username) {
           await Cuadros.updateOne(
             { legend: father.referral_father },
-            { $unset: { "lado_derecho.builders2": 1 } }
+            { $unset: { "lado_derecho.builders2": 1 } },
           );
         }
 
@@ -166,7 +167,7 @@ export const deleteUser = async (req, res) => {
         ) {
           await Cuadros.updateOne(
             { legend: father.referral_father },
-            { $unset: { "lado_izquierdo.builders1": 1 } }
+            { $unset: { "lado_izquierdo.builders1": 1 } },
           );
         }
 
@@ -175,7 +176,7 @@ export const deleteUser = async (req, res) => {
         ) {
           await Cuadros.updateOne(
             { legend: father.referral_father },
-            { $unset: { "lado_izquierdo.builders2": 1 } }
+            { $unset: { "lado_izquierdo.builders2": 1 } },
           );
         }
       }
@@ -209,7 +210,7 @@ export const deleteUser = async (req, res) => {
       if (cuadroo.lado_derecho.builders1.username == user.username) {
         await Cuadros.updateOne(
           { _id: cuadroo._id },
-          { $unset: { "lado_derecho.builders1": 1 } }
+          { $unset: { "lado_derecho.builders1": 1 } },
         );
         await cuadroo.save();
         res.status(205).json({ msg: "todo ok" });
@@ -218,7 +219,7 @@ export const deleteUser = async (req, res) => {
       if (cuadroo.lado_derecho.builders2.username == user.username) {
         await Cuadros.updateOne(
           { _id: cuadroo._id },
-          { $unset: { "lado_derecho.builders2": 1 } }
+          { $unset: { "lado_derecho.builders2": 1 } },
         );
         await cuadroo.save();
         res.status(205).json({ msg: "todo ok" });
@@ -227,7 +228,7 @@ export const deleteUser = async (req, res) => {
       if (cuadroo.lado_izquierdo.builders1.username == user.username) {
         await Cuadros.updateOne(
           { _id: cuadroo._id },
-          { $unset: { "lado_izquierdo.builders1": 1 } }
+          { $unset: { "lado_izquierdo.builders1": 1 } },
         );
         await cuadroo.save();
         res.status(205).json({ msg: "todo ok" });
@@ -236,7 +237,7 @@ export const deleteUser = async (req, res) => {
       if (cuadroo.lado_izquierdo.builders2.username == user.username) {
         await Cuadros.updateOne(
           { _id: cuadroo._id },
-          { $unset: { "lado_izquierdo.builders2": 1 } }
+          { $unset: { "lado_izquierdo.builders2": 1 } },
         );
         await cuadroo.save();
         res.status(205).json({ msg: "todo ok" });
@@ -309,14 +310,18 @@ export const subirNivel = async (req, res) => {
         .status(408)
         .json({ error: "Pool correspondiente no encontrado" });
     }
-    if (!poolCorrespondiente.cuadros || !Array.isArray(poolCorrespondiente.cuadros)) {
-      return res.status(407).json({ error: "La propiedad 'cuadros' es inválida en el pool correspondiente" });
+    if (
+      !poolCorrespondiente.cuadros ||
+      !Array.isArray(poolCorrespondiente.cuadros)
+    ) {
+      return res.status(407).json({
+        error: "La propiedad 'cuadros' es inválida en el pool correspondiente",
+      });
     }
     // 1)  Si tu referal father es Nelson, osea si sos escro o pablo
     /////////////////////////////////////////////////
 
     if (usuario.referral_father === "Pablo10") {
-
       console.log(usuario.referral_father, ": usuario r father");
 
       let numeroPablo = usuario.nivel;
@@ -324,7 +329,7 @@ export const subirNivel = async (req, res) => {
       console.log("numero pablo", numeroPablo);
 
       const cuadroEncontrado = poolCorrespondiente.cuadros.find(
-        (cuadro) => cuadro.legend == `Pablo${numeroPablo}`
+        (cuadro) => cuadro.legend == `Pablo${numeroPablo}`,
       );
       console.log("cuadro encontrado", cuadroEncontrado);
 
@@ -364,7 +369,7 @@ export const subirNivel = async (req, res) => {
     // 2) ENCONTRAS EL CUADRO EN EL QUE TU REFERAL FATHER ES LEGEND
 
     const cuadroEncontrado = poolCorrespondiente.cuadros.find(
-      (cuadro) => cuadro.legend === usuario.referral_father
+      (cuadro) => cuadro.legend === usuario.referral_father,
     );
 
     if (cuadroEncontrado) {
@@ -405,7 +410,7 @@ export const subirNivel = async (req, res) => {
     /////////////////////////////////////////////////
     //3) Buscar el cuadro con guides igual a referral_father, lo encuentro
     const cuadroEncontrado2 = poolCorrespondiente.cuadros.find(
-      (cuadro) => cuadro.lado_derecho.guide === usuario.referral_father
+      (cuadro) => cuadro.lado_derecho.guide === usuario.referral_father,
     );
 
     if (cuadroEncontrado2) {
@@ -442,7 +447,7 @@ export const subirNivel = async (req, res) => {
         } else {
           console.log(
             "ya hay recluiter 2 en el cuadro:",
-            cuadroSiguiente.lado_derecho.builders2.username
+            cuadroSiguiente.lado_derecho.builders2.username,
           );
         }
       }
@@ -450,7 +455,7 @@ export const subirNivel = async (req, res) => {
     }
 
     const cuadroEncontrado3 = poolCorrespondiente.cuadros.find(
-      (cuadro) => cuadro.lado_izquierdo.guide === usuario.referral_father
+      (cuadro) => cuadro.lado_izquierdo.guide === usuario.referral_father,
     );
     if (cuadroEncontrado3) {
       //console.log("soy guia izq")
@@ -498,20 +503,8 @@ export const subirNivel = async (req, res) => {
     const abueloEncontrado = await buscarAbueloRecursivo(
       poolCorrespondiente,
       usuario.referral_father,
-      usuario.username
+      usuario.username,
     );
-
-    if (abueloEncontrado) {
-      console.log("abuelo encontrado", abueloEncontrado);
-      cambiarEstadoPadre(abueloEncontrado.legend);
-    } else {
-      // Si no se encuentra el cuadro ni el "abuelo", devolver un error
-      return res
-        .status(410)
-        .json({ error: "No se encontró el cuadro ni el abuelo en el linaje." });
-    }
-
-    return res.status(205).json({ msg: "todo ok" });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Hubo un error en el servidor" });
@@ -527,8 +520,8 @@ export const buscarAbueloRecursivo = async (pool, referralFather, hijo) => {
 
     // Verificar si se encontró al usuario abuelo
     if (!usuario || !usuario.referral_father) {
-      console.log("No se encontró al usuario abuelo");
-      return null;
+      console.log("No se encontró al usuario abuelo usercontroller");
+      return false;
     }
 
     // Obtener al anteúltimo usuario
@@ -539,7 +532,7 @@ export const buscarAbueloRecursivo = async (pool, referralFather, hijo) => {
 
     // Buscar el cuadro del abuelo por su leyenda
     const cuadroEncontrado = pool.cuadros.find(
-      (cuadro) => cuadro.legend === usuario.referral_father
+      (cuadro) => cuadro.legend === usuario.referral_father,
     );
 
     // Verificar si se encontró el cuadro del abuelo
@@ -579,10 +572,10 @@ export const buscarAbueloRecursivo = async (pool, referralFather, hijo) => {
     return buscarAbueloRecursivo(
       pool,
       usuario.referral_father,
-      userHijo.username
+      userHijo.username,
     );
   } catch (error) {
-    console.error("Error al buscar al abuelo:", error);
+    console.error("Error al buscar al abuelo! hasta aca llega:", error);
     return null;
   }
 };
@@ -619,7 +612,7 @@ export const userUpdate = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await Users.findOne({ email: email });
-     console.log("Emaaaaaa", user)
+    console.log("Emaaaaaa", user);
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
@@ -638,6 +631,8 @@ export const userUpdate = async (req, res) => {
 
     return res.status(200).json(updatedUser);
   } catch (error) {
-    return res.status(500).json({ message: "Error al actualizar datos", error: error.message });
+    return res
+      .status(500)
+      .json({ message: "Error al actualizar datos", error: error.message });
   }
 };

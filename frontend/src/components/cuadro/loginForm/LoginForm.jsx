@@ -47,7 +47,6 @@ const LoginForm = () => {
 
       switch (res.status) {
         case 200:
-          console.log("todo salio bien");
           const json = await res.json();
           Cookies.set("token", json.token);
           setToken(json.token);
@@ -55,8 +54,7 @@ const LoginForm = () => {
           router.push("/dashboard");
           break;
         case 401:
-          console.log("Incorrect email or password");
-          MySweetAlert.fire("Error", "Incorrect email or password", "error");
+          MySweetAlert.fire("Error", "Email o password Incorrecto", "error");
           break;
         default:
           console.log("Server error");
@@ -88,7 +86,7 @@ const LoginForm = () => {
               },
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                message: "The format is incorrect",
+                message: "Formato incorrecto",
               },
             })}
           />

@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import "./loginForm.css";
 import Link from "next/link";
-//import { ToastContainer, toast } from "react-toastify";
-//import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
@@ -22,34 +20,34 @@ const LoginForm = () => {
 
   const handleUpdateUser = async () => {
 
-    const { value: fruit } = await Swal.fire({
+    const { value: claves } = await Swal.fire({
       title: "Seleccione el codigo de validación",
       input: "select",
       inputOptions: {
-        Frutas: {
-          manzana: "Manzana",
-          banana: "Banana",
-          uva: "Uva",
-          naranja: "Naranja",
-          pera: "Pera",
-          sandia: "Sandia",
+        Clave: {
+          Cosmos: "Cosmos",
+          infinito: "infinito",
+          raudal: "raudal",
+          bienestar: "bienestar",
+          prosperidad: "prosperidad",
+          afluencia: "afluencia",
         }
       },
-      inputPlaceholder: "Seleccione una fruta",
+      inputPlaceholder: "Seleccione una palabra clave",
       showCancelButton: true,
       inputValidator: (value) => {
         return new Promise((resolve) => {
-          if (value === "banana" || value ==="pera" || value ==="naranja") {
+          if (value === "afluencia" || value ==="raudal" || value ==="prosperidad") {
             resolve();
           } else {
-            resolve("Necesito que selecciones el codigo que se te envio :)");
+            resolve("Necesito que selecciones el código que se te envió :)");
           }
         });
       }
     });
   
     if (fruit) {
-      Swal.fire(`Usted selecciono: ${fruit}`);
+      Swal.fire(`Usted selecciono: ${claves}`);
 
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -103,7 +101,6 @@ const LoginForm = () => {
           const json = await res.json();
           Cookies.set("token", json.token);
           setToken(json.token);
-          // setReset(true); // Asegúrate de que esto esté configurado correctamente
           MySweetAlert.close();
           router.push("/dashboard");
           break;

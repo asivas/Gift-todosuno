@@ -202,17 +202,6 @@ const InactiveUsers = () => {
     createCuadros(lado, builder, userHijo);
   };
 
-  const succesLevel = () => {
-    Swal.fire({
-      icon: "success",
-      title: "Subiste de nivel",
-      html: `
-        Porfavor actualiza la pagina para ver tus cambios
-      `,
-      showConfirmButton: true,
-    });
-  };
-
   const ascenderNivel = async () => {
     if (
       dataUser.username !== "Pablo" &&
@@ -229,7 +218,7 @@ const InactiveUsers = () => {
 
     const username = dataUser.username;
 
-    const res = await fetch(
+    const res = fetch(
       `${process.env.NEXT_PUBLIC_API_BACKEND}user/subirNivel`, // Ajusta la ruta según tu configuración
       {
         method: "PUT",
@@ -240,10 +229,33 @@ const InactiveUsers = () => {
       },
     );
     setAscendido(false);
-    console.log("ricki", res);
-    if (!res) {
-      console.log("esto es falsee");
+
+    console.log("res es false", res);
+    if (!res.ok) {
+      const res2 = fetch(
+        `${process.env.NEXT_PUBLIC_API_BACKEND}cuadro/generarNuevoCuadro`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username }),
+        },
+      );
+      setAscendido(false);
+      i;
+      console.log("entro en res2", res2);
     }
+  };
+  const succesLevel = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Subiste de nivel",
+      html: `
+        Porfavor actualiza la pagina para ver tus cambios
+      `,
+      showConfirmButton: true,
+    });
   };
 
   return (

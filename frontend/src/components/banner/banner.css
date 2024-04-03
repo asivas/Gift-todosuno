@@ -1,39 +1,67 @@
-
-
-
 .banner {
-    background-color:#1f1f1ff7;
-    margin-top: 0;
-    color: rgba(255, 255, 255, 0.925);
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+  background-color: #1f1f1ff7;
+  margin-top: 0;
+  color: rgba(255, 255, 255, 0.925);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 #logo-banner {
   margin-right: 31%;
-  font-family: 'Philosopher', sans-serif ; 
-
+  font-family: "Philosopher", sans-serif;
 }
 
 .banner span {
-    margin-right: 3%;
+  margin-right: 3%;
 }
 
 .banner a {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: white;
 }
 
 @media (min-width: 300px) and (max-width: 800px) {
-    .banner {
-        justify-content:space-between
-    }
-    #logo-banner {
-        margin-left: 3%;
-        margin-right: 8%;
-    }
-    .banner span {
-        margin-right: 4%;
-    }
+  .banner {
+    justify-content: space-between;
   }
+  #logo-banner {
+    margin-left: 3%;
+    margin-right: 8%;
+  }
+  .banner span {
+    margin-right: 4%;
+  }
+}
+
+.btn-carrera {
+  background-color: #d7bde2;
+  cursor: pointer;
+  border-radius: 7px;
+  border-color: black;
+}
+
+.btn-carrera a:hover {
+  background-color: orange;
+}
+
+.btn-libre {
+  background-color: #d7bde2;
+  cursor: pointer;
+  border-radius: 7px;
+  border-color: black;
+}
+
+.btn-registrarse {
+  background-color: #d7bde2;
+  cursor: pointer;
+  border-radius: 7px;
+  border-color: black;
+}
+
+.btn-entrar {
+  background-color: #d7bde2;
+  cursor: pointer;
+  border-radius: 7px;
+  border-color: black;
+}

@@ -100,7 +100,12 @@ const RegisterForm = () => {
            
 
         } catch (error) {
-            console.log(error)
+          console.error('Error al realizar la solicitud fetch:', error);
+          MySweetAlert.fire(
+              'Error',
+              'Error al comunicarse con el servidor. Por favor, inténtalo de nuevo más tarde.',
+              'error'
+          );
         }
         
     }

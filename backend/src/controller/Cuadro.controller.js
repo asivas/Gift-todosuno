@@ -448,7 +448,7 @@ export const subirNivelUsuario = async (req, res) => {
       legend: username,
       lado_derecho: { guide: "" },
       lado_izquierdo: { guide: "" },
-      poolId: poolAnterior._id,
+      poolId: poolAnterior.poolId,
       cuadroPadre_id: cuadro ? cuadro._id : null,
     });
 

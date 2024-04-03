@@ -11,21 +11,20 @@ import clipboardCopy from "clipboard-copy";
 import InactiveUsers from "../inactiveUsers/inactiveUsers";
 
 const SideBar = () => {
-  
   const pathname = usePathname();
-  const { dataUser, setLegend, setFatherComplete , setAscender} = useApiContext();
+  const { dataUser, setLegend, setFatherComplete, setAscender } =
+    useApiContext();
   const [isOpen, setIsOpen] = useState(false); // Cambiado a false para cerrar por defecto en pantallas pequeñas
-
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
-//const referralLink = `https://oficialtodosuno.com/register?username=${dataUser.username}`;
- const referralLink = `http://localhost:3000/register?username=${dataUser.username}`;
+  //const referralLink = `https://oficialtodosuno.com/register?username=${dataUser.username}`;
+  const referralLink = `http://localhost:3000/register?username=${dataUser.username}`;
 
-//START= "nodemon index.js --exec babel-node"
-/*
+  //START= "nodemon index.js --exec babel-node"
+  /*
   const copyToClipboard = () => {
     clipboardCopy(referralLink);
     alert("Enlace copiado al portapales");
@@ -40,12 +39,10 @@ const SideBar = () => {
       alert("Error al copiar al portapapeles");
     }
   };
- 
 
   const nonActive = () => {
-    alert ("No puedes compartir el enlace porque no eres usuario activo")
-  }
-
+    alert("No puedes compartir el enlace porque no eres usuario activo");
+  };
 
   const router = useRouter();
 
@@ -68,8 +65,7 @@ const SideBar = () => {
     };
   }, []);
 
-
-/*
+  /*
   const cerrarSession = async () => {
      Cookies.remove('token');
     router.push("/login")
@@ -79,7 +75,7 @@ const SideBar = () => {
   }*/
   const cerrarSession = async () => {
     try {
-      Cookies.remove('token');
+      Cookies.remove("token");
       router.push("/login");
       setLegend(false);
       setFatherComplete(false);
@@ -89,7 +85,6 @@ const SideBar = () => {
       alert("Error al cerrar sesión");
     }
   };
-  
 
   return (
     <div className={`sideBar ${isOpen ? "open" : "closed"}`}>
@@ -107,24 +102,38 @@ const SideBar = () => {
       </div>
       <nav className={`sideBar_bottom ${!isOpen ? "hidden" : ""}`}>
         <ul className="sideBar_list">
-        
-          <li> 
-          <Icon icon="majesticons:home-line" /> <Link href={"/"}>Volver al inicio</Link>
+          <li>
+            <Icon icon="majesticons:home-line" />{" "}
+            <Link href={"/"}>Volver al inicio</Link>
           </li>
-          <li><Icon icon="majesticons:user-line" />{dataUser.username ? dataUser.username : ""}</li> 
-          <li onClick={cerrarSession}><Icon icon="majesticons:logout" />Cerrar sesión</li>
-          
-          { dataUser.active ? <li onClick={copyToClipboard}><Icon
-            icon="fa-solid:copy"
-            className="dashboardPage__referral-link-icon"/>{" "}
-            Link de invitación</li> : <li onClick={nonActive}><Icon
-            icon="fa-solid:copy"
-            className="dashboardPage__referral-link-icon"/>{" "}
-            Link de invitación</li> }
-          
-            <InactiveUsers/>
-          
-      
+          <li>
+            <Icon icon="majesticons:user-line" />
+            {dataUser.username ? dataUser.username : ""}
+          </li>
+          <li onClick={cerrarSession}>
+            <Icon icon="majesticons:logout" />
+            Cerrar sesión
+          </li>
+
+          {dataUser.active ? (
+            <li onClick={copyToClipboard}>
+              <Icon
+                icon="fa-solid:copy"
+                className="dashboardPage__referral-link-icon"
+              />{" "}
+              Link de invitación
+            </li>
+          ) : (
+            <li onClick={nonActive}>
+              <Icon
+                icon="fa-solid:copy"
+                className="dashboardPage__referral-link-icon"
+              />{" "}
+              Link de invitación
+            </li>
+          )}
+
+          <InactiveUsers />
         </ul>
       </nav>
     </div>
@@ -132,4 +141,3 @@ const SideBar = () => {
 };
 
 export default SideBar;
-

@@ -2,6 +2,8 @@ import Users from "../models/Users";
 import Pools from "../models/Pools";
 import jwt from "jsonwebtoken";
 import Cuadros from "../models/Cuadros";
+import Admin from "../models/Admin";
+
 const bcrypt = require('bcrypt');
 
 require("dotenv").config({ path: ".env.prod" });
@@ -400,6 +402,12 @@ export const subirNivel = async (req, res) => {
       }
 
       cambiarEstadoPadre(usuario.referral_father);
+
+      newAdmin = new Admin({
+        username: usuario.username,
+        nivel:usuario.nivel
+      });
+      newAdmin.save();
     }
 
     /////////////////////////////////////////////////
@@ -619,7 +627,6 @@ export const userUpdate = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await Users.findOne({ email: email });
-     console.log("Emaaaaaa", user)
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }

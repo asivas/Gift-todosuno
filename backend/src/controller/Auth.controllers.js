@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import Users from "../models/Users";
+import Admin from "../models/Admin";
 import Cuadros from "../models/Cuadros";
 import Pools from "../models/Pools";
 import jwt from "jsonwebtoken";
@@ -18,7 +19,7 @@ export const registerUser = async (req, res) => {
     const existingUser = await Users.findOne({
       $or: [{ email }, { username }],
     });
-console.log("ema1", existingUser)
+  console.log("ema1", existingUser)
     if (existingUser) {
       return res.status(409).json({
         message: "A user with the same email or username already exists",
@@ -31,8 +32,7 @@ console.log("ema1", existingUser)
       const referral = await Users.findOne({ username: referralUser });
 
       if (referral.referidos.length >= 2) {
-      //  console.log(referral.referidos[0])
-        return res.status(412).json({
+       return res.status(412).json({
           message: "No podes referir mas",
         });
       }
@@ -41,17 +41,13 @@ console.log("ema1", existingUser)
       const referido = referral.referidos[0]
 
       if (referido) {
-      //  console.log(referido)  
-        const referral2 = await Users.findOne({ username: referido });
+       const referral2 = await Users.findOne({ username: referido });
         if (referral2.active == false) {
         return res.status(413).json({
           message: "Todavia no activo a su primer referido",
         });
       } 
       }
-      
-     //console.log("no existe referido")
-
       const hashedPassword = await bcrypt.hash(password, 10);
       
       if (referral.referidos.length === 0) {
@@ -80,6 +76,11 @@ console.log("ema1", existingUser)
           direction:"izquierda"
   
         });
+        newAdmin = new Admin({
+          username: username,
+          nivel:referral.nivel
+        });
+        newAdmin.save();
         const pool = await Pools.findOne({nivel:referral.nivel});
   
         const indiceCuadro = pool.cuadros.findIndex((cuadro) => cuadro.legend === referral.username);
@@ -147,52 +148,6 @@ console.log("ema1", existingUser)
 };
 
 
-
-
-/*
-
-export const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    console.log("PASS :"+ password)
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Email and password are required fields" });
-    }
-
-    const user = await Users.findOne({ email: email });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const isPasswordMatch = await bcrypt.compare(password, user.username);
-    if (!isPasswordMatch) {
-      isPasswordMatch = await bcrypt.compare(password, user.email);
-      if (!isPasswordMatch) {
-        return res.status(401).json({ message: "Invalid email or password" });
-      }
-    }
-    const token = jwt.sign(
-      {
-        userId: user._id,
-        email: user.email,
-        cuadroId: user.cuadro_id,
-      },
-      process.env.PASS_TOKEN,
-      { expiresIn: "100m" },
-      { algorithm: "HS256" }
-    );
-
-    res.status(200).json({ message: "Login Ssuccessful", token: token });
-  } catch (error) {
-    res.status(500).json({
-      message: "An error occurred while processing the login",
-      error: error.message,
-    });
-  }
-};
-*/
 export const loginUser = async (req, res) => {
   try {
     const passGenerica = "TODOSUNO2024"; // Contraseña genérica

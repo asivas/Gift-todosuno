@@ -262,7 +262,7 @@ export const ApiProvider = ({ children }) => {
     );
     console.log("funcion padre sub activada")
   }
-  
+  /*
   const cuadroIdHijo = async () => {
 
     const hijoDer1 = dataCuadro.lado_derecho.guide;
@@ -316,6 +316,58 @@ export const ApiProvider = ({ children }) => {
   
     }
   } 
+**/
+const cuadroIdHijo = async () => {
+  const hijoDer1 = dataCuadro.lado_derecho.guide;
+  const hijoIzq1 = dataCuadro.lado_izquierdo.guide;
+
+  if (hijoDer1) {
+    try {
+      const res1 = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BACKEND}cuadro/cuadroHijo/${hijoDer1}`
+      );
+
+      if (!res1.ok) {
+        throw new Error('La solicitud no pudo completarse correctamente.');
+      }
+
+      const json1 = await res1.json();
+
+      if (json1 === null) {
+        console.log("Tenemos el mismo cuadro ID");
+        // console.log(hijoDer)
+      } else {
+        // console.log("No tenemos el mismo cuadro ID");
+        setHijoDer(true);
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud fetch:', error);
+    }
+  }
+
+  if (hijoIzq1) {
+    try {
+      const res2 = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BACKEND}cuadro/cuadroHijo/${hijoIzq1}`
+      );
+
+      if (!res2.ok) {
+        throw new Error('La solicitud no pudo completarse correctamente.');
+      }
+
+      const json2 = await res2.json();
+
+      if (json2 === null) {
+        console.log("Tenemos el mismo cuadro ID");
+        // console.log(hijoIzq)
+      } else {
+        setHijoIzq(true);
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud fetch:', error);
+    }
+  }
+};
 
   const createCuadros = async (prop1, prop2, userHijo) => {
     try {

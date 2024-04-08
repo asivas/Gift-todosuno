@@ -144,50 +144,6 @@ export const registerUser = async (req, res) => {
   }
 };
 
-/*
-
-export const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    console.log("PASS :"+ password)
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Email and password are required fields" });
-    }
-
-    const user = await Users.findOne({ email: email });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const isPasswordMatch = await bcrypt.compare(password, user.username);
-    if (!isPasswordMatch) {
-      isPasswordMatch = await bcrypt.compare(password, user.email);
-      if (!isPasswordMatch) {
-        return res.status(401).json({ message: "Invalid email or password" });
-      }
-    }
-    const token = jwt.sign(
-      {
-        userId: user._id,
-        email: user.email,
-        cuadroId: user.cuadro_id,
-      },
-      process.env.PASS_TOKEN,
-      { expiresIn: "100m" },
-      { algorithm: "HS256" }
-    );
-
-    res.status(200).json({ message: "Login Ssuccessful", token: token });
-  } catch (error) {
-    res.status(500).json({
-      message: "An error occurred while processing the login",
-      error: error.message,
-    });
-  }
-};
-*/
 export const loginUser = async (req, res) => {
   try {
     const passGenerica = "TODOSUNO2024"; // Contraseña genérica

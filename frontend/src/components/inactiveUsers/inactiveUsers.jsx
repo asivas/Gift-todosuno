@@ -243,7 +243,7 @@ const InactiveUsers = () => {
         },
       );
       setAscendido(false);
-      i;
+
       console.log("entro en res2", res2);
     }
   };

@@ -10,16 +10,12 @@ import { useApiContext } from "../../../context/apiContext";
 import withReactContent from "sweetalert2-react-content";
 import { validateHeaderValue } from "http";
 
-
-
 const MySweetAlert = withReactContent(Swal);
 
 const LoginForm = () => {
   const { setToken, setReset, updateUser } = useApiContext();
- 
 
   const handleUpdateUser = async () => {
-
     const { value: claves } = await Swal.fire({
       title: "Seleccione el codigo de validación",
       input: "select",
@@ -31,43 +27,50 @@ const LoginForm = () => {
           bienestar: "bienestar",
           prosperidad: "prosperidad",
           afluencia: "afluencia",
-        }
+        },
       },
       inputPlaceholder: "Seleccione una palabra clave",
       showCancelButton: true,
       inputValidator: (value) => {
         return new Promise((resolve) => {
-          if (value === "afluencia" || value ==="raudal" || value ==="prosperidad") {
+          if (
+            value === "afluencia" ||
+            value === "raudal" ||
+            value === "prosperidad"
+          ) {
             resolve();
           } else {
             resolve("Necesito que selecciones el código que se te envió :)");
           }
         });
-      }
+      },
     });
-  
-    if (fruit) {
+
+    if (claves) {
       Swal.fire(`Usted selecciono: ${claves}`);
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-    try {
-      const updatedUsers = await updateUser(email, password);
-      if (updatedUsers) {
-        // alert("¡Usuario actualizado correctamente! Ya puede iniciar sesion");
-        Swal.fire("¡Usuario actualizado correctamente! Ya puede iniciar sesion");
+      try {
+        const updatedUsers = await updateUser(email, password);
+        if (updatedUsers) {
+          // alert("¡Usuario actualizado correctamente! Ya puede iniciar sesion");
+          Swal.fire(
+            "¡Usuario actualizado correctamente! Ya puede iniciar sesion",
+          );
+        }
+
+        // Si es necesario, realiza alguna acción adicional después de actualizar el usuario
+      } catch (error) {
+        console.error("Error al actualizar usuario:", error);
+        // Swal.fire("SweetAlert2 is working!");
+        Swal.fire(
+          "Ha ocurrido un error al actualizar el usuario. Por favor, inténtalo de nuevo más tarde.",
+        );
       }
-      
-      // Si es necesario, realiza alguna acción adicional después de actualizar el usuario
-    } catch (error) {
-      console.error("Error al actualizar usuario:", error);
-      // Swal.fire("SweetAlert2 is working!");
-      Swal.fire("Ha ocurrido un error al actualizar el usuario. Por favor, inténtalo de nuevo más tarde.");
-      
     }
   };
-  }
   const router = useRouter();
   const {
     register,
@@ -93,7 +96,7 @@ const LoginForm = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
-        }
+        },
       );
 
       switch (res.status) {
@@ -109,7 +112,7 @@ const LoginForm = () => {
           MySweetAlert.fire(
             "Error",
             "Correo electrónico o contraseña incorrectos",
-            "error"
+            "error",
           );
           break;
         default:
@@ -176,9 +179,9 @@ const LoginForm = () => {
         </div>
       </form>
       <div>
-      <button onClick={handleUpdateUser} className="form__login-link">
-        ACTUALIZAR USUARIO
-      </button>
+        <button onClick={handleUpdateUser} className="form__login-link">
+          ACTUALIZAR USUARIO
+        </button>
       </div>
     </>
   );

@@ -451,6 +451,8 @@ export const subirNivelUsuario = async (req, res) => {
       poolId: poolAnterior.poolId,
       cuadroPadre_id: cuadro ? cuadro._id : null,
     });
+    nuevoCuadro.poolId = poolAnterior._id;
+    poolAnterior.cuadros.push(nuevoCuadro);
 
     // Guarda el nuevo cuadro en la base de datos
     await nuevoCuadro.save();

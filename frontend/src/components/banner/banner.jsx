@@ -37,7 +37,7 @@ const Banner = () => {
           });
 
           document.getElementById("modo-libre").addEventListener("click", function() {
-            window.location.href = "/test";
+            window.location.href = "/registerFree";
           });
           `,
         }}

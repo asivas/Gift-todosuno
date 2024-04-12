@@ -435,7 +435,7 @@ export const subirNivelUsuario = async (req, res) => {
 
     // Encuentra el pool correspondiente al nivel anterior
     const poolAnterior = await Pools.findOne({ nivel: nivelAnterior });
-    console.log("ema", poolAnterior);
+
     // Si no hay un pool para el nivel anterior, maneja este caso según la lógica de tu aplicación
     if (!poolAnterior) {
       return res.status(404).json({

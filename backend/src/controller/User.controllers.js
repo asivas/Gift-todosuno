@@ -4,8 +4,7 @@ import jwt from "jsonwebtoken";
 import Cuadros from "../models/Cuadros";
 import Admin from "../models/Admin";
 
-const bcrypt = require('bcrypt');
-
+const bcrypt = require("bcrypt");
 
 require("dotenv").config({ path: ".env.prod" });
 
@@ -306,221 +305,160 @@ export const subirNivel = async (req, res) => {
 
     await usuario.save();
 
-    const poolCorrespondiente = await Pools.findOne({ nivel: usuario.nivel });
+    let referralFather = usuario.referral_father;
 
-    if (!poolCorrespondiente) {
-      return res
-        .status(408)
-        .json({ error: "Pool correspondiente no encontrado" });
-    }
-    if (
-      !poolCorrespondiente.cuadros ||
-      !Array.isArray(poolCorrespondiente.cuadros)
-    ) {
-      return res.status(407).json({
-        error: "La propiedad 'cuadros' es inválida en el pool correspondiente",
-      });
-    }
-    // 1)  Si tu referal father es Nelson, osea si sos escro o pablo
-    /////////////////////////////////////////////////
+    console.log("Comenzando bucle while");
+    // Iterar mientras haya referralFather y no se haya encontrado un cuadro disponible
+    while (referralFather) {
+      console.log("Iteración del bucle while");
+      console.log("Referral father:", referralFather);
 
-    if (usuario.referral_father === "Pablo10") {
-      console.log(usuario.referral_father, ": usuario r father");
+      const poolCorrespondiente = await Pools.findOne({ nivel: usuario.nivel });
 
-      let numeroPablo = usuario.nivel;
+      if (!poolCorrespondiente) {
+        return res
+          .status(408)
+          .json({ error: "Pool correspondiente no encontrado" });
+      }
 
-      console.log("numero pablo", numeroPablo);
+      if (
+        !poolCorrespondiente.cuadros ||
+        !Array.isArray(poolCorrespondiente.cuadros)
+      ) {
+        return res.status(407).json({
+          error:
+            "La propiedad 'cuadros' es inválida en el pool correspondiente",
+        });
+      }
 
-      const cuadroEncontrado = poolCorrespondiente.cuadros.find(
-        (cuadro) => cuadro.legend == `Pablo${numeroPablo}`,
+      let cuadroEncontrado = poolCorrespondiente.cuadros.find(
+        (cuadro) => cuadro.legend === referralFather,
       );
-      console.log("cuadro encontrado", cuadroEncontrado);
+      console.log("Cuadro encontrado:", cuadroEncontrado);
 
       if (cuadroEncontrado) {
         const cuadroId = cuadroEncontrado._id;
-        const cuadroSiguiente = await Cuadros.findOne({ _id: cuadroId });
-        console.log("cuadro siguiente", cuadroSiguiente);
+        const cuadroSiguiente = await Cuadros.findById(cuadroId);
 
-        if (usuario.direction === "derecha") {
-          if (
-            cuadroSiguiente &&
-            cuadroSiguiente.lado_derecho &&
-            !cuadroSiguiente.lado_derecho.guide
-          ) {
-            cuadroSiguiente.lado_derecho.guide = usuario.username;
-            usuario.cuadro_id = cuadroSiguiente._id;
-            usuario.save();
-            return cuadroSiguiente.save();
+        if (cuadroSiguiente) {
+          if (usuario.direction === "derecha") {
+            if (
+              cuadroSiguiente.lado_derecho &&
+              !cuadroSiguiente.lado_derecho.guide
+            ) {
+              cuadroSiguiente.lado_derecho.guide = usuario.username;
+              usuario.cuadro_id = cuadroSiguiente._id;
+              await usuario.save();
+              return cuadroSiguiente.save();
+            }
+          }
+
+          if (usuario.direction === "izquierda") {
+            if (
+              cuadroSiguiente.lado_izquierdo &&
+              !cuadroSiguiente.lado_izquierdo.guide
+            ) {
+              cuadroSiguiente.lado_izquierdo.guide = usuario.username;
+              usuario.cuadro_id = cuadroSiguiente._id;
+              await usuario.save();
+              return cuadroSiguiente.save();
+            }
           }
         }
-
-        if (usuario.direction === "izquierda") {
-          if (
-            cuadroSiguiente &&
-            cuadroSiguiente.lado_izquierdo &&
-            !cuadroSiguiente.lado_izquierdo.guide
-          ) {
-            cuadroSiguiente.lado_izquierdo.guide = usuario.username;
-            usuario.cuadro_id = cuadroSiguiente._id;
-            usuario.save();
-            return cuadroSiguiente.save();
+      } else {
+        cuadroEncontrado = poolCorrespondiente.cuadros.find(
+          (cuadro) => cuadro.lado_derecho.guide === referralFather,
+        );
+        if (cuadroEncontrado) {
+          const cuadroId = cuadroEncontrado._id;
+          const cuadroSiguiente = await Cuadros.findById(cuadroId);
+          if (cuadroSiguiente) {
+            if (usuario.direction === "derecha") {
+              if (
+                cuadroSiguiente.lado_derecho.guide &&
+                !cuadroSiguiente.lado_derecho.builders1.username
+              ) {
+                cuadroSiguiente.lado_derecho.builders1.username =
+                  usuario.username;
+                usuario.cuadro_id = cuadroSiguiente._id;
+                await usuario.save();
+                return cuadroSiguiente.save();
+              }
+            } else {
+              if (usuario.direction === "izquierda") {
+                if (
+                  cuadroSiguiente.lado_derecho.guide &&
+                  !cuadroSiguiente.lado_derecho.builders2.username
+                ) {
+                  cuadroSiguiente.lado_derecho.builders2.username =
+                    usuario.username;
+                  usuario.cuadro_id = cuadroSiguiente._id;
+                  await usuario.save();
+                  return cuadroSiguiente.save();
+                }
+              }
+            }
           }
-        }
-      }
-    }
-    //////////////////
-    // 2) ENCONTRAS EL CUADRO EN EL QUE TU REFERAL FATHER ES LEGEND
-
-    const cuadroEncontrado = poolCorrespondiente.cuadros.find(
-      (cuadro) => cuadro.legend === usuario.referral_father,
-    );
-
-    if (cuadroEncontrado) {
-      console.log("rf", usuario.referral_father);
-      console.log("cuadro legend", cuadroEncontrado.legend);
-      const cuadroId = cuadroEncontrado._id;
-      const cuadroSiguiente = await Cuadros.findById(cuadroId);
-      console.log(cuadroSiguiente);
-      if (usuario.direction === "derecha") {
-        if (
-          cuadroSiguiente &&
-          cuadroSiguiente.lado_derecho &&
-          !cuadroSiguiente.lado_derecho.guide
-        ) {
-          cuadroSiguiente.lado_derecho.guide = usuario.username;
-          usuario.cuadro_id = cuadroSiguiente._id;
-          usuario.save();
-          return cuadroSiguiente.save();
-        }
-      }
-
-      if (usuario.direction === "izquierda") {
-        if (
-          cuadroSiguiente &&
-          cuadroSiguiente.lado_izquierdo &&
-          !cuadroSiguiente.lado_izquierdo.guide
-        ) {
-          cuadroSiguiente.lado_izquierdo.guide = usuario.username;
-          usuario.cuadro_id = cuadroSiguiente._id;
-          usuario.save();
-          return cuadroSiguiente.save();
-        }
-      }
-
-      cambiarEstadoPadre(usuario.referral_father);
-
-      newAdmin = new Admin({
-        username: usuario.username,
-        nivel:usuario.nivel
-      });
-      newAdmin.save();
-    }
-
-    /////////////////////////////////////////////////
-    //3) Buscar el cuadro con guides igual a referral_father, lo encuentro
-    const cuadroEncontrado2 = poolCorrespondiente.cuadros.find(
-      (cuadro) => cuadro.lado_derecho.guide === usuario.referral_father,
-    );
-
-    if (cuadroEncontrado2) {
-      console.log("cuadro encontrado 2", cuadroEncontrado2);
-      const cuadroId = cuadroEncontrado2._id;
-      const cuadroSiguiente = await Cuadros.findById(cuadroId);
-      console.log("cuadro encontrado en pool", cuadroEncontrado2);
-      console.log("cuadro encontrado en cuadro", cuadroSiguiente);
-
-      if (usuario.direction === "derecha") {
-        if (
-          cuadroSiguiente &&
-          cuadroSiguiente.lado_derecho &&
-          !cuadroSiguiente.lado_derecho.builders1.username
-        ) {
-          cuadroSiguiente.lado_derecho.builders1.username = usuario.username;
-          usuario.cuadro_id = cuadroSiguiente._id;
-          usuario.save();
-          return cuadroSiguiente.save();
-        }
-      }
-
-      if (usuario.direction === "izquierda") {
-        if (
-          cuadroSiguiente &&
-          cuadroSiguiente.lado_derecho &&
-          !cuadroSiguiente.lado_derecho.builders2.username
-        ) {
-          console.log("ema", "builder2 no existe en la derecha");
-          cuadroSiguiente.lado_derecho.builders2.username = usuario.username;
-          usuario.cuadro_id = cuadroSiguiente._id;
-          usuario.save();
-          return cuadroSiguiente.save();
         } else {
-          console.log(
-            "ya hay recluiter 2 en el cuadro:",
-            cuadroSiguiente.lado_derecho.builders2.username,
+          cuadroEncontrado = poolCorrespondiente.cuadros.find(
+            (cuadro) => cuadro.lado_izquierdo.guide === referralFather,
           );
-        }
-      }
-      cambiarEstadoPadre(usuario.referral_father);
-    }
-
-    const cuadroEncontrado3 = poolCorrespondiente.cuadros.find(
-      (cuadro) => cuadro.lado_izquierdo.guide === usuario.referral_father,
-    );
-    if (cuadroEncontrado3) {
-      //console.log("soy guia izq")
-      const cuadroId = cuadroEncontrado3._id;
-      const cuadroSiguiente = await Cuadros.findById(cuadroId);
-      console.log("cuadro encontrado 3", cuadroSiguiente);
-
-      if (cuadroSiguiente) {
-        console.log("cuadro encontrado en pool", cuadroEncontrado3);
-        console.log("cuadro encontrado en cuadro", cuadroSiguiente);
-
-        if (usuario.direction === "derecha") {
-          if (
-            cuadroSiguiente &&
-            cuadroSiguiente.lado_izquierdo &&
-            !cuadroSiguiente.lado_izquierdo.builders1.username
-          ) {
-            cuadroSiguiente.lado_izquierdo.builders1.username =
-              usuario.username;
-            usuario.cuadro_id = cuadroSiguiente._id;
-            usuario.save();
-            return cuadroSiguiente.save();
-          }
-        }
-
-        if (usuario.direction === "izquierda") {
-          if (
-            cuadroSiguiente &&
-            cuadroSiguiente.lado_izquierdo &&
-            !cuadroSiguiente.lado_izquierdo.builders2.username
-          ) {
-            cuadroSiguiente.lado_izquierdo.builders2.username =
-              usuario.username;
-            usuario.cuadro_id = cuadroSiguiente._id;
-            usuario.save();
-            return cuadroSiguiente.save();
+          if (cuadroEncontrado) {
+            const cuadroId = cuadroEncontrado._id;
+            const cuadroSiguiente = await Cuadros.findById(cuadroId);
+            if (cuadroSiguiente) {
+              if (usuario.direction === "derecha") {
+                if (
+                  cuadroSiguiente.lado_izquierdo.guide &&
+                  !cuadroSiguiente.lado_izquierdo.builders1.username
+                ) {
+                  cuadroSiguiente.lado_izquierdo.builders1.username =
+                    usuario.username;
+                  usuario.cuadro_id = cuadroSiguiente._id;
+                  await usuario.save();
+                  return cuadroSiguiente.save();
+                }
+              } else {
+                if (usuario.direction === "izquierda") {
+                  if (
+                    cuadroSiguiente.lado_izquierdo.guide &&
+                    !cuadroSiguiente.lado_izquierdo.builders2.username
+                  ) {
+                    cuadroSiguiente.lado_izquierdo.builders2.username =
+                      usuario.username;
+                    usuario.cuadro_id = cuadroSiguiente._id;
+                    await usuario.save();
+                    return cuadroSiguiente.save();
+                  }
+                }
+              }
+            }
           }
         }
       }
-      cambiarEstadoPadre(usuario.referral_father);
+      referralFather = await buscarReferralFather(referralFather); // Obtener el referral_father del referral_father actual
     }
 
-    ////////////////////////////////////////////
-
-    const abueloEncontrado = await buscarAbueloRecursivo(
-      poolCorrespondiente,
-      usuario.referral_father,
-      usuario.username,
-    );
+    // Si llegamos aquí, significa que no se encontró una posición disponible
+    return res
+      .status(409)
+      .json({ message: "no se encontró una posición disponible" });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Hubo un error en el servidor" });
   }
 };
 
-// funcion modificada para su mejor funcionamiento //
+// Función para buscar el referral_father de un usuario
+const buscarReferralFather = async (referralFather) => {
+  try {
+    const user = await Users.findOne({ username: referralFather });
+    return user ? user.referral_father : null;
+  } catch (error) {
+    console.error("Error al buscar referral_father:", error);
+    return null;
+  }
+};
 
 export const buscarAbueloRecursivo = async (pool, referralFather, hijo) => {
   try {

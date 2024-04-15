@@ -32,7 +32,6 @@ const registerPage = () => {
 
   const submitHandler = async (data) => {
     setLoading(true);
-
     try {
       // Verificar si el usuario ya existe
       const users = await getAllUsers();
@@ -138,8 +137,15 @@ const registerPage = () => {
                   value: true,
                   message: "Required",
                 },
+                pattern: {
+                  value: /^[A-Z0-9._-]{2,16}$/i,
+
+                  message:
+                    "No se aceptan espacios en blanco, minimo 2 caracteres maximo 16",
+                },
               })}
             />
+            {errors.username && <span>{errors.username.message}</span>}
           </div>
           <div className="form__group_register">
             <label htmlFor="email">Correo electrónico:</label>

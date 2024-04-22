@@ -160,12 +160,6 @@ const RegisterForm = () => {
                   value: true,
                   message: "Required",
                 },
-                pattern: {
-                  value: /^[A-Z0-9._-]{2,16}$/i,
-
-                  message:
-                    "No se aceptan espacios en blanco, minimo 2 caracteres maximo 16",
-                },
               })}
             />
           </div>

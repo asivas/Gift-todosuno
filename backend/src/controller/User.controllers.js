@@ -378,6 +378,7 @@ export const subirNivel = async (req, res) => {
               referralFather = await buscarUsuarioPorUsername(
                 cuadroSiguiente.lado_derecho.guide,
               ).username;
+              cuadroSiguiente.lado_derecho.guide = usuario.username;
               console.log(
                 "Entra a la función recursiva para buscar otro referralFather:",
                 referralFather,
@@ -386,6 +387,9 @@ export const subirNivel = async (req, res) => {
               referralFather = await buscarUsuarioPorUsername(
                 cuadroSiguiente.lado_izquierdo.guide,
               ).username;
+
+              cuadroSiguiente.lado_izquierdo.guide = usuario.username;
+
               console.log(
                 "Entra a la función recursiva para buscar otro referralFather:",
                 referralFather,

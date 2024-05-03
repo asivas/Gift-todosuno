@@ -254,16 +254,16 @@ const registerPage = () => {
               name="nivel"
               defaultValue="Pablo10"
             >
-              <option value="Pablo1">1</option>
-              <option value="Pablo2">2</option>
-              <option value="Pablo3">3</option>
-              <option value="Pablo4">4</option>
-              <option value="Pablo5">5</option>
-              <option value="Pablo6">6</option>
-              <option value="Pablo7">7</option>
-              <option value="Pablo8">8</option>
-              <option value="Pablo9">9</option>
-              <option value="Pablo10">10</option>
+              <option value="Pablo1">$12800</option>
+              <option value="Pablo2">$6400</option>
+              <option value="Pablo3">$3200</option>
+              <option value="Pablo4">$1600</option>
+              <option value="Pablo5">$800</option>
+              <option value="Pablo6">$400</option>
+              <option value="Pablo7">$200</option>
+              <option value="Pablo8">$100</option>
+              <option value="Pablo9">$50</option>
+              <option value="Pablo10">$25</option>
             </select>
           </div>
 

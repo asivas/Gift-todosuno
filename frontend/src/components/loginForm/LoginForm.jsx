@@ -14,40 +14,32 @@ const MySweetAlert = withReactContent(Swal);
 
 const LoginForm = () => {
   const { setToken, setReset, updateUser } = useApiContext();
-
   const handleUpdateUser = async () => {
-    const { value: claves } = await Swal.fire({
-      title: "Seleccione el codigo de validación",
-      input: "select",
-      inputOptions: {
-        Clave: {
-          Cosmos: "Cosmos",
-          infinito: "infinito",
-          raudal: "raudal",
-          bienestar: "bienestar",
-          prosperidad: "prosperidad",
-          afluencia: "afluencia",
-        },
-      },
-      inputPlaceholder: "Seleccione una palabra clave",
+    const { value: inputValue } = await Swal.fire({
+      title: "Ingrese el código de validación",
+      input: "text",
+      inputPlaceholder: "Ingrese una palabra clave",
       showCancelButton: true,
       inputValidator: (value) => {
         return new Promise((resolve) => {
           if (
             value === "afluencia" ||
             value === "raudal" ||
-            value === "prosperidad"
+            value === "prosperidad" ||
+            value === "bienestar" ||
+            value === "cosmos" ||
+            value === "infinito"
           ) {
             resolve();
           } else {
-            resolve("Necesito que selecciones el código que se te envió :)");
+            resolve("Por favor, seleccione un código válido");
           }
         });
       },
     });
 
-    if (claves) {
-      Swal.fire(`Usted selecciono: ${claves}`);
+    if (inputValue) {
+      Swal.fire(`Usted ingresó: ${inputValue}`);
 
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
@@ -55,22 +47,19 @@ const LoginForm = () => {
       try {
         const updatedUsers = await updateUser(email, password);
         if (updatedUsers) {
-          // alert("¡Usuario actualizado correctamente! Ya puede iniciar sesion");
           Swal.fire(
-            "¡Usuario actualizado correctamente! Ya puede iniciar sesion",
+            "¡Usuario actualizado correctamente! Ya puede iniciar sesión",
           );
         }
-
-        // Si es necesario, realiza alguna acción adicional después de actualizar el usuario
       } catch (error) {
         console.error("Error al actualizar usuario:", error);
-        // Swal.fire("SweetAlert2 is working!");
         Swal.fire(
           "Ha ocurrido un error al actualizar el usuario. Por favor, inténtalo de nuevo más tarde.",
         );
       }
     }
   };
+
   const router = useRouter();
   const {
     register,

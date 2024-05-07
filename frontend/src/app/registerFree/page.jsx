@@ -254,9 +254,9 @@ const registerPage = () => {
               name="nivel"
               defaultValue="Pablo10"
             >
-              <option value="Pablo1">$12800</option>
-              <option value="Pablo2">$6400</option>
+          {/** <option value="Pablo1">$12800</option>
               <option value="Pablo3">$3200</option>
+          */} <option value="Pablo2">$6400</option>
               <option value="Pablo4">$1600</option>
               <option value="Pablo5">$800</option>
               <option value="Pablo6">$400</option>

@@ -3,6 +3,7 @@ import Users from "../models/Users";
 import Cuadros from "../models/Cuadros";
 import Pools from "../models/Pools";
 import jwt from "jsonwebtoken";
+import Admin from "../models/Admin";
 require("dotenv").config();
 
 export const registerUser = async (req, res) => {
@@ -120,6 +121,11 @@ export const registerUser = async (req, res) => {
           cuadro.lado_izquierdo.builders2.username = username;
         }
       }
+      const dataAdmin = new Admin({
+        username: username,
+        nivel: referral.nivel,
+      });
+      await dataAdmin.save();
 
       referral.referidos.push(username);
       await newUser.save();
@@ -221,6 +227,14 @@ export const registerUserFree = async (req, res) => {
         message: "A user with the same email or username already exists",
       });
     }
+    //const admin = await Admin.findOne({ username: username });
+
+    //
+    const dataAdmin = new Admin({
+      username: username,
+      nivel: referral.nivel,
+    });
+    await dataAdmin.save();
 
     const hashedPassword = await bcrypt.hash(password, 10);
 

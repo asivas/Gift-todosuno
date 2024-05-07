@@ -4,6 +4,8 @@
 
 # Node.js
 node_modules/
-next/
+/home/natalia/Desktop/Proyect/TodosUno/Gift-todosuno/frontend/node_modules
 .next/
+/home/natalia/Desktop/Proyect/TodosUno/Gift-todosuno/frontend/.next/
 .env.env.prod
+/home/natalia/Desktop/Proyect/TodosUno/Gift-todosuno/frontend/.env
